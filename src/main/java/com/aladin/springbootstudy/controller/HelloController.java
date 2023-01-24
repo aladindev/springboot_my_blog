@@ -2,6 +2,8 @@ package com.aladin.springbootstudy.controller;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 public class HelloController {
 
@@ -35,5 +37,23 @@ public class HelloController {
                                    @RequestParam String email,
                                    @RequestParam String organization) {
         return name + " / " + email + " / " + organization;
+    }
+
+    @GetMapping(value="/request2")
+    /**
+     * @RequestParam
+     * 어떤 GET 요청 값이 들어올지 모를 경우 Map<String, String>으로
+     * 전달받는다.
+     * Object의 Null Check에 유의해야겠지?
+     * */
+    public String getRequestParam2(@RequestParam Map<String, String> params) {
+
+        StringBuilder sb = new StringBuilder();
+
+        params.entrySet().forEach(map -> {
+            sb.append(map.getKey() + " : " + map.getValue() + "\n");
+        });
+
+        return sb.toString();
     }
 }
