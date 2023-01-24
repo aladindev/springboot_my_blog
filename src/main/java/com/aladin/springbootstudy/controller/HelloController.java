@@ -1,5 +1,6 @@
 package com.aladin.springbootstudy.controller;
 
+import com.aladin.springbootstudy.dto.MemberDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -53,6 +54,21 @@ public class HelloController {
         params.entrySet().forEach(map -> {
             sb.append(map.getKey() + " : " + map.getValue() + "\n");
         });
+
+        return sb.toString();
+    }
+
+    @GetMapping(value="/request3")
+    /**
+     * @RequestParam
+     * key와 value가 정해져있지만, 받아야할 파라미터가 많을 경우
+     * DTO 객체를 사용한 방식
+     * */
+    public String getRequestParam3(@RequestParam MemberDTO memberDto) {
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(memberDto.getName());
 
         return sb.toString();
     }
