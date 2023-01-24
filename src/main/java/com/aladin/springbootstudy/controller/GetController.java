@@ -61,11 +61,14 @@ public class GetController {
      * key와 value가 정해져있지만, 받아야할 파라미터가 많을 경우
      * DTO 객체를 사용한 방식
      * */
-    public String getRequestParam3(@RequestParam MemberDTO memberDto) {
+    public String getRequestParam3(MemberDTO memberDto) {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(memberDto.getName());
+        sb.append("name > " + memberDto.getName() + "\n");
+        sb.append("name > " + memberDto.getEmail() + "\n");
+        sb.append("name > " + memberDto.getOrganization() + "\n");
+
 
         return sb.toString();
     }
