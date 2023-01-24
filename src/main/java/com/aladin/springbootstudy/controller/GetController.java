@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/get-api")
+@RequestMapping("/api/v1/get-api") // infix = 공통 URL
 public class GetController {
 
     @GetMapping(value="/variable1/{variable}")
@@ -21,6 +21,7 @@ public class GetController {
     }
 
 
+    //http://localhost:8080/api/vi/get-api/request1?name=name&email=emai&organization=organization
     @GetMapping(value="/request1")
     /**
      * @RequestParam
@@ -42,6 +43,7 @@ public class GetController {
      * 전달받는다.
      * Object의 Null Check에 유의해야겠지?
      * */
+    //http://localhost:8080/api/vi/get-api/request1?key1=val1&key2=val2&key3=val3
     public String getRequestParam2(@RequestParam Map<String, String> params) {
 
         StringBuilder sb = new StringBuilder();
