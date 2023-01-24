@@ -1,9 +1,6 @@
 package com.aladin.springbootstudy.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class HelloController {
@@ -23,5 +20,20 @@ public class HelloController {
      * */
     public String getVariable1(@PathVariable String variable) {
         return variable;
+    }
+
+
+    @GetMapping(value="/request1")
+    /**
+     * @RequestParam
+     * GET형식의 요청에서 쿼리 문자열을 전달하기 위해 사용되는 방법
+     * '?'를 기준으로 우측에 key=value의 형태로 전달되며,
+     * 복수 형태로 전달될 경우 &를 구분자로 사용함.
+     * 쿼리스트링!
+     * */
+    public String getRequestParam1(@RequestParam String name,
+                                   @RequestParam String email,
+                                   @RequestParam String organization) {
+        return name + " / " + email + " / " + organization;
     }
 }
