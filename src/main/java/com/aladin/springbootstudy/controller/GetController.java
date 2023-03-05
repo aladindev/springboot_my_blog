@@ -72,4 +72,9 @@ public class GetController {
 
         return sb.toString();
     }
+
+    @GetMapping(value="/login")
+    public String login() {
+        return "login";
+    }
 }
