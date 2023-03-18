@@ -2,7 +2,9 @@ package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.dto.KakaoProfile;
 import com.aladin.springbootstudy.dto.OAuthToken;
+import com.aladin.springbootstudy.service.UserInfoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
@@ -14,6 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/auth/kakao") // infix = 공통 URL
 public class LoginController {
+
+    @Autowired
+    UserInfoService userInfoService;
 
     @Value("#{kakao.client_id}")
     private String client_id;
