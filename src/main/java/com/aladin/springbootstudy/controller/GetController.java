@@ -1,13 +1,18 @@
 package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.dto.MemberDTO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/get-api") // infix = 공통 URL
 public class GetController {
+
+    @Value("#{kakao.client_id}")
+    private String client_id;
 
     @GetMapping(value="/variable1/{variable}")
     /**
@@ -74,7 +79,9 @@ public class GetController {
     }
 
     @GetMapping(value="/login")
-    public String login() {
-        return "login";
+    public ModelAndView login() {
+        System.out.println("client_id >>> " + client_id);
+        ModelAndView mv = new ModelAndView("login");
+        return mv;
     }
 }

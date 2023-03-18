@@ -34,3 +34,4 @@ build/
 
 ### properties ###
 application.properties
+kakao.properties

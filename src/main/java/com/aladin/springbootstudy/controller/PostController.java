@@ -16,6 +16,7 @@ import java.util.Map;
  * */
 public class PostController {
 
+
     @PostMapping(value="/member")
     public String postMember(@RequestBody Map<String, Object> postData) {
         StringBuilder sb = new StringBuilder();
