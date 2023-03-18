@@ -80,7 +80,6 @@ public class GetController {
 
     @GetMapping(value="/login")
     public ModelAndView login() {
-        System.out.println("client_id >>> " + client_id);
         ModelAndView mv = new ModelAndView("login");
         return mv;
     }
