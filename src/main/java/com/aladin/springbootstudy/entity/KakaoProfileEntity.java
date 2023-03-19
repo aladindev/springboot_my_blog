@@ -36,7 +36,6 @@ public class KakaoProfileEntity {
     }
 
     /* Kakao Profile builder class */
-    @Builder
     public static class KakaoBuilder implements CommonBuilder<KakaoProfileEntity> {
         private Long id;
         private String nickname;

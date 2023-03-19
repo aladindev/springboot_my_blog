@@ -10,7 +10,7 @@ public class KakaoProfileDto {
     public KakaoAccount kakao_account;
 
     @Data
-    public class KakaoAccount {
+    public static class KakaoAccount {
         public Boolean profile_nickname_needs_agreement;
         public Profile profile;
         public Boolean has_email;
@@ -21,11 +21,11 @@ public class KakaoProfileDto {
     }
 
     @Data
-    public class Profile {
+    public static class Profile {
         public String nickname;
     }
     @Data
-    public class Properties {
+    public static class Properties {
         public String nickname;
     }
 
