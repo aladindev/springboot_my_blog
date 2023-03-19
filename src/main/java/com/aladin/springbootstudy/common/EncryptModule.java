@@ -11,15 +11,17 @@ import java.util.Base64;
 @Component
 public class EncryptModule {
 
-    @Value("encrypt.algorithm")
+    //@Value("#{kakao.client_id}")
+    @Value("#{encrypt.algorithm}")
     private String algorithm;
-    @Value("encrypt.key")
+    @Value("#{encrypt.key}")
     private String key;
-    private String iv = key.substring(0, 16); // 16byte
+    private String iv = null;
 
     public String encrypt(String text) throws Exception {
         Cipher cipher = Cipher.getInstance(algorithm);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        iv = key.substring(0, 16); // 16byte
         IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
 
@@ -30,6 +32,7 @@ public class EncryptModule {
     public String decrypt(String cipherText) throws Exception {
         Cipher cipher = Cipher.getInstance(algorithm);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        iv = key.substring(0, 16); // 16byte
         IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
         cipher.init(Cipher.DECRYPT_MODE, keySpec, ivParamSpec);
 
