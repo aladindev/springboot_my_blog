@@ -18,9 +18,13 @@ public class UserInfoService {
         return null;
     }
 
-    public Optional<KakaoProfileEntity> getOne(Long id) {
+    public KakaoProfileEntity getOne(Long id) {
 
-        System.out.println(userRepository.findById(id));
-        return userRepository.findById(id);
+        Optional<KakaoProfileEntity> result = userRepository.findById(id);
+        if(result.isPresent()) {
+            return result.get();
+        }else {
+            return result.orElse(null);
+        }
     }
 }

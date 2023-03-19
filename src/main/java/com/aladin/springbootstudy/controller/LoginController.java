@@ -99,7 +99,13 @@ public class LoginController {
                     System.out.println("kakaoProfile dto > > " + kakaoProfileDto);
 
                     KakaoProfileEntity entity = new KakaoProfileEntity.KakaoBuilder(kakaoProfileDto).build();
-                    System.out.println("build entity >>  " + entity);
+
+                    KakaoProfileEntity entity2 = null;
+                    entity2 = userInfoService.getOne(kakaoProfileDto.getId());
+
+                    if(entity2 != null) {
+                        System.out.println(entity2.getEmail() + "\n" + entity2.getId());
+                    }
 
                 } catch (Exception e) {
                     System.out.println("kakaoProfile exception > " + e.getMessage());
@@ -107,7 +113,7 @@ public class LoginController {
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        } 
         return "카카오 로그인 완료 req param return code : " + code;
     }
 }
