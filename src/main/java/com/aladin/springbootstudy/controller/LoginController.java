@@ -49,7 +49,7 @@ public class LoginController {
             params.put("redirect_uri", "http://localhost:8080/auth/kakao/callback");
             params.put("code", code);
 
-            //httpRequest(headers, params,);
+            // httpRequest(headers, params,);
 
             // ObjectMapper > json을 object로 변환 라이브러리
             // 파싱 시 반드시 멤버변수의 변수명과 응답 json의 key값이 일치해야 한다!!
