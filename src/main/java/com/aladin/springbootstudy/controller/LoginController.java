@@ -39,7 +39,7 @@ public class LoginController {
     public String kakaoCallback(@RequestParam(name="code") String code) {
         //@ResponseBody : Data를 리턴해주는 컨트롤러 함수
 
-        try {
+        try { // test
 
             Map<String, String> headers = new LinkedHashMap<>();
             headers.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
