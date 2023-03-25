@@ -17,7 +17,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
@@ -39,32 +41,15 @@ public class LoginController {
 
         try {
 
-            //POST 방식으로 key=value 데이터를 요청(카카오 쪽으로)
-            RestTemplate rt = new RestTemplate(); // http 요청 라이브러리
+            Map<String, String> headers = new LinkedHashMap<>();
+            headers.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+            Map<String, String> params = new LinkedHashMap<>();
+            params.put("grant_type", "authorization_code");
+            params.put("client_id", client_id);
+            params.put("redirect_uri", "http://localhost:8080/auth/kakao/callback");
+            params.put("code", code);
 
-            //POST요청 날릴 데이터가 key-value 형태임을 알리는 HttpHeader 선언
-            HttpHeaders headers = new HttpHeaders();
-            headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-
-            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-            params.add("grant_type", "authorization_code");
-            params.add("client_id", client_id);
-            params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
-            params.add("code", code);
-
-            // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
-            // >> exchange()가 HttpEntity object를 매개변수로 받기 때문이다.
-            HttpEntity<MultiValueMap<String, String>> kakaoTokenReq =
-                    new HttpEntity<>(params, headers);
-
-            // Http 요청하기 - Post 방식으로 그리고 response 변수의 응답을 받는다.
-            // 제네릭 String 선언 -> 응답 데이터를 String 클래스로 받겠다.
-            ResponseEntity<String> response = rt.exchange(
-                    "https://kauth.kakao.com/oauth/token"
-                    , HttpMethod.POST // Type
-                    , kakaoTokenReq   // 토큰 요청 데이터
-                    , String.class    // 응답받을 클래스타입입
-            );
+            httpRequest(headers, params, );
 
             // ObjectMapper > json을 object로 변환 라이브러리
             // 파싱 시 반드시 멤버변수의 변수명과 응답 json의 key값이 일치해야 한다!!
