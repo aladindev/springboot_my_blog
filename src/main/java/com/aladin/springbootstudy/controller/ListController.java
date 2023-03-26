@@ -1,17 +1,13 @@
 package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonCode;
-import com.aladin.springbootstudy.dto.KakaoProfileDto;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
-import static com.aladin.springbootstudy.common.CommonFunction.*;
+import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
 
 @RestController
-@RequestMapping("/list") // infix = 공통 URL
+@RequestMapping("/api/v1") // infix = 공통 URL
 public class ListController implements CommonCode {
 
     @Value("#{crypto.upbit_a_key}")
@@ -45,7 +37,10 @@ public class ListController implements CommonCode {
     @Value("#{crypto.upbit_get_accounts_url}")
     String upbit_get_accounts_url;
 
-    @GetMapping(value="/upbit-account")
+    @Value("#{crypto.upbit_get_ticker_url}")
+    String upbit_get_ticker_url;
+
+    @GetMapping(value="/accounts")
     @ResponseBody
     public String upbitAccountList() {
 
@@ -62,18 +57,6 @@ public class ListController implements CommonCode {
 
         String authenticationToken = "Bearer " + jwtToken;
 
-        //            HttpClient client = HttpClientBuilder.create().build();
-//            HttpGet request = new HttpGet(upbit_get_accounts_url);
-//            request.setHeader("Content-Type", "application/json");
-//            request.addHeader("Authorization", authenticationToken);
-//
-//            HttpResponse response = client.execute(request);
-//            HttpEntity entity = response.getEntity();
-//
-//            String result = EntityUtils.toString(entity, "UTF-8");
-//
-//            System.out.println("result >>  " + result);
-//            return result;
         Map<String, String> accountsHeader = new LinkedHashMap<>();
         accountsHeader.put("Content-Type", "application/json");
         accountsHeader.put("Authorization", authenticationToken);
@@ -81,16 +64,50 @@ public class ListController implements CommonCode {
         ResponseEntity<String> responseEntity = httpRequest(accountsHeader, new HashMap<String, String>()
                                         , upbit_get_accounts_url, HttpMethod.GET);
 
-        System.out.println("우선 response entity > " + responseEntity.getBody().toString());
-
         ObjectMapper objectMapper = new ObjectMapper();
         List<UpbitAccountDto> listUpbitAccountDto = new ArrayList<>();
         try {
             listUpbitAccountDto = objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
+
+            StringBuilder sb = null;
+            if(listUpbitAccountDto != null) {
+                sb = new StringBuilder("업비트 자산 리스트 >>>>>>>>>>>" + "\n\n");
+            }
+
+            for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
+                if("KRW".equals(upbitAccountDto.getCurrency())) {
+                    sb.append("원화 : " + upbitAccountDto.getBalance() + "<br/>");
+                } else {
+                    Map<String, String> tickerHeader = new LinkedHashMap<>();
+                    tickerHeader.put("accept", "application/json");
+
+                    //markets=KRW-GRS"
+                    String url = upbit_get_ticker_url + "?markets=KRW-" + upbitAccountDto.getCurrency();
+                    String bal = upbitAccountDto.getBalance();
+                    String lock = upbitAccountDto.getLocked();
+                    Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
+                    System.out.println("coinCount > " + coinCount);
+
+                    //trade_price(종가:현재가)
+                    ResponseEntity<String> tickerEntity = httpRequest(
+                            tickerHeader
+                            , new HashMap<String, String>()
+                            , url
+                            , HttpMethod.GET);
+                    JSONArray jsonArray = new JSONArray(tickerEntity.getBody());
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                    Number trade_price = (Number) jsonObject.get("trade_price");
+
+                    BigDecimal totAsset = BigDecimal.valueOf(coinCount * trade_price.doubleValue());
+                    System.out.println("totAsset >> " + totAsset);
+                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
+                }
+            }
+            return sb.toString();
         } catch (Exception e) {
             System.out.println("" + e.getMessage());
+            return "비정상 요청";
         }
-        return "성공";
-
     }
 }

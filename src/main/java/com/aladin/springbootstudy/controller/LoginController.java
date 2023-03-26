@@ -84,7 +84,7 @@ public class LoginController implements CommonCode {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
                         System.out.println("인증성공 list redirect");
-                        RedirectView rv = new RedirectView("/list/upbit-account");
+                        RedirectView rv = new RedirectView("/api/v1/accounts");
                         return new ModelAndView(rv);
                     }
 
