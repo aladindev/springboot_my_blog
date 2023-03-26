@@ -23,4 +23,13 @@ public class ConfigProperties {
 
         return propertiesFactoryBean;
     }
+
+    @Bean(name="crypto")
+    public PropertiesFactoryBean cryptoPropertiesFactoryBean() throws Exception {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("crypto.properties");
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
+    }
 }

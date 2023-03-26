@@ -17,6 +17,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,10 +39,11 @@ public class LoginController implements CommonCode {
 
     @GetMapping(value="/callback")
     @ResponseBody
-    public String kakaoCallback(@RequestParam(name="code") String code) {
+    public ModelAndView kakaoCallback(@RequestParam(name="code") String code) {
         //@ResponseBody : Data를 리턴해주는 컨트롤러 함수
 
-        try { // test
+        ModelAndView mv = null;
+        try {
 
             Map<String, String> oauthHeaders = new LinkedHashMap<>();
             oauthHeaders.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -56,8 +59,6 @@ public class LoginController implements CommonCode {
             // ObjectMapper > json을 object로 변환 라이브러리
             // 파싱 시 반드시 멤버변수의 변수명과 응답 json의 key값이 일치해야 한다!!
             OAuthToken oAuthToken = getOAuthToken(oAuthResponse);
-
-            // 로직 분리는 나중에..
 
             Map<String, String> getUserInfoHeaders = new LinkedHashMap<>();
             getUserInfoHeaders.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -80,7 +81,8 @@ public class LoginController implements CommonCode {
                 if(entity != null) {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
-                        return "카카오 로그인 완료 req param return code : " + code;
+                        RedirectView rv = new RedirectView("/list.do");
+                        return new ModelAndView(rv);
                     }
 
                 }
@@ -91,7 +93,7 @@ public class LoginController implements CommonCode {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return "등록되지 않은 사용자 입니다.";
+        return new ModelAndView("error");
     }
 
 
