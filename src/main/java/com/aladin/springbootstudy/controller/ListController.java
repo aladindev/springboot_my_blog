@@ -76,7 +76,7 @@ public class ListController implements CommonCode {
 
             for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
                 if("KRW".equals(upbitAccountDto.getCurrency())) {
-                    sb.append("원화 : " + upbitAccountDto.getBalance() + "<br/>");
+                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
                 } else {
                     Map<String, String> tickerHeader = new LinkedHashMap<>();
                     tickerHeader.put("accept", "application/json");
@@ -100,7 +100,7 @@ public class ListController implements CommonCode {
                     Number trade_price = (Number) jsonObject.get("trade_price");
 
                     BigDecimal totAsset = BigDecimal.valueOf(coinCount * trade_price.doubleValue());
-                    totAsset = totAsset.setScale(0, BigDecimal.ROUND_UP);
+                    totAsset = roundUp(totAsset);
                     System.out.println("totAsset >> " + totAsset);
                     sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
                 }
@@ -110,5 +110,15 @@ public class ListController implements CommonCode {
             System.out.println("" + e.getMessage());
             return "비정상 요청";
         }
+    }
+
+    public BigDecimal roundUp(String asset) {
+        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP);
+    }
+    public BigDecimal roundUp(Double asset) {
+        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP);
+    }
+    public BigDecimal roundUp(BigDecimal asset) {
+        return asset.setScale(0, BigDecimal.ROUND_UP);
     }
 }
