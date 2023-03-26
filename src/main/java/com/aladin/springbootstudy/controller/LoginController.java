@@ -56,7 +56,7 @@ public class LoginController implements CommonCode {
             params.put("redirect_uri", "http://localhost:8080/auth/kakao/callback");
             params.put("code", code);
 
-            ResponseEntity<String> oAuthResponse =  httpRequest(oauthHeaders, params, OAUTH_TOKEN_URL);
+            ResponseEntity<String> oAuthResponse =  httpRequest(oauthHeaders, params, OAUTH_TOKEN_URL, HttpMethod.POST);
 
             // ObjectMapper > json을 object로 변환 라이브러리
             // 파싱 시 반드시 멤버변수의 변수명과 응답 json의 key값이 일치해야 한다!!
@@ -66,7 +66,7 @@ public class LoginController implements CommonCode {
             getUserInfoHeaders.put("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
             getUserInfoHeaders.put("Authorization", "Bearer " + oAuthToken.getAccess_token());
 
-            ResponseEntity<String> userInfoResponse = httpRequest(getUserInfoHeaders, params, GET_USER_INFO_URL);
+            ResponseEntity<String> userInfoResponse = httpRequest(getUserInfoHeaders, params, GET_USER_INFO_URL, HttpMethod.POST);
 
             ObjectMapper objectMapper = new ObjectMapper();
             KakaoProfileDto kakaoProfileDto = null;

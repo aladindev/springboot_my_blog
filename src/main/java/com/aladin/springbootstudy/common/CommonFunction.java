@@ -14,7 +14,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class CommonFunction {
-    public static ResponseEntity<String> httpRequest(Map<String, String> headerMap, Map<String, String> params, String url) {
+    public static ResponseEntity<String> httpRequest(Map<String, String> headerMap, Map<String
+                                , String> params, String url, HttpMethod type) {
 
         try {
             //POST 방식으로 key=value 데이터를 요청(카카오 쪽으로)
@@ -32,9 +33,9 @@ public class CommonFunction {
                 headers.add(entry.getKey(), entry.getValue());
             }
 
-            if(params == null) {
-                throw new Exception("파라미터정보 누락");
-            }
+//            if(params == null) {
+//                throw new Exception("파라미터정보 누락");
+//            }
             MultiValueMap<String, String> mvm = new LinkedMultiValueMap<>();
             Iterator<Map.Entry<String, String>> iter2 = params.entrySet().iterator();
             while(iter2.hasNext()) {
@@ -51,7 +52,7 @@ public class CommonFunction {
             // 제네릭 String 선언 -> 응답 데이터를 String 클래스로 받겠다.
             ResponseEntity<String> response = rt.exchange(
                     url
-                    , HttpMethod.POST // Type
+                    , type // Type
                     , httpEntity   // 토큰 요청 데이터
                     , String.class    // 응답받을 클래스타입입
             );
