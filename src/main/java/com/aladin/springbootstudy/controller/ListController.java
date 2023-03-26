@@ -71,7 +71,7 @@ public class ListController implements CommonCode {
 
             StringBuilder sb = null;
             if(listUpbitAccountDto != null) {
-                sb = new StringBuilder("업비트 자산 리스트 >>>>>>>>>>>" + "\n\n");
+                sb = new StringBuilder("<<<<<<<<<<<< 업비트 자산 리스트 >>>>>>>>>>>" + "<br/>");
             }
 
             for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
@@ -100,6 +100,7 @@ public class ListController implements CommonCode {
                     Number trade_price = (Number) jsonObject.get("trade_price");
 
                     BigDecimal totAsset = BigDecimal.valueOf(coinCount * trade_price.doubleValue());
+                    totAsset = totAsset.setScale(0, BigDecimal.ROUND_UP);
                     System.out.println("totAsset >> " + totAsset);
                     sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
                 }
