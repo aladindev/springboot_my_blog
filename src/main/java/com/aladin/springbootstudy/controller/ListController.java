@@ -76,7 +76,7 @@ public class ListController implements CommonCode {
 
             for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
                 if("KRW".equals(upbitAccountDto.getCurrency())) {
-                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
+                    sb.append("원화 : " + addComma(roundUp(upbitAccountDto.getBalance())) + "<br/>");
                 } else {
                     Map<String, String> tickerHeader = new LinkedHashMap<>();
                     tickerHeader.put("accept", "application/json");
@@ -86,7 +86,6 @@ public class ListController implements CommonCode {
                     String bal = upbitAccountDto.getBalance();
                     String lock = upbitAccountDto.getLocked();
                     Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
-                    System.out.println("coinCount > " + coinCount);
 
                     //trade_price(종가:현재가)
                     ResponseEntity<String> tickerEntity = httpRequest(
@@ -98,11 +97,9 @@ public class ListController implements CommonCode {
                     JSONObject jsonObject = jsonArray.getJSONObject(0);
 
                     Number trade_price = (Number) jsonObject.get("trade_price");
+                    String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
 
-                    BigDecimal totAsset = BigDecimal.valueOf(coinCount * trade_price.doubleValue());
-                    totAsset = roundUp(totAsset);
-                    System.out.println("totAsset >> " + totAsset);
-                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
+                    sb.append(upbitAccountDto.getCurrency() + " : " + addComma(totAsset) + "<br/>");
                 }
             }
             return sb.toString();
@@ -112,13 +109,29 @@ public class ListController implements CommonCode {
         }
     }
 
-    public BigDecimal roundUp(String asset) {
-        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP);
+    public String roundUp(String asset) {
+        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP).toString();
     }
-    public BigDecimal roundUp(Double asset) {
-        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP);
+    public String roundUp(Double asset) {
+        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP).toString();
     }
-    public BigDecimal roundUp(BigDecimal asset) {
-        return asset.setScale(0, BigDecimal.ROUND_UP);
+    public String roundUp(BigDecimal asset) {
+        return asset.setScale(0, BigDecimal.ROUND_UP).toString();
+    }
+
+    public String addComma(String asset) {
+
+        StringBuilder sb = new StringBuilder(asset).reverse();
+        String str = sb.toString();
+        sb.setLength(0);
+        for(int i = 0 ; i < str.length() ; i++) {
+            if(i == 0) {
+                sb.append(str.charAt(i));
+            } else {
+                if(i%3==0) sb.append("," + str.charAt(i));
+                else sb.append(str.charAt(i));
+            }
+        }
+        return sb.reverse().toString();
     }
 }
