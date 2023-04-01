@@ -2,6 +2,7 @@ package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonCode;
 import com.aladin.springbootstudy.common.EncryptModule;
+import com.aladin.springbootstudy.common.SessionManager;
 import com.aladin.springbootstudy.dto.KakaoProfileDto;
 import com.aladin.springbootstudy.dto.OAuthToken;
 import com.aladin.springbootstudy.entity.KakaoProfileEntity;
@@ -20,6 +21,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -36,12 +39,16 @@ public class LoginController implements CommonCode {
     UserInfoService userInfoService;
     @Autowired
     EncryptModule encryptModule;
+    @Autowired
+    SessionManager sessionManager;
 
     @Value("#{kakao.client_id}")
     private String client_id;
+    @Value("#{encrypt.session_key}")
+    private String session_key;
 
     @GetMapping(value="/callback")
-    public ModelAndView kakaoCallback(@RequestParam(name="code") String code) {
+    public ModelAndView kakaoCallback(@RequestParam(name="code") String code, HttpServletRequest request, HttpServletResponse response) {
         //@ResponseBody : Data를 리턴해주는 컨트롤러 함수
 
         ModelAndView mv = null;
@@ -82,6 +89,11 @@ public class LoginController implements CommonCode {
 
                 if(entity != null) {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
+                    /* 세션 등록 */
+                    Object obj = encryptModule.encrypt(email, session_key);
+                    System.out.println("session >> " + (String) obj);
+                    sessionManager.createSession(obj, response);
+
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
                         System.out.println("인증성공 list redirect");
                         RedirectView rv = new RedirectView("/api/v1/accounts");

@@ -29,6 +29,17 @@ public class EncryptModule {
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
+    public String encrypt(String text, String key) throws Exception {
+        Cipher cipher = Cipher.getInstance(algorithm);
+        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
+        iv = key.substring(0, 16); // 16byte
+        IvParameterSpec ivParamSpec = new IvParameterSpec(iv.getBytes());
+        cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivParamSpec);
+
+        byte[] encrypted = cipher.doFinal(text.getBytes("UTF-8"));
+        return Base64.getEncoder().encodeToString(encrypted);
+    }
+
     public String decrypt(String cipherText) throws Exception {
         Cipher cipher = Cipher.getInstance(algorithm);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
