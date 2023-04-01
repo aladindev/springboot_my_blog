@@ -42,15 +42,17 @@ public class ListController implements CommonCode {
 
     @GetMapping(value="/accounts")
     @ResponseBody
-    public ResponseEntity<?> upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key) {
+    public String upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key) {
 
+        System.out.println("listController session_key > " + session_key);
+        HttpHeaders headers = new HttpHeaders();
         if("".equals(session_key) || session_key == null) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create("/api/v1/get-api/login"));
-            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+            System.out.println("session_key > " + session_key + " 이므로 redirect");
+            return "redirect:/api/v1/get-api/login";
         }
 
-        return null;
+        System.out.println(" get ");
+        return upbitGetAccount();
     }
 
     public String upbitGetAccount() {

@@ -24,10 +24,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.aladin.springbootstudy.common.CommonFunction.getOAuthToken;
 import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
@@ -94,9 +91,7 @@ public class LoginController implements CommonCode {
                 if(entity != null) {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
                     /* 세션 등록 */
-                    String obj = encryptModule.encrypt(email, session_key);
-                    System.out.println("login controller session key > " + obj);
-                    session.setAttribute("session_key", obj);
+                    session.setAttribute("session_key", UUID.randomUUID().toString());
 
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
                         System.out.println("인증성공 list redirect");
