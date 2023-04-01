@@ -23,6 +23,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -50,6 +51,9 @@ public class LoginController implements CommonCode {
     @GetMapping(value="/callback")
     public ModelAndView kakaoCallback(@RequestParam(name="code") String code, HttpServletRequest request, HttpServletResponse response) {
         //@ResponseBody : Data를 리턴해주는 컨트롤러 함수
+
+        // 로그인 세션
+        HttpSession session = request.getSession();
 
         ModelAndView mv = null;
         try {
@@ -90,9 +94,9 @@ public class LoginController implements CommonCode {
                 if(entity != null) {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
                     /* 세션 등록 */
-                    Object obj = encryptModule.encrypt(email, session_key);
-                    System.out.println("session >> " + (String) obj);
-                    sessionManager.createSession(obj, response);
+                    String obj = encryptModule.encrypt(email, session_key);
+                    System.out.println("login controller session key > " + obj);
+                    session.setAttribute("session_key", obj);
 
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
                         System.out.println("인증성공 list redirect");

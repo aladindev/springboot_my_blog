@@ -9,14 +9,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.*;
 
 import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
@@ -42,9 +42,15 @@ public class ListController implements CommonCode {
 
     @GetMapping(value="/accounts")
     @ResponseBody
-    public String upbitAccountList() {
+    public ResponseEntity<?> upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key) {
 
-        return upbitGetAccount();
+        if("".equals(session_key) || session_key == null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(URI.create("/api/v1/get-api/login"));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        }
+
+        return null;
     }
 
     public String upbitGetAccount() {
