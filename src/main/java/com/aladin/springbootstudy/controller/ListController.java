@@ -4,6 +4,7 @@ import com.aladin.springbootstudy.common.CommonCode;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.binance.connector.client.impl.SpotClientImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
@@ -40,6 +41,12 @@ public class ListController implements CommonCode {
     @Value("#{crypto.upbit_get_ticker_url}")
     String upbit_get_ticker_url;
 
+    @Value("#{crypto.binance_a_key}")
+    String binance_a_key;
+
+    @Value("#{crypto.binance_s_key}")
+    String binanace_s_key;
+
     @GetMapping(value="/accounts")
     @ResponseBody
     public String upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key) {
@@ -52,7 +59,8 @@ public class ListController implements CommonCode {
         }
 
         System.out.println(" get ");
-        return upbitGetAccount();
+        //return upbitGetAccount();
+        return binance();
     }
 
     public String upbitGetAccount() {
@@ -68,7 +76,7 @@ public class ListController implements CommonCode {
         Map<String, String> accountsHeader = new LinkedHashMap<>();
         accountsHeader.put("Content-Type", "application/json");
         accountsHeader.put("Authorization", authenticationToken);
-
+ 
         ResponseEntity<String> responseEntity = httpRequest(accountsHeader, new HashMap<String, String>()
                                         , upbit_get_accounts_url, HttpMethod.GET);
 
@@ -141,5 +149,20 @@ public class ListController implements CommonCode {
             }
         }
         return sb.reverse().toString();
+    }
+
+    public String binance() {
+        LinkedHashMap<String,Object> parameters = new LinkedHashMap<String,Object>();
+
+        SpotClientImpl client = new SpotClientImpl(binance_a_key, binanace_s_key);
+
+        parameters.put("symbol","BTCUSDT");
+        parameters.put("side", "SELL");
+        parameters.put("type", "LIMIT");
+        parameters.put("timeInForce", "GTC");
+        parameters.put("quantity", 0.01);
+        parameters.put("price", 9500);
+
+        return client.createTrade().testNewOrder(parameters);
     }
 }
