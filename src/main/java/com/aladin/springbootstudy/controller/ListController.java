@@ -70,17 +70,17 @@ public class ListController implements CommonCode {
     public String upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key
                                    , HttpServletResponse response) throws IOException, InterruptedException, NoSuchAlgorithmException, InvalidKeyException, ParseException {
 
-        System.out.println("listController session_key > " + session_key);
         HttpHeaders headers = new HttpHeaders();
         if("".equals(session_key) || session_key == null) {
-            System.out.println("session_key > " + session_key + " 이므로 redirect");
             response.sendRedirect("/api/v1/get-api/login");
             return null;
         }
 
-        System.out.println(" get ");
-        //return upbitGetAccount();
-        return binance_accounts_info();
+        StringBuilder sb = new StringBuilder(binance_accounts_info());
+        sb.append("<br><br>");
+        sb.append(upbitGetAccount());
+
+        return sb.toString();
     }
 
     public String upbitGetAccount() {
@@ -99,7 +99,7 @@ public class ListController implements CommonCode {
 
         ResponseEntity<String> responseEntity = httpRequest(accountsHeader, new HashMap<String, String>()
                                         , upbit_get_accounts_url, HttpMethod.GET);
- 
+
         ObjectMapper objectMapper = new ObjectMapper();
         List<UpbitAccountDto> listUpbitAccountDto = new ArrayList<>();
         try {
@@ -145,17 +145,95 @@ public class ListController implements CommonCode {
         }
     }
 
+    public String binance_accounts_info() {
+
+
+        try {
+
+            Map<String, String> header = new HashMap<>();
+            header.put("Content-Type", "application/json");
+            header.put("X-MBX-APIKEY", binance_a_key);
+
+            Map<String, String> params = new HashMap<>();
+
+            String timestamp = Long.toString(System.currentTimeMillis());
+            String queryString = "timestamp=" + timestamp;
+
+            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secKey = new SecretKeySpec(binance_s_key.getBytes(), "HmacSHA256");
+            hmacSha256.init(secKey);
+
+            String actualSign = new String(Hex.encodeHex(hmacSha256.doFinal(queryString.getBytes())));
+            queryString += "&signature=" + actualSign;
+
+            String serverUrl = "https://fapi.binance.com";
+            StringBuilder sb = new StringBuilder(serverUrl);
+            sb.append("/fapi/v2/account?");
+            sb.append(queryString);
+            serverUrl = sb.toString();
+
+            ResponseEntity<String> binanceResponseEntity = CommonFunction.httpRequest(header, params, serverUrl, HttpMethod.GET);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            BinanceAccountsDto binanceAccountsDto = null;
+            binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
+
+            List<BinanceAccountsDto.Position> positionList = binanceAccountsDto.getPositions();
+            StringBuilder sb2 = new StringBuilder("<<<<<<<<<바이낸스 계좌 정보>>>>>>>>>>").append("<br>");
+
+            for (BinanceAccountsDto.Position position : positionList) {
+                if (!"0".equals(position.getInitialMargin())) {
+
+                    String uP = position.getUnrealizedProfit();
+                    double d = Double.parseDouble(uP) * 1300;
+                    String sf = String.format("%.0f", d);
+                    String ac = addComma(sf);
+
+                    sb2.append("보유 코인 : ");
+                    sb2.append(position.getSymbol()).append("(" + position.getLeverage() + "x)").append("<br>");
+                    sb2.append("평단가 : ").append(position.getEntryPrice()).append("<br>");
+                    sb2.append("USDT : ").append(roundUp(position.getInitialMargin())).append("<br>");
+                    sb2.append("손익 : ").append(roundUp(position.getUnrealizedProfit()))
+                            .append("usdt / ")
+                            .append(ac).append("won")
+                            .append("<br>");
+                    sb2.append("SIZE : ").append(roundUp(position.getNotional())).append("<br>");
+
+                    double pee = Double.parseDouble(position.getNotional());
+                    pee *= 0.0008;
+
+                    sb2.append("수수료 : ").append(String.format("%.2f", pee)).append("usdt").append("<br>");
+
+                    sb2.append("<br>");
+                    sb2.append("<br>");
+                }
+
+            }
+            return sb2.toString();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "error";
+        }
+
+    }
+
     public String roundUp(String asset) {
-        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP).toString();
+        return new BigDecimal(asset).setScale(3, BigDecimal.ROUND_UP).toString();
     }
     public String roundUp(Double asset) {
-        return new BigDecimal(asset).setScale(0, BigDecimal.ROUND_UP).toString();
+        return new BigDecimal(asset).setScale(3, BigDecimal.ROUND_UP).toString();
     }
     public String roundUp(BigDecimal asset) {
-        return asset.setScale(0, BigDecimal.ROUND_UP).toString();
+        return asset.setScale(3, BigDecimal.ROUND_UP).toString();
     }
 
     public String addComma(String asset) {
+
+        boolean minus = false;
+        if(asset.indexOf("-") > -1) {
+            minus = true;
+            asset = asset.substring(1);
+        }
 
         StringBuilder sb = new StringBuilder(asset).reverse();
         String str = sb.toString();
@@ -168,48 +246,6 @@ public class ListController implements CommonCode {
                 else sb.append(str.charAt(i));
             }
         }
-        return sb.reverse().toString();
+        return minus ? "-" + sb.reverse().toString() : sb.reverse().toString();
     }
-
-    public String binance_accounts_info() throws InterruptedException, NoSuchAlgorithmException, InvalidKeyException, IOException, ParseException {
-
-
-        Map<String, String> header = new HashMap<>();
-        header.put("Content-Type", "application/json");
-        header.put("X-MBX-APIKEY", binance_a_key);
-
-        Map<String, String> params = new HashMap<>();
-
-        String timestamp = Long.toString(System.currentTimeMillis());
-        String queryString = "timestamp=" + timestamp;
-
-        Mac hmacSha256 = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secKey = new SecretKeySpec(binance_s_key.getBytes(), "HmacSHA256");
-        hmacSha256.init(secKey);
-
-        String actualSign = new String(Hex.encodeHex(hmacSha256.doFinal(queryString.getBytes())));
-        queryString += "&signature=" + actualSign;
-
-        String serverUrl = "https://fapi.binance.com";
-        StringBuilder sb = new StringBuilder(serverUrl);
-        sb.append("/fapi/v2/account?");
-        sb.append(queryString);
-        serverUrl = sb.toString();
-
-        ResponseEntity<String> binanceResponseEntity = CommonFunction.httpRequest(header, params, serverUrl, HttpMethod.GET);
-
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        KakaoProfileDto kakaoProfileDto = null;
-//            kakaoProfileDto = objectMapper.readValue(userInfoResponse.getBody(), KakaoProfileDto.class);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        BinanceAccountsDto binanceAccountsDto = null;
-        binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
-
-        System.out.println("binance > " + binanceAccountsDto);
-
-        return null;
-
-    }
-
 }
