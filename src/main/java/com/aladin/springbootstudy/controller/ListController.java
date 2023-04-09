@@ -1,23 +1,39 @@
 package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonCode;
+import com.aladin.springbootstudy.common.CommonFunction;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.binance.connector.client.impl.SpotClientImpl;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URI;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
@@ -45,22 +61,23 @@ public class ListController implements CommonCode {
     String binance_a_key;
 
     @Value("#{crypto.binance_s_key}")
-    String binanace_s_key;
+    String binance_s_key;
 
     @GetMapping(value="/accounts")
-    @ResponseBody
-    public String upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key) {
+    public String upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key
+                                   , HttpServletResponse response) throws IOException, InterruptedException, NoSuchAlgorithmException, InvalidKeyException, ParseException {
 
         System.out.println("listController session_key > " + session_key);
         HttpHeaders headers = new HttpHeaders();
         if("".equals(session_key) || session_key == null) {
             System.out.println("session_key > " + session_key + " 이므로 redirect");
-            return "redirect:/api/v1/get-api/login";
+            response.sendRedirect("/api/v1/get-api/login");
+            return null;
         }
 
         System.out.println(" get ");
         //return upbitGetAccount();
-        return binance();
+        return binance_accounts_info();
     }
 
     public String upbitGetAccount() {
@@ -151,18 +168,34 @@ public class ListController implements CommonCode {
         return sb.reverse().toString();
     }
 
-    public String binance() {
-        LinkedHashMap<String,Object> parameters = new LinkedHashMap<String,Object>();
+    public String binance_accounts_info() throws InterruptedException, NoSuchAlgorithmException, InvalidKeyException, IOException, ParseException {
 
-        SpotClientImpl client = new SpotClientImpl(binance_a_key, binanace_s_key);
+        String timestamp = Long.toString(System.currentTimeMillis());
+        String queryString = "timestamp=" + timestamp;
 
-        parameters.put("symbol","BTCUSDT");
-        parameters.put("side", "SELL");
-        parameters.put("type", "LIMIT");
-        parameters.put("timeInForce", "GTC");
-        parameters.put("quantity", 0.01);
-        parameters.put("price", 9500);
+        Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secKey = new SecretKeySpec(binance_s_key.getBytes(), "HmacSHA256");
+        hmacSha256.init(secKey);
 
-        return client.createTrade().testNewOrder(parameters);
+        String actualSign = new String(Hex.encodeHex(hmacSha256.doFinal(queryString.getBytes())));
+        queryString += "&signature=" + actualSign;
+
+        String serverUrl = "https://fapi.binance.com";
+
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpGet request = new HttpGet(serverUrl + "/fapi/v2/account?" + queryString);
+        request.addHeader("Content-Type", "application/json");
+        request.addHeader("X-MBX-APIKEY", binance_a_key);
+
+        HttpResponse response = client.execute(request);
+        HttpEntity entity = response.getEntity();
+        String entityString = EntityUtils.toString(entity, "UTF-8");
+
+        System.out.println(entityString);
+
+
+        return null;
+
     }
+
 }

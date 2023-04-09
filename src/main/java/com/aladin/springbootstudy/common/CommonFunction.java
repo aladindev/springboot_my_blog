@@ -33,9 +33,6 @@ public class CommonFunction {
                 headers.add(entry.getKey(), entry.getValue());
             }
 
-//            if(params == null) {
-//                throw new Exception("파라미터정보 누락");
-//            }
             MultiValueMap<String, String> mvm = new LinkedMultiValueMap<>();
             Iterator<Map.Entry<String, String>> iter2 = params.entrySet().iterator();
             while(iter2.hasNext()) {
