@@ -3,20 +3,12 @@ package com.aladin.springbootstudy.controller;
 import com.aladin.springbootstudy.common.CommonCode;
 import com.aladin.springbootstudy.common.CommonFunction;
 import com.aladin.springbootstudy.dto.BinanceAccountsDto;
-import com.aladin.springbootstudy.dto.KakaoProfileDto;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -112,7 +103,7 @@ public class ListController implements CommonCode {
 
             for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
                 if("KRW".equals(upbitAccountDto.getCurrency())) {
-                    sb.append("원화 : " + addComma(roundUp(upbitAccountDto.getBalance())) + "<br/>");
+                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
                 } else {
                     Map<String, String> tickerHeader = new LinkedHashMap<>();
                     tickerHeader.put("accept", "application/json");
@@ -135,7 +126,7 @@ public class ListController implements CommonCode {
                     Number trade_price = (Number) jsonObject.get("trade_price");
                     String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
 
-                    sb.append(upbitAccountDto.getCurrency() + " : " + addComma(totAsset) + "<br/>");
+                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
                 }
             }
             return sb.toString();
