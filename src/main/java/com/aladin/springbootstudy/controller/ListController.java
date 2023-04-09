@@ -2,6 +2,8 @@ package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonCode;
 import com.aladin.springbootstudy.common.CommonFunction;
+import com.aladin.springbootstudy.dto.BinanceAccountsDto;
+import com.aladin.springbootstudy.dto.KakaoProfileDto;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -170,6 +173,13 @@ public class ListController implements CommonCode {
 
     public String binance_accounts_info() throws InterruptedException, NoSuchAlgorithmException, InvalidKeyException, IOException, ParseException {
 
+
+        Map<String, String> header = new HashMap<>();
+        header.put("Content-Type", "application/json");
+        header.put("X-MBX-APIKEY", binance_a_key);
+
+        Map<String, String> params = new HashMap<>();
+
         String timestamp = Long.toString(System.currentTimeMillis());
         String queryString = "timestamp=" + timestamp;
 
@@ -181,18 +191,22 @@ public class ListController implements CommonCode {
         queryString += "&signature=" + actualSign;
 
         String serverUrl = "https://fapi.binance.com";
+        StringBuilder sb = new StringBuilder(serverUrl);
+        sb.append("/fapi/v2/account?");
+        sb.append(queryString);
+        serverUrl = sb.toString();
 
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(serverUrl + "/fapi/v2/account?" + queryString);
-        request.addHeader("Content-Type", "application/json");
-        request.addHeader("X-MBX-APIKEY", binance_a_key);
+        ResponseEntity<String> binanceResponseEntity = CommonFunction.httpRequest(header, params, serverUrl, HttpMethod.GET);
 
-        HttpResponse response = client.execute(request);
-        HttpEntity entity = response.getEntity();
-        String entityString = EntityUtils.toString(entity, "UTF-8");
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        KakaoProfileDto kakaoProfileDto = null;
+//            kakaoProfileDto = objectMapper.readValue(userInfoResponse.getBody(), KakaoProfileDto.class);
 
-        System.out.println(entityString);
+        ObjectMapper objectMapper = new ObjectMapper();
+        BinanceAccountsDto binanceAccountsDto = null;
+        binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
 
+        System.out.println("binance > " + binanceAccountsDto);
 
         return null;
 
