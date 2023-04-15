@@ -1,6 +1,6 @@
 package com.aladin.springbootstudy.controller;
 
-import com.aladin.springbootstudy.common.CommonCode;
+import com.aladin.springbootstudy.common.CommonUtils;
 import com.aladin.springbootstudy.common.EncryptModule;
 import com.aladin.springbootstudy.common.SessionManager;
 import com.aladin.springbootstudy.dto.KakaoProfileDto;
@@ -10,14 +10,9 @@ import com.aladin.springbootstudy.service.UserInfoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -31,7 +26,7 @@ import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
 
 @RestController
 @RequestMapping("/auth/kakao") // infix = 공통 URL
-public class LoginController implements CommonCode {
+public class LoginController implements CommonUtils {
 
     @Autowired
     UserInfoService userInfoService;
