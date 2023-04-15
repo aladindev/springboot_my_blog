@@ -3,6 +3,7 @@ package com.aladin.springbootstudy.controller;
 import com.aladin.springbootstudy.common.CommonFunction;
 import com.aladin.springbootstudy.dto.AccountsListFormDto;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
+import com.aladin.springbootstudy.dto.UserExchngListDto;
 import com.aladin.springbootstudy.service.UserInfoService;
 import com.aladin.springbootstudy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +45,12 @@ public class ListController extends CommonFunction{
                 out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
                 out.flush();
             } else {
-                System.out.println("?? " + userService.getUserExchngList(email));
+                List<UserExchngListDto> result = userService.getUserExchngList(email);
+                System.out.println(result);
                 model.addAttribute("userExchngList", userService.getUserExchngList(email));
             }
         } catch (Exception e) {
-            System.out.println("listController exceptino " + e.getMessage());
+            System.out.println("listController exception " + e.getMessage());
         }
         return "list";
     }

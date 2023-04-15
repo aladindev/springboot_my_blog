@@ -5,6 +5,7 @@ import com.aladin.springbootstudy.repository.UserExchngListRepository;
 import com.aladin.springbootstudy.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,10 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserExchngListRepository mapper;
+    @Autowired
+    UserExchngListRepository mapper;
 
     @Override
-    public List<UserExchngListDto> getUserExchngList(@Param("eamil") String email) {
-        return mapper.getUserExchngList();
+    public List<UserExchngListDto> getUserExchngList(@Param("email") String email) {
+        return mapper.getUserExchngList(email);
     }
 }

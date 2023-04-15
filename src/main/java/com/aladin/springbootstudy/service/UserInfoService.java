@@ -15,8 +15,6 @@ public class UserInfoService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    UserExchngListRepository userExchngListRepository;
 
     public List<KakaoProfileEntity> getList(KakaoProfileEntity kakaoProfileEntity) {
         return null;

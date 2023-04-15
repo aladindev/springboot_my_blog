@@ -2,9 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
 <mapper namespace="com.aladin.springbootstudy.repository.UserExchngListRepository">
     <select id="getUserExchngList" resultType="com.aladin.springbootstudy.dto.UserExchngListDto">
-        SELECT EXCHNG_CD AS exchngCd FROM USER_EXCHNG_LIST WHERE EMAIL = #{email, jdbcType=VARCHAR};
+        SELECT EXCHNG_CD AS exchngCd FROM USER_EXCHNG_LIST WHERE EMAIL = #{email, jdbcType=VARCHAR}
     </select>
 </mapper>
