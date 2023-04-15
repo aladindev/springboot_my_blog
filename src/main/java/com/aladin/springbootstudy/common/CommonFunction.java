@@ -155,7 +155,7 @@ public class CommonFunction implements CommonUtils{
             binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
 
             List<BinanceAccountsDto.Position> positionList = binanceAccountsDto.getPositions();
-            StringBuilder sb2 = new StringBuilder("<<<<<<<<<바이낸스 계좌 정보>>>>>>>>>>").append("<br>");
+            //StringBuilder sb2 = new StringBuilder("<<<<<<<<<바이낸스 계좌 정보>>>>>>>>>>").append("<br>");
 
 //            for (BinanceAccountsDto.Position position : positionList) {
 //                if (!"0".equals(position.getInitialMargin())) {
@@ -195,63 +195,74 @@ public class CommonFunction implements CommonUtils{
 
     public List<UpbitAccountDto> upbit_accounts_info() {
 
-        Algorithm algorithm = Algorithm.HMAC256(upbit_s_key);
-        String jwtToken = JWT.create()
-                .withClaim("access_key", upbit_a_key)
-                .withClaim("nonce", UUID.randomUUID().toString())
-                .sign(algorithm);
 
-        String authenticationToken = "Bearer " + jwtToken;
-
-        Map<String, String> accountsHeader = new LinkedHashMap<>();
-        accountsHeader.put("Content-Type", "application/json");
-        accountsHeader.put("Authorization", authenticationToken);
-
-        ResponseEntity<String> responseEntity = httpRequest(accountsHeader, new HashMap<String, String>()
-                , upbit_get_accounts_url, HttpMethod.GET);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<UpbitAccountDto> listUpbitAccountDto = new ArrayList<>();
         try {
-            listUpbitAccountDto = objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
+            Algorithm algorithm = Algorithm.HMAC256(upbit_s_key);
+            String jwtToken = JWT.create()
+                    .withClaim("access_key", upbit_a_key)
+                    .withClaim("nonce", UUID.randomUUID().toString())
+                    .sign(algorithm);
 
-            StringBuilder sb = null;
-            if(listUpbitAccountDto != null) {
-                sb = new StringBuilder("<<<<<<<<<<<< 업비트 자산 리스트 >>>>>>>>>>>" + "<br/>");
-            }
+            String authenticationToken = "Bearer " + jwtToken;
 
-            for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
-                if("KRW".equals(upbitAccountDto.getCurrency())) {
-                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
-                } else {
-                    Map<String, String> tickerHeader = new LinkedHashMap<>();
-                    tickerHeader.put("accept", "application/json");
+            Map<String, String> accountsHeader = new LinkedHashMap<>();
+            accountsHeader.put("Content-Type", "application/json");
+            accountsHeader.put("Authorization", authenticationToken);
 
-                    //markets=KRW-GRS"
-                    String url = upbit_get_ticker_url + "?markets=KRW-" + upbitAccountDto.getCurrency();
-                    String bal = upbitAccountDto.getBalance();
-                    String lock = upbitAccountDto.getLocked();
-                    Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
+            ResponseEntity<String> responseEntity = httpRequest(accountsHeader, new HashMap<String, String>()
+                    , upbit_get_accounts_url, HttpMethod.GET);
 
-                    //trade_price(종가:현재가)
-                    ResponseEntity<String> tickerEntity = httpRequest(
-                            tickerHeader
-                            , new HashMap<String, String>()
-                            , url
-                            , HttpMethod.GET);
-                    JSONArray jsonArray = new JSONArray(tickerEntity.getBody());
-                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-
-                    Number trade_price = (Number) jsonObject.get("trade_price");
-                    String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
-
-                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
-                }
-            }
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<UpbitAccountDto> listUpbitAccountDto =
+                    objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
             return listUpbitAccountDto;
-        } catch (Exception e) {
-            System.out.println("" + e.getMessage());
+
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
+//        try {
+//            listUpbitAccountDto = objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
+//
+//            StringBuilder sb = null;
+//            if(listUpbitAccountDto != null) {
+//                sb = new StringBuilder("<<<<<<<<<<<< 업비트 자산 리스트 >>>>>>>>>>>" + "<br/>");
+//            }
+//
+//            for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
+//                if("KRW".equals(upbitAccountDto.getCurrency())) {
+//                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
+//                } else {
+//                    Map<String, String> tickerHeader = new LinkedHashMap<>();
+//                    tickerHeader.put("accept", "application/json");
+//
+//                    //markets=KRW-GRS"
+//                    String url = upbit_get_ticker_url + "?markets=KRW-" + upbitAccountDto.getCurrency();
+//                    String bal = upbitAccountDto.getBalance();
+//                    String lock = upbitAccountDto.getLocked();
+//                    Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
+//
+//                    //trade_price(종가:현재가)
+//                    ResponseEntity<String> tickerEntity = httpRequest(
+//                            tickerHeader
+//                            , new HashMap<String, String>()
+//                            , url
+//                            , HttpMethod.GET);
+//                    JSONArray jsonArray = new JSONArray(tickerEntity.getBody());
+//                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+//
+//                    Number trade_price = (Number) jsonObject.get("trade_price");
+//                    String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
+//
+//                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
+//                }
+//            }
+//            return listUpbitAccountDto;
+//        }
+//
+//        catch (Exception e) {
+//            System.out.println("" + e.getMessage());
+//            return null;
+//        }
     }
 }
