@@ -10,10 +10,10 @@ public interface CommonUtils {
 
 
     public default String roundUp(String asset) {
-        return new BigDecimal(asset).setScale(3, BigDecimal.ROUND_UP).toString();
+        return new BigDecimal(asset).setScale(1, BigDecimal.ROUND_UP).toString();
     }
     public default String roundUp(Double asset) {
-        return new BigDecimal(asset).setScale(3, BigDecimal.ROUND_UP).toString();
+        return new BigDecimal(asset).setScale(1, BigDecimal.ROUND_UP).toString();
     }
     public default String roundUp(BigDecimal asset) {
         return asset.setScale(3, BigDecimal.ROUND_UP).toString();

@@ -1,5 +1,6 @@
 package com.aladin.springbootstudy.common;
 
+import com.aladin.springbootstudy.dto.AccountsListFormDto;
 import com.aladin.springbootstudy.dto.BinanceAccountsDto;
 import com.aladin.springbootstudy.dto.OAuthToken;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
@@ -195,7 +196,6 @@ public class CommonFunction implements CommonUtils{
 
     public List<UpbitAccountDto> upbit_accounts_info() {
 
-
         try {
             Algorithm algorithm = Algorithm.HMAC256(upbit_s_key);
             String jwtToken = JWT.create()
@@ -264,5 +264,60 @@ public class CommonFunction implements CommonUtils{
 //            System.out.println("" + e.getMessage());
 //            return null;
 //        }
+    }
+
+    public List<AccountsListFormDto> upbitDtoProcessor(List<UpbitAccountDto> upbitAccountsList) {
+
+        try {
+            List<AccountsListFormDto> accountsList = new ArrayList<>();
+
+            for(UpbitAccountDto upbitAccountDto : upbitAccountsList) {
+                AccountsListFormDto aLFDto = new AccountsListFormDto();
+                if("KRW".equals(upbitAccountDto.getCurrency())) {
+                    //sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
+                    aLFDto.setTokenName("KRW");
+                    aLFDto.setExchngCd("01");
+                    aLFDto.setNowAmt(new BigDecimal(roundUp(upbitAccountDto.getBalance())));
+                    aLFDto.setCoinAmount(0.0);
+
+                    accountsList.add(aLFDto);
+
+                } else {
+                    Map<String, String> tickerHeader = new LinkedHashMap<>();
+                    tickerHeader.put("accept", "application/json");
+
+                    //markets=KRW-GRS"
+                    String url = upbit_get_ticker_url + "?markets=KRW-" + upbitAccountDto.getCurrency();
+                    String bal = upbitAccountDto.getBalance();
+                    String lock = upbitAccountDto.getLocked();
+                    Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
+
+                    //trade_price(종가:현재가)
+                    ResponseEntity<String> tickerEntity = httpRequest(
+                            tickerHeader
+                            , new HashMap<String, String>()
+                            , url
+                            , HttpMethod.GET);
+                    JSONArray jsonArray = new JSONArray(tickerEntity.getBody());
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+
+                    Number trade_price = (Number) jsonObject.get("trade_price");
+                    String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
+
+                    aLFDto.setTokenName(upbitAccountDto.getCurrency());
+                    aLFDto.setExchngCd("01");
+                    aLFDto.setNowAmt(new BigDecimal(totAsset));
+                    aLFDto.setCoinAmount(coinCount);
+
+                    accountsList.add(aLFDto);
+
+                    //sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
+                }
+            }
+            return accountsList;
+        } catch (Exception e) {
+            System.out.println("upbit dto processor exception " + e.getMessage());
+            return null;
+        }
     }
 }
