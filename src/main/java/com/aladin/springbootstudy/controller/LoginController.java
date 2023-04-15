@@ -85,13 +85,13 @@ public class LoginController implements CommonUtils {
 
                 if(entity != null) {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
-                    /* 세션 등록 */
-                    session.setAttribute("session_key", UUID.randomUUID().toString());
 
-                    System.out.println("encryptModule.encrypt(email) >> " + encryptModule.encrypt(email));
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
                         System.out.println("인증성공 list redirect");
-                        RedirectView rv = new RedirectView("/api/v1/accounts");
+                        /* 세션 등록 */
+                        session.setAttribute("session_key", UUID.randomUUID().toString());
+                        session.setAttribute("email", entity.getEmail());
+                        RedirectView rv = new RedirectView("/accounts/list");
                         return new ModelAndView(rv);
                     }
 

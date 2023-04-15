@@ -1,6 +1,7 @@
 package com.aladin.springbootstudy.service;
 
 import com.aladin.springbootstudy.entity.KakaoProfileEntity;
+import com.aladin.springbootstudy.repository.UserExchngListRepository;
 import com.aladin.springbootstudy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,17 +15,25 @@ public class UserInfoService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserExchngListRepository userExchngListRepository;
+
     public List<KakaoProfileEntity> getList(KakaoProfileEntity kakaoProfileEntity) {
         return null;
     }
 
     public KakaoProfileEntity getOne(Long id) {
 
-        Optional<KakaoProfileEntity> result = userRepository.findById(id);
-        if(result.isPresent()) {
-            return result.get();
-        }else {
-            return result.orElse(null);
+        try {
+            Optional<KakaoProfileEntity> result = userRepository.findById(id);
+            if(result.isPresent()) {
+                return result.get();
+            }else {
+                return result.orElse(null);
+            }
+        } catch(Exception e) {
+            System.out.println("userinfoservice kakao profile exception > " + e.getMessage());
+            return null;
         }
     }
 }
