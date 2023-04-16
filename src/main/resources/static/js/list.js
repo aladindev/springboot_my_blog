@@ -12,14 +12,13 @@
         queryStr += "&exchngCd=";
     }
 
-    console.log(reqUrl + queryStr);
     const eventSource = new EventSource(reqUrl + queryStr);
 
     eventSource.onopen = (e) => {
-        console.log(e);
+        console.log("open >");
     };
 
     eventSource.onmessage = event => {
-        console.log(event.data);
+        console.log("event > " + event.data);
     };
 }

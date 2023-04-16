@@ -6,17 +6,25 @@
     <link rel="stylesheet" href="../css/main.css">
     <script type="text/javascript" src="../js/list.js"></script>
 </head>
-    <body>
-        <div id="main">
-            <tr th:each="ele, i: ${userExchngList}">
-                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${ele.exchngCd}"/>
-                <div style="width: 50px; height: 50px;">
-                    <img th:src="${ele.srcUrl}" style="width: 100%; height: 100%;"/>
-                </div>
-                <td th:text="${ele.cdNm}"/>
+<body>
+    <div id="main">
+        <tr th:each="userExchngList : ${userExchngList}">
+            <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+            <div style="width: 50px; height: 50px;">
+                <img th:src="${userExchngList.srcUrl}" style="width: 100%; height: 100%;"/>
+                <td th:text="${userExchngList.cdNm}"/>
                 <br/>
-                <br/>
-            </tr>
-        </div>
-    </body>
+            </div>
+            <div>
+                <p th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                    <!-- /* index가 0부터 시작하기 때문에 +1 */ -->
+                  <span th:text="${accounts.tokenName}"></span>
+                </p>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+        </tr>
+    </div>
+</body>
 </html>

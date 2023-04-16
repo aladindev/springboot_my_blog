@@ -34,7 +34,7 @@ public class SseController extends CommonFunction {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @GetMapping(value="/subscribe", produces = "text/event-stream")
-    public SseEmitter subscribe(@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) {
+    public SseEmitter subscribe(@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) throws IOException {
         final SseEmitter emitter = new SseEmitter();
 
         // String 배열로 받아도 되지만 굳이 Set으로 받는다.
@@ -49,6 +49,11 @@ public class SseController extends CommonFunction {
             bfAmtMap.put(exchngCd, new HashMap<>());
         }
 
+        // 503 에러 방지를 위한 최초 연결 시 더미 데이터 전송
+        emitter.send(SseEmitter.event()
+                .name("connect")
+                .data("connected!"));
+
         executorService.execute(() -> {
             try {
                 while(true) {
@@ -59,25 +64,29 @@ public class SseController extends CommonFunction {
                     Map<String, BigDecimal> map = bfAmtMap.get("01");
                     while(iter.hasNext()) {
                         AccountsListFormDto dto = iter.next();
-                        log.error("dto.getTokenName() >>  " + dto.getTokenName());
-                        BigDecimal bfAmt = map.getOrDefault(dto.getTokenName(), BigDecimal.ONE);
-                        log.error("bfAmt >>  " + bfAmt);
+                        BigDecimal bfAmt = map.get(dto.getTokenName());
                         if(bfAmt == null) {
-                            resultList.add(dto);
+                            map.put(dto.getTokenName(), dto.getNowAmt());
                         } else {
                             if(bfAmt.compareTo(dto.getNowAmt()) > 0) { // 현재 금액이 감소한 경우
                                 dto.setUpDown(-1);
                                 resultList.add(dto);
-                            } else if(bfAmt.compareTo(dto.getNowAmt()) == 0) { // 현재 금액과 같은 경우
-                                dto.setUpDown(0);
-                            } else {
+                            } else if(bfAmt.compareTo(dto.getNowAmt()) < 0) { // 현재 금액보다 증가한 경우
                                 dto.setUpDown(1);
                                 resultList.add(dto);
+                            } else { // 금액 변동이 없는 경우
+                                dto.setUpDown(0);
                             }
+                            //
+                            map.put(dto.getTokenName(), dto.getNowAmt());
+
                         }
                     }
+                    // 거래소 별 이전 금액 담고 있는 Map 초기화
+                    bfAmtMap.put("01", map);
                     if(resultList.size() > 0) {
-                        emitter.send(exchngApiRequest("01"));
+                        log.error("금액이 변경된 코인 리스트 \n" + resultList);
+                        emitter.send(resultList);
                     }
                     Thread.sleep(3000);
                 }
