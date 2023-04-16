@@ -320,4 +320,16 @@ public class CommonFunction implements CommonUtils{
             return null;
         }
     }
+
+    protected List<AccountsListFormDto> exchngApiRequest(String exchngCd) {
+        switch(exchngCd) {
+            case "01" : //upbit
+                return upbitDtoProcessor(upbit_accounts_info());
+            case "02" : //binance
+                break;
+            default:
+                break;
+        }
+        return null;
+    }
 }

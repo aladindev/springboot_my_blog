@@ -19,10 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,18 +37,31 @@ public class SseController extends CommonFunction {
     public SseEmitter subscribe(@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) {
         final SseEmitter emitter = new SseEmitter();
 
+        // String 배열로 받아도 되지만 굳이 Set으로 받는다.
         Iterator<String> iterator = exchngCdSet.iterator();
-        while(iterator.hasNext()) {
-            log.error(iterator.next());
+        String[] exchngCdArr = exchngCdSet != null && exchngCdSet.size() > 0 ? new String[exchngCdSet.size()] : null;
+        int idx = 0;
+        while(iterator.hasNext()) exchngCdArr[idx++] = iterator.next();
+
+        // 이전 금액을 담을 Map 선언
+        Map<String, BigDecimal> bfAmtMap = new HashMap<>();
+        for(String exchngCd : exchngCdArr) {
+            bfAmtMap.put(exchngCd, BigDecimal.ZERO);
         }
 
         executorService.execute(() -> {
             try {
-                for (int i = 0; i < 10; i++) {
-                    Thread.sleep(1000);
-                    emitter.send("test data " + i);
+                while(true) {
+                    //test upbit
+                    List<AccountsListFormDto> list = exchngApiRequest("01");
+                    Iterator<AccountsListFormDto> iter = list.iterator();
+                    while(iter.hasNext()) {
+                        AccountsListFormDto dto = iter.next();
+                    }
+
+                    emitter.send(exchngApiRequest("01"));
+                    Thread.sleep(3000);
                 }
-                emitter.complete();
             } catch (Exception e) {
                 emitter.completeWithError(e);
             }
