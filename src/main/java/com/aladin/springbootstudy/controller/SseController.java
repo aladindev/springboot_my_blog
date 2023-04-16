@@ -8,37 +8,53 @@ import com.aladin.springbootstudy.service.UserInfoService;
 import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v3/") // infix = 공통 URL
-public class SseController extends CommonFunction{
+@RequestMapping("/api/v3/sse") // infix = 공통 URL
+public class SseController extends CommonFunction {
 
-    private static final Map<String, SseEmitter> CLIENTS = new ConcurrentHashMap<>();
+    //이벤트 발행을 비동기로 처리하기 위해 별도 스레드를 통해 처리함
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    @GetMapping(value="/accounts-info")
-    public SseEmitter subscribe(String id) {
-        SseEmitter emitter = new SseEmitter();
-        CLIENTS.put(id, emitter);
+    @GetMapping(value="/subscribe", produces = "text/event-stream")
+    public SseEmitter subscribe(@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) {
+        final SseEmitter emitter = new SseEmitter();
 
-        emitter.onTimeout(() -> CLIENTS.remove(id));
-        emitter.onCompletion(() -> CLIENTS.remove(id));
+        Iterator<String> iterator = exchngCdSet.iterator();
+        while(iterator.hasNext()) {
+            log.error(iterator.next());
+        }
+
+        executorService.execute(() -> {
+            try {
+                for (int i = 0; i < 10; i++) {
+                    Thread.sleep(1000);
+                    emitter.send("test data " + i);
+                }
+                emitter.complete();
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        });
         return emitter;
 
     }
