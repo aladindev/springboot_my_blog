@@ -43,23 +43,42 @@ public class SseController extends CommonFunction {
         int idx = 0;
         while(iterator.hasNext()) exchngCdArr[idx++] = iterator.next();
 
-        // 이전 금액을 담을 Map 선언
-        Map<String, BigDecimal> bfAmtMap = new HashMap<>();
+        // 이전 금액을 담을 Map 선언 key:exchngCd val: Map<String, BigDecimal>(key:coin token / val : amt)
+        Map<String, Map<String, BigDecimal>> bfAmtMap = new HashMap<>();
         for(String exchngCd : exchngCdArr) {
-            bfAmtMap.put(exchngCd, BigDecimal.ZERO);
+            bfAmtMap.put(exchngCd, new HashMap<>());
         }
 
         executorService.execute(() -> {
             try {
                 while(true) {
+                    List<AccountsListFormDto> resultList = new ArrayList<>();
                     //test upbit
                     List<AccountsListFormDto> list = exchngApiRequest("01");
                     Iterator<AccountsListFormDto> iter = list.iterator();
+                    Map<String, BigDecimal> map = bfAmtMap.get("01");
                     while(iter.hasNext()) {
                         AccountsListFormDto dto = iter.next();
+                        log.error("dto.getTokenName() >>  " + dto.getTokenName());
+                        BigDecimal bfAmt = map.getOrDefault(dto.getTokenName(), BigDecimal.ONE);
+                        log.error("bfAmt >>  " + bfAmt);
+                        if(bfAmt == null) {
+                            resultList.add(dto);
+                        } else {
+                            if(bfAmt.compareTo(dto.getNowAmt()) > 0) { // 현재 금액이 감소한 경우
+                                dto.setUpDown(-1);
+                                resultList.add(dto);
+                            } else if(bfAmt.compareTo(dto.getNowAmt()) == 0) { // 현재 금액과 같은 경우
+                                dto.setUpDown(0);
+                            } else {
+                                dto.setUpDown(1);
+                                resultList.add(dto);
+                            }
+                        }
                     }
-
-                    emitter.send(exchngApiRequest("01"));
+                    if(resultList.size() > 0) {
+                        emitter.send(exchngApiRequest("01"));
+                    }
                     Thread.sleep(3000);
                 }
             } catch (Exception e) {
