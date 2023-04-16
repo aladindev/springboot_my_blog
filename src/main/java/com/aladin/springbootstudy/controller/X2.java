@@ -1,12 +1,9 @@
 package com.aladin.springbootstudy.controller;
 
-import com.aladin.springbootstudy.dto.MemberDTO;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @RestController
-public class HelloController {
+public class X2 {
 
     //@RequestMapping(value="/hello")
     @GetMapping("/hello")

@@ -7,5 +7,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("UserExchngListDto")
 public class UserExchngListDto {
     public String exchngCd;
+    public String cdNm;
+    public String srcUrl;
 }
 

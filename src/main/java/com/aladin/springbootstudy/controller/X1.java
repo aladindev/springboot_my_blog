@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/get-api") // infix = 공통 URL
-public class GetController {
+public class X1 {
 
     @Value("#{kakao.client_id}")
     private String client_id;

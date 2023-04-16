@@ -14,7 +14,7 @@ import java.util.Map;
  * 일반적으로 추가하고자 하는 Resource를 http body에 추가하여 서버에 요청
  * 그렇기 때문에 @RequestBody를 이용하여 body에 담겨있는 값을 받아야 함.
  * */
-public class PostController {
+public class X3 {
 
     @PostMapping(value="/member")
     public String postMember(@RequestBody Map<String, Object> postData) {
