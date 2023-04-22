@@ -8,6 +8,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 public class CommonFunction implements CommonUtils{
     @Value("#{crypto.upbit_a_key}")
     String upbit_a_key;
@@ -220,7 +222,7 @@ public class CommonFunction implements CommonUtils{
         } catch(Exception e) {
             System.out.println(e.getMessage());
             return null;
-        }
+        } 
 //        try {
 //            listUpbitAccountDto = objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
 //
