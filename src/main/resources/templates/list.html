@@ -22,6 +22,7 @@
                         <ul class=""></ul>
                         <table>
                             <colgroup>
+                                <col width="100">
                                 <col width="200">
                                 <col width="200">
                                 <col width="200">
@@ -29,10 +30,11 @@
                             </colgroup>
                             <thead>
                                 <tr>
+                                    <th colspan="1">거래소</th>
                                     <th colspan="1">코인명</th>
                                     <th colspan="1">현재가</th>
+                                    <th colspan="1">보유수량</th>
                                     <th colspan="1">보유금액</th>
-                                    <th colspan="1">2</th>
                                 </tr>
                             </thead>
                         </table>
@@ -41,16 +43,21 @@
                                 <div style="position: absolute; inset: 0px; overflow: scroll; margin-right: 0px; margin-bottom: 0px;">
                                     <table class="highlight borderNone">
                                         <colgroup>
+                                            <col width="100">
                                             <col width="200">
                                             <col width="200">
                                             <col width="200">
                                             <col width="200">
                                         </colgroup>
-                                        <tbody>
-                                            <tr class="down">
+                                        <tbody th:each="userExchngList : ${userExchngList}">
+                                        <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+                                            <tr class="down" th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                                                <td>
+                                                    <img th:src="${userExchngList.srcUrl}" style="width: 50%; height: 100%;"/>
+                                                </td>
                                                 <td class="tit">
                                                     <a href="#">
-                                                        <strong>하이파이</strong>
+                                                        <strong th:text="${accounts.tokenName}"></strong>
                                                     </a>
                                                 </td>
                                                 <td class="price">
@@ -62,9 +69,6 @@
                                                     <p>542,993<i>백만</i></p>
                                                 </td>
                                             </tr>
-<!--                                            <tr class="down"><td>-->
-<!--                                                <span class="bookmark"></span>-->
-<!--                                            </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
@@ -78,7 +82,6 @@
 
 
     <tr th:each="userExchngList : ${userExchngList}">
-        <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
         <div style="width: 50px; height: 50px;">
             <img th:src="${userExchngList.srcUrl}" style="width: 100%; height: 100%;"/>
         </div>
