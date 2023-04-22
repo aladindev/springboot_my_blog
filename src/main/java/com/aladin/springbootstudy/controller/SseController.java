@@ -7,6 +7,7 @@ import com.aladin.springbootstudy.dto.UserExchngListDto;
 import com.aladin.springbootstudy.service.UserInfoService;
 import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpHeaders;
@@ -57,38 +58,15 @@ public class SseController extends CommonFunction {
         executorService.execute(() -> {
             try {
                 while(true) {
-//                    List<AccountsListFormDto> resultList = new ArrayList<>();
-//                    //test upbit
-//                    List<AccountsListFormDto> list = exchngApiRequest("01");
-//                    Iterator<AccountsListFormDto> iter = list.iterator();
-//                    Map<String, BigDecimal> map = bfAmtMap.get("01");
-//                    while(iter.hasNext()) {
-//                        AccountsListFormDto dto = iter.next();
-//                        BigDecimal bfAmt = map.get(dto.getTokenName());
-//                        if(bfAmt == null) {
-//                            map.put(dto.getTokenName(), dto.getNowAmt());
-//                        } else {
-//                            if(bfAmt.compareTo(dto.getNowAmt()) > 0) { // 현재 금액이 감소한 경우
-//                                dto.setUpDown(-1);
-//                                resultList.add(dto);
-//                            } else if(bfAmt.compareTo(dto.getNowAmt()) < 0) { // 현재 금액보다 증가한 경우
-//                                dto.setUpDown(1);
-//                                resultList.add(dto);
-//                            } else { // 금액 변동이 없는 경우
-//                                dto.setUpDown(0);
-//                            }
-//                            //
-//                            map.put(dto.getTokenName(), dto.getNowAmt());
-//
-//                        }
-//                    }
-//                    // 거래소 별 이전 금액 담고 있는 Map 초기화
-//                    bfAmtMap.put("01", map);
-//                    if(resultList.size() > 0) {
-//                        log.error("금액이 변경된 코인 리스트 \n" + resultList);
-//                        emitter.send(resultList);
-//                    }
-                    Thread.sleep(3000);
+
+                    List<AccountsListFormDto> listAccounts = new ArrayList<>();
+                    for(String s : exchngCdArr) {
+                        listAccounts.addAll(exchngApiRequest(s));
+                    }
+
+                    emitter.send(listAccounts);
+
+                    Thread.sleep(2000);
                 }
             } catch (Exception e) {
                 emitter.completeWithError(e);
@@ -107,7 +85,6 @@ public class SseController extends CommonFunction {
             response.sendRedirect("/api/v1/get-api/login");
 
         } else {
-
             //upbit
             List<UpbitAccountDto> upbitAccountDtoList = upbit_accounts_info();
             List<AccountsListFormDto> UpbitAccountsListForm = upbitDtoProcessor(upbitAccountDtoList);

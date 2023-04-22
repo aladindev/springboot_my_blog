@@ -159,6 +159,7 @@ public class CommonFunction implements CommonUtils{
             List<BinanceAccountsDto.Position> positionList = binanceAccountsDto.getPositions();
             //total USDT - initial USDT
             double usdt = Double.parseDouble(binanceAccountsDto.getTotalWalletBalance()) - Double.parseDouble(binanceAccountsDto.getTotalInitialMargin());
+            log.error("usdt >> " + usdt);
             BinanceAccountsDto.Position usdtPosition = new BinanceAccountsDto.Position();
             usdtPosition.setSymbol("USDT");
             usdtPosition.setPositionInitialMargin(String.valueOf(usdt));
@@ -181,15 +182,26 @@ public class CommonFunction implements CommonUtils{
                     listFormDto.setTokenName("USDT");
                     listFormDto.setExchngCd("02");
                     listFormDto.setNowAmt(new BigDecimal(dto.getPositionInitialMargin()).multiply(new BigDecimal("1280")));
-                    listFormDto.setCoinAmount(0.0);
+                    listFormDto.setCoinAmount(Double.valueOf(dto.getPositionInitialMargin()));
 
+                    log.error("usdt > " + dto.getPositionInitialMargin());
                     accountsList.add(listFormDto);
                 } else {
+                    if(BigDecimal.ONE.compareTo(new BigDecimal(dto.getPositionInitialMargin())) < 0) {
+                        double totAmt = Double.parseDouble(dto.getPositionInitialMargin()) + Double.parseDouble(dto.getUnrealizedProfit());
+                        log.error("totAmt > " + totAmt);
+                        AccountsListFormDto listFormDto = new AccountsListFormDto();
+                        listFormDto.setTokenName(dto.getSymbol());
+                        listFormDto.setExchngCd("02");
+                        listFormDto.setNowAmt(new BigDecimal(totAmt * 1280));
+                        listFormDto.setCoinAmount(totAmt / Double.valueOf(dto.getEntryPrice()));
 
+                        accountsList.add(listFormDto);
+                    }
                 }
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("binance processor exception > " + e.getMessage());
         }
 
         return accountsList;

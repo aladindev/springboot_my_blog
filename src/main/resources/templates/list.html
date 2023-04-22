@@ -5,10 +5,10 @@
     <title>Accounts Info</title>
     <link rel="stylesheet" href="../css/main.css">
     <script type="text/javascript" src="../js/list.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="main" style="width:100%;">
-
     <section style="position: sticky; top: 72px;">
         <article>
             <span>
@@ -57,17 +57,17 @@
                                                 </td>
                                                 <td class="tit">
                                                     <a href="#">
-                                                        <strong th:text="${accounts.tokenName}"></strong>
+                                                        <strong th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
                                                     </a>
                                                 </td>
 <!--                                                <td class="price">-->
 <!--                                                    <strong th:text="${accounts.nowAmt}"></strong><span class=""></span>-->
 <!--                                                </td>-->
                                                 <td class="percent">
-                                                    <p th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                                                    <p th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
                                                 </td>
                                                 <td class="rAlign">
-                                                    <strong th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                                                    <strong th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -80,33 +80,6 @@
             </span>
         </article>
     </section>
-
-
-<!--    <tr th:each="userExchngList : ${userExchngList}">-->
-<!--        <div style="width: 50px; height: 50px;">-->
-<!--            <img th:src="${userExchngList.srcUrl}" style="width: 100%; height: 100%;"/>-->
-<!--        </div>-->
-<!--        <span th:text="${userExchngList.cdNm}"></span>-->
-<!--        <br/>-->
-<!--        <div>-->
-<!--            <h5 th:each="accounts : ${userExchngList.accountsListFormDtoList}">-->
-<!--                &lt;!&ndash; /* index가 0부터 시작하기 때문에 +1 */ &ndash;&gt;-->
-<!--                <span th:text="${accounts.tokenName}"></span>-->
-<!--                <span th:text="${accounts.nowAmt}"></span>-->
-<!--                <br/>-->
-<!--            </h5>-->
-<!--        </div>-->
-<!--        &lt;!&ndash;        <div>&ndash;&gt;-->
-<!--        &lt;!&ndash;            <p th:each="accounts : ${userExchngList.accountsListFormDtoList}">&ndash;&gt;-->
-<!--        &lt;!&ndash;                &lt;!&ndash; /* index가 0부터 시작하기 때문에 +1 */ &ndash;&gt;&ndash;&gt;-->
-<!--        &lt;!&ndash;                <span th:text="${accounts.tokenName}"></span>&ndash;&gt;-->
-<!--        &lt;!&ndash;                <span th:text="${accounts.nowAmt}"></span>&ndash;&gt;-->
-<!--        &lt;!&ndash;            </p>&ndash;&gt;-->
-<!--        &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--        <br/>-->
-<!--        <br/>-->
-<!--        <br/>-->
-<!--    </tr>-->
 </div>
 </body>
 </html>
