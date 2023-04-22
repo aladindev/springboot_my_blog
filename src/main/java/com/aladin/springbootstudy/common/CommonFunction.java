@@ -124,11 +124,8 @@ public class CommonFunction implements CommonUtils{
         return response;
     }
 
-    public BinanceAccountsDto binance_accounts_info() {
-
-
+    public List<BinanceAccountsDto.Position> binance_accounts_info() {
         try {
-
             Map<String, String> header = new HashMap<>();
             header.put("Content-Type", "application/json");
             header.put("X-MBX-APIKEY", binance_a_key);
@@ -153,47 +150,49 @@ public class CommonFunction implements CommonUtils{
 
             ResponseEntity<String> binanceResponseEntity = CommonFunction.httpRequest(header, params, serverUrl, HttpMethod.GET);
 
+            log.error("binanceResponseEntity > " + binanceResponseEntity);
+
             ObjectMapper objectMapper = new ObjectMapper();
             BinanceAccountsDto binanceAccountsDto = null;
             binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
 
             List<BinanceAccountsDto.Position> positionList = binanceAccountsDto.getPositions();
-            //StringBuilder sb2 = new StringBuilder("<<<<<<<<<바이낸스 계좌 정보>>>>>>>>>>").append("<br>");
-
-//            for (BinanceAccountsDto.Position position : positionList) {
-//                if (!"0".equals(position.getInitialMargin())) {
-//
-//                    String uP = position.getUnrealizedProfit();
-//                    double d = Double.parseDouble(uP) * 1300;
-//                    String sf = String.format("%.0f", d);
-//                    String ac = addComma(sf);
-//
-//                    sb2.append("보유 코인 : ");
-//                    sb2.append(position.getSymbol()).append("(" + position.getLeverage() + "x)").append("<br>");
-//                    sb2.append("평단가 : ").append(position.getEntryPrice()).append("<br>");
-//                    sb2.append("USDT : ").append(roundUp(position.getInitialMargin())).append("<br>");
-//                    sb2.append("손익 : ").append(roundUp(position.getUnrealizedProfit()))
-//                            .append("usdt / ")
-//                            .append(ac).append("won")
-//                            .append("<br>");
-//                    sb2.append("SIZE : ").append(roundUp(position.getNotional())).append("<br>");
-//
-//                    double pee = Double.parseDouble(position.getNotional());
-//                    pee *= 0.0008;
-//
-//                    sb2.append("수수료 : ").append(String.format("%.2f", pee)).append("usdt").append("<br>");
-//
-//                    sb2.append("<br>");
-//                    sb2.append("<br>");
-//                }
-//
-//            }
-            return binanceAccountsDto;
+            //total USDT - initial USDT
+            double usdt = Double.parseDouble(binanceAccountsDto.getTotalWalletBalance()) - Double.parseDouble(binanceAccountsDto.getTotalInitialMargin());
+            BinanceAccountsDto.Position usdtPosition = new BinanceAccountsDto.Position();
+            usdtPosition.setSymbol("USDT");
+            usdtPosition.setPositionInitialMargin(String.valueOf(usdt));
+            positionList.add(usdtPosition);
+            return positionList;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+    public List<AccountsListFormDto> binanceProcessor(List<BinanceAccountsDto.Position> binanceAccountsDtoList) {
 
+        List<AccountsListFormDto> accountsList = new ArrayList<>();
+        try {
+
+            //BinanceAccountsDto.Position(symbol=EOSUSDT, initialMargin=2789.80828234, maintMargin=100.28695500, unrealizedProfit=485.15629866, positionInitialMargin=2075.52803234, openOrderInitialMargin=714.28025000, leverage=7, isolated=true, entryPrice=1.081962440096, maxNotional=1000000, bidNotional=0, askNotional=4999.96150000, positionSide=BOTH, positionAmt=-13876.5, notional=-14528.69550000, isolatedWallet=2165.25519849, updateTime=1682121601400, additionalProperties={}),
+            for(BinanceAccountsDto.Position dto : binanceAccountsDtoList) {
+                if("USDT".equals(dto.getSymbol())) {
+                    AccountsListFormDto listFormDto = new AccountsListFormDto();
+                    listFormDto.setTokenName("USDT");
+                    listFormDto.setExchngCd("02");
+                    listFormDto.setNowAmt(new BigDecimal(dto.getPositionInitialMargin()).multiply(new BigDecimal("1280")));
+                    listFormDto.setCoinAmount(0.0);
+
+                    accountsList.add(listFormDto);
+                } else {
+
+                }
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+
+        return accountsList;
     }
 
     public List<UpbitAccountDto> upbit_accounts_info() {
@@ -222,50 +221,7 @@ public class CommonFunction implements CommonUtils{
         } catch(Exception e) {
             System.out.println(e.getMessage());
             return null;
-        } 
-//        try {
-//            listUpbitAccountDto = objectMapper.readValue(responseEntity.getBody(), new TypeReference<List<UpbitAccountDto>>() {} );
-//
-//            StringBuilder sb = null;
-//            if(listUpbitAccountDto != null) {
-//                sb = new StringBuilder("<<<<<<<<<<<< 업비트 자산 리스트 >>>>>>>>>>>" + "<br/>");
-//            }
-//
-//            for(UpbitAccountDto upbitAccountDto : listUpbitAccountDto) {
-//                if("KRW".equals(upbitAccountDto.getCurrency())) {
-//                    sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
-//                } else {
-//                    Map<String, String> tickerHeader = new LinkedHashMap<>();
-//                    tickerHeader.put("accept", "application/json");
-//
-//                    //markets=KRW-GRS"
-//                    String url = upbit_get_ticker_url + "?markets=KRW-" + upbitAccountDto.getCurrency();
-//                    String bal = upbitAccountDto.getBalance();
-//                    String lock = upbitAccountDto.getLocked();
-//                    Double coinCount = Double.parseDouble(bal) + Double.parseDouble(lock);
-//
-//                    //trade_price(종가:현재가)
-//                    ResponseEntity<String> tickerEntity = httpRequest(
-//                            tickerHeader
-//                            , new HashMap<String, String>()
-//                            , url
-//                            , HttpMethod.GET);
-//                    JSONArray jsonArray = new JSONArray(tickerEntity.getBody());
-//                    JSONObject jsonObject = jsonArray.getJSONObject(0);
-//
-//                    Number trade_price = (Number) jsonObject.get("trade_price");
-//                    String totAsset = roundUp(BigDecimal.valueOf(coinCount * trade_price.doubleValue()));
-//
-//                    sb.append(upbitAccountDto.getCurrency() + " : " + totAsset + "<br/>");
-//                }
-//            }
-//            return listUpbitAccountDto;
-//        }
-//
-//        catch (Exception e) {
-//            System.out.println("" + e.getMessage());
-//            return null;
-//        }
+        }
     }
 
     public List<AccountsListFormDto> upbitDtoProcessor(List<UpbitAccountDto> upbitAccountsList) {
@@ -328,7 +284,7 @@ public class CommonFunction implements CommonUtils{
             case "01" : //upbit
                 return upbitDtoProcessor(upbit_accounts_info());
             case "02" : //binance
-                break;
+                return binanceProcessor(binance_accounts_info());
             default:
                 break;
         }
