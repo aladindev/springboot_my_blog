@@ -7,84 +7,108 @@
     <link rel="stylesheet" href="../css/tab.css">
     <link rel="stylesheet" href="../css/list.css">
     <script type="text/javascript" src="../js/list.js"></script>
+    <script type="text/javascript" src="../js/tab.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 <div id="main" style="width:100%; top:0px;">
-    <section style="position: sticky; top: 72px; width:50%;" class="box">
+    <div>
+        <input type="text" placeholder="검색"/>
+        <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
+    </div>
+    <section style="position: reactive; overflow:auto; top: 72px; width:50%;" class="container">
         <article>
-            <span>
-                <div>
-                    <input type="text" placeholder="검색"/>
-                    <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
-                </div>
-<!--                <div style="position: relative; overflow: scroll; width: 80%; height: 405px;">-->
-                <div style="overflow: scroll; width: 80%; height: 405px;">
-                    <span>
-                        <ul class=""></ul>
-                        <table>
-                            <colgroup>
-                                <col width="200">
-                                <col width="200">
-                                <col width="200">
-                                <col width="200">
-                                <col width="200">
-                            </colgroup>
-                            <thead>
-                                <tr style="position:sticky;">
-                                    <th colspan="1"  style="position:sticky;">거래소</th>
-                                    <th colspan="1"  style="position:sticky;">코인명</th>
-                                    <th colspan="1"  style="position:sticky;">보유수량</th>
-                                    <th colspan="1"  style="position:sticky;">보유금액</th>
-                                    <th colspan="1"  style="position:sticky;">포지션</th>
-                                </tr>
-                            </thead>
-                            <tbody th:each="userExchngList : ${userExchngList}">
-                                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
-                                <tr class="down" th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                                    <td>
-                                        <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
-                                    </td>
-                                    <td class="tit">
-                                        <a href="#">
-                                            <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
-                                        </a>
-                                    </td>
-                                    <td class="percent">
-                                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
-                                    </td>
-                                    <td class="rAlign">
-                                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                                    </td>
-                                    <td class="rAlign">
-                                        <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </span>
-                </div>
-            </span>
+            <table>
+                <colgroup>
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th colspan="1" class="fixedHeader">거래소</th>
+                        <th colspan="1" class="fixedHeader">코인명</th>
+                        <th colspan="1" class="fixedHeader">보유수량</th>
+                        <th colspan="1" class="fixedHeader">보유금액</th>
+                        <th colspan="1" class="fixedHeader">포지션</th>
+                    </tr>
+                </thead>
+                <tbody th:each="userExchngList : ${userExchngList}">
+                    <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+                    <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                        <td>
+                            <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
+                        </td>
+                        <td>
+                            <a href="#">
+                                <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
+                            </a>
+                        </td>
+                        <td>
+                            <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                        </td>
+                        <td>
+                            <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                        </td>
+                        <td>
+                            <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </article>
     </section>
 </div>
 <div style="width:37.5%">
-    <ul class="tabs">
-        <li class="tab-link current" data-tab="tab-1">메뉴_하나</li>
-        <li class="tab-link" data-tab="tab-2">메뉴_둘</li>
-        <li class="tab-link" data-tab="tab-3">메뉴_셋</li>
-    </ul>
+    <input id="tab1" type="radio" name="tabs" class="input" checked>
+    <label for="tab1">Codepen</label>
 
-    <div id="tab-1" class="tab-content current">
-        ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ----
-    </div>
-    <div id="tab-2" class="tab-content">
-        ---- ---- ★------ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ★-- ---- ---- ------★ ---- ---- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- ---- ★------ ---- ---- ---- ----
-    </div>
-    <div id="tab-3" class="tab-content">
-        ---- ★-- -------- ---- ---- ---- -★- ---- ---- -------- ---- -★- ---- ---- ---- ---- -------- ---- ---- ---- ---- ---- --★ -------- ★-- ---- ---- ---- ---- ---- -------- ---- ---- --★ ---- ---- ---- -------- ---- ---- ---- --★
-    </div>
+    <input id="tab2" type="radio" name="tabs" class="input">
+    <label for="tab2">Dribbble</label>
 
+    <input id="tab3" type="radio" name="tabs" class="input">
+    <label for="tab3">Dropbox</label>
+
+    <input id="tab4" type="radio" name="tabs" class="input">
+    <label for="tab4">Drupal</label>
+
+    <section id="content1">
+        <p>
+            Bacon ipsum dolor sit amet beef venison beef ribs kielbasa. Sausage pig leberkas, t-bone sirloin shoulder bresaola. Frankfurter rump porchetta ham. Pork belly prosciutto brisket meatloaf short ribs.
+        </p>
+        <p>
+            Brisket meatball turkey short loin boudin leberkas meatloaf chuck andouille pork loin pastrami spare ribs pancetta rump. Frankfurter corned beef beef tenderloin short loin meatloaf swine ground round venison.
+        </p>
+    </section>
+
+    <section id="content2">
+        <p>
+            Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
+        </p>
+        <p>
+            Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
+        </p>
+    </section>
+
+    <section id="content3">
+        <p>
+            Bacon ipsum dolor sit amet beef venison beef ribs kielbasa. Sausage pig leberkas, t-bone sirloin shoulder bresaola. Frankfurter rump porchetta ham. Pork belly prosciutto brisket meatloaf short ribs.
+        </p>
+        <p>
+            Brisket meatball turkey short loin boudin leberkas meatloaf chuck andouille pork loin pastrami spare ribs pancetta rump. Frankfurter corned beef beef tenderloin short loin meatloaf swine ground round venison.
+        </p>
+    </section>
+
+    <section id="content4">
+        <p>
+            Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
+        </p>
+        <p>
+            Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
+        </p>
+    </section>
 </div>
 </body>
 </html>
