@@ -46,10 +46,8 @@ public class TradeHistScheduler extends CommonFunction {
     @Autowired
     TradeHistRepository tradeHistRepository;
 
-    @Scheduled(fixedDelay = 600000)
+    @Scheduled(cron = "0 0 0 * * *")
     public void scheduleFixedDelayTask() throws InterruptedException {
-
-        log.debug("Scheduler exec");
 
         try {
             List<UserExchngListDto> userExchngListDtoList = userExchngListRepository.getUserEmailList();
@@ -67,7 +65,7 @@ public class TradeHistScheduler extends CommonFunction {
                         tradeHistDto.setNowAmt(alFDto.getNowAmt().setScale(0, RoundingMode.DOWN));
 
                         int result = tradeHistRepository.insertTradeHist(tradeHistDto);
-                        log.debug("insert result = " + result);
+
                     }
                 }
             }

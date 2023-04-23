@@ -35,7 +35,23 @@ public class SseController extends CommonFunction {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     @GetMapping(value="/subscribe", produces = "text/event-stream")
-    public SseEmitter subscribe(@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) throws IOException {
+    public SseEmitter subscribe(@SessionAttribute(name = "session_key", required = false) String session_key
+                                ,HttpServletResponse response
+                                ,@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) throws IOException {
+
+
+        /*
+        *  세션 보안 등록 !!!!!!!!!!! 중요함 !!!
+        * */
+        if("".equals(session_key) || session_key == null) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
+            out.flush();
+
+            return null;
+        }
+
         final SseEmitter emitter = new SseEmitter();
 
         // String 배열로 받아도 되지만 굳이 Set으로 받는다.

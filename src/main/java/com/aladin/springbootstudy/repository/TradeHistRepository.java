@@ -13,4 +13,5 @@ import java.util.List;
 public interface TradeHistRepository {
     //List<UserExchngListDto> getUserExchngList(@Param("email") String email);
     int insertTradeHist(TradeHistDto tradeHistDto);
+    List<TradeHistDto> selectTradeHist(String email);
 }

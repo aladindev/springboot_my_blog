@@ -56,7 +56,7 @@ public class LoginController implements CommonUtils {
             Map<String, String> params = new LinkedHashMap<>();
             params.put("grant_type", "authorization_code");
             params.put("client_id", client_id);
-            params.put("redirect_uri", "http://localhost:8080/auth/kakao/callback");
+            params.put("redirect_uri", "http://129.154.50.230:8080/auth/kakao/callback");
             params.put("code", code);
 
             ResponseEntity<String> oAuthResponse =  httpRequest(oauthHeaders, params, OAUTH_TOKEN_URL, HttpMethod.POST);

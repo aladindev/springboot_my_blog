@@ -2,8 +2,10 @@ package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonFunction;
 import com.aladin.springbootstudy.dto.AccountsListFormDto;
+import com.aladin.springbootstudy.dto.TradeHistDto;
 import com.aladin.springbootstudy.dto.UpbitAccountDto;
 import com.aladin.springbootstudy.dto.UserExchngListDto;
+import com.aladin.springbootstudy.service.TradeHistService;
 import com.aladin.springbootstudy.service.UserInfoService;
 import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,11 +37,15 @@ public class ListController extends CommonFunction{
     @Autowired
     UserService userService;
 
+    @Autowired
+    TradeHistService tradeHistService;
+
     @GetMapping(value="/list")
     public String accountsList(
               @SessionAttribute(name = "session_key", required = false) String session_key
             , @SessionAttribute(name = "email", required = false) String email
-            , HttpServletResponse response, Model model){
+            , HttpServletResponse response
+            , Model model){
 
         try {
             if("".equals(session_key) || session_key == null) {
@@ -55,12 +61,19 @@ public class ListController extends CommonFunction{
                 for(int i = 0 ; i < userExchngList.size() ; i++) {
                     userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
                 }
-                log.error("userExchngList >>>  \n"  + userExchngList);
-
                 model.addAttribute("userExchngList", userExchngList);
+
+
+                // 당일 매매 일지
+                List<TradeHistDto> tradeHistDto = new ArrayList<>();
+                tradeHistDto = tradeHistService.getTradeHist(email);
+
+                if(tradeHistDto != null && tradeHistDto.size() > 0) {
+                    model.addAttribute("tradeHist", tradeHistDto);
+                }
             }
         } catch (Exception e) {
-            System.out.println("listController exception " + e.getMessage());
+            log.error("listController exception " + e.getMessage());
         }
         return "list";
     }
