@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
-<div id="main" style="width:100%;">
+<div id="main" style="width:100%; top:0px;">
     <section style="position: sticky; top: 72px; width:50%;" class="box">
         <article>
             <span>
@@ -18,7 +18,8 @@
                     <input type="text" placeholder="검색"/>
                     <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
                 </div>
-                <div style="position: relative; overflow: scroll; width: 80%; height: 405px;">
+<!--                <div style="position: relative; overflow: scroll; width: 80%; height: 405px;">-->
+                <div style="overflow: scroll; width: 80%; height: 405px;">
                     <span>
                         <ul class=""></ul>
                         <table>
@@ -39,28 +40,26 @@
                                 </tr>
                             </thead>
                             <tbody th:each="userExchngList : ${userExchngList}">
-                                <div style="position: absolute; inset: 0px; overflow: scroll; margin-right: 0px; margin-bottom: 0px; height: 205px;">
-                                    <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
-                                    <tr class="down" th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                                        <td>
-                                            <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
-                                        </td>
-                                        <td class="tit">
-                                            <a href="#">
-                                                <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
-                                            </a>
-                                        </td>
-                                        <td class="percent">
-                                            <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
-                                        </td>
-                                        <td class="rAlign">
-                                            <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                                        </td>
-                                        <td class="rAlign">
-                                            <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
-                                        </td>
-                                    </tr>
-                                </div>
+                                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+                                <tr class="down" th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                                    <td>
+                                        <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
+                                    </td>
+                                    <td class="tit">
+                                        <a href="#">
+                                            <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
+                                        </a>
+                                    </td>
+                                    <td class="percent">
+                                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                                    </td>
+                                    <td class="rAlign">
+                                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                                    </td>
+                                    <td class="rAlign">
+                                        <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </span>
