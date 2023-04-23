@@ -41,3 +41,9 @@ footer {
 }
 
 .jb-large { font-size: large; }
+
+#t-header th {
+    position: sticky;
+    top: 0px;
+    background-color: gray !important;
+}

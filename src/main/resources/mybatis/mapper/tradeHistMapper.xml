@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aladin.springbootstudy.repository.TradeHistRepository">
+    <insert id="insertTradeHist" parameterType="com.aladin.springbootstudy.dto.TradeHistDto">
+        INSERT INTO
+            TRADE_HIST(EMAIL, TRADE_DT, EXCHNG_CD, TOKEN_NAME, NOW_AMT, RGSTRN_DT)
+        VALUES(
+            #{email}
+           ,SYSDATE
+           ,#{exchngCd}
+           ,#{tokenName}
+           ,#{nowAmt}
+           ,SYSDATE)
+    </insert>
+</mapper>
+
