@@ -15,14 +15,16 @@
            ,SYSDATE)
     </insert>
     <select id="selectTradeHistToday" parameterType="String" resultType="com.aladin.springbootstudy.dto.TradeHistDto">
-        SELECT EMAIL AS email
-            , TRADE_DT AS tradeDt
-            , EXCHNG_CD AS exchngCd
-            , TOKEN_NAME AS tokenName
-            , NOW_AMT AS nowAmt
-            , RGSTRN_DT AS rgstrnDt
-         FROM TRADE_HIST
-        WHERE EMAIL = #{email, jdbcType=VARCHAR}
+        SELECT
+                EMAIL AS email
+                , TRADE_DT AS tradeDt
+                , EXCHNG_CD AS exchngCd
+                , TOKEN_NAME AS tokenName
+                , NOW_AMT AS nowAmt
+                , RGSTRN_DT AS rgstrnDt
+                , SUM(NOW_AMT) OVER(PARTITION BY EXCHNG_CD) AS totAmt
+          FROM TRADE_HIST
+         WHERE EMAIL = #{email, jdbcType=VARCHAR}
     </select>
 </mapper>
 

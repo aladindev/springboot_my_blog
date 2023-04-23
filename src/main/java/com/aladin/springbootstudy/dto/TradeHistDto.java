@@ -16,4 +16,5 @@ public class TradeHistDto {
     public String tokenName;
     public BigDecimal nowAmt;
     public Date rgstrnDt;
+    public BigDecimal totAmt;
 }

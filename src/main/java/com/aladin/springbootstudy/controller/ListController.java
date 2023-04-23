@@ -66,7 +66,7 @@ public class ListController extends CommonFunction{
 
                 // 당일 매매 일지
                 List<TradeHistDto> tradeHistDto = new ArrayList<>();
-                tradeHistDto = tradeHistService.getTradeHist(email);
+                tradeHistDto = tradeHistService.getTradeHistToday(email);
 
                 if(tradeHistDto != null && tradeHistDto.size() > 0) {
                     model.addAttribute("tradeHist", tradeHistDto);
