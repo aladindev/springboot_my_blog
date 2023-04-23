@@ -150,8 +150,6 @@ public class CommonFunction implements CommonUtils{
 
             ResponseEntity<String> binanceResponseEntity = CommonFunction.httpRequest(header, params, serverUrl, HttpMethod.GET);
 
-            log.error("binanceResponseEntity > " + binanceResponseEntity);
-
             ObjectMapper objectMapper = new ObjectMapper();
             BinanceAccountsDto binanceAccountsDto = null;
             binanceAccountsDto = objectMapper.readValue(binanceResponseEntity.getBody(), BinanceAccountsDto.class);
@@ -159,7 +157,6 @@ public class CommonFunction implements CommonUtils{
             List<BinanceAccountsDto.Position> positionList = binanceAccountsDto.getPositions();
             //total USDT - initial USDT
             double usdt = Double.parseDouble(binanceAccountsDto.getTotalWalletBalance()) - Double.parseDouble(binanceAccountsDto.getTotalInitialMargin());
-            log.error("usdt >> " + usdt);
             BinanceAccountsDto.Position usdtPosition = new BinanceAccountsDto.Position();
             usdtPosition.setSymbol("USDT");
             usdtPosition.setPositionInitialMargin(String.valueOf(usdt));
@@ -183,18 +180,19 @@ public class CommonFunction implements CommonUtils{
                     listFormDto.setExchngCd("02");
                     listFormDto.setNowAmt(new BigDecimal(dto.getPositionInitialMargin()).multiply(new BigDecimal("1280")));
                     listFormDto.setCoinAmount(Double.valueOf(dto.getPositionInitialMargin()));
+                    listFormDto.setPositionSide("1x Long");
 
-                    log.error("usdt > " + dto.getPositionInitialMargin());
                     accountsList.add(listFormDto);
                 } else {
                     if(BigDecimal.ONE.compareTo(new BigDecimal(dto.getPositionInitialMargin())) < 0) {
                         double totAmt = Double.parseDouble(dto.getPositionInitialMargin()) + Double.parseDouble(dto.getUnrealizedProfit());
-                        log.error("totAmt > " + totAmt);
                         AccountsListFormDto listFormDto = new AccountsListFormDto();
                         listFormDto.setTokenName(dto.getSymbol());
                         listFormDto.setExchngCd("02");
                         listFormDto.setNowAmt(new BigDecimal(totAmt * 1280));
                         listFormDto.setCoinAmount(totAmt / Double.valueOf(dto.getEntryPrice()));
+                        listFormDto.setPositionSide(dto.getLeverage() + "x"
+                                                    + ("BOTH".equals(dto.getPositionSide()) ? " Short" : " Long"));
 
                         accountsList.add(listFormDto);
                     }
@@ -249,6 +247,7 @@ public class CommonFunction implements CommonUtils{
                     aLFDto.setExchngCd("01");
                     aLFDto.setNowAmt(new BigDecimal(roundUp(upbitAccountDto.getBalance())));
                     aLFDto.setCoinAmount(0.0);
+                    aLFDto.setPositionSide("1x Long");
 
                     accountsList.add(aLFDto);
 
@@ -278,6 +277,7 @@ public class CommonFunction implements CommonUtils{
                     aLFDto.setExchngCd("01");
                     aLFDto.setNowAmt(new BigDecimal(totAsset));
                     aLFDto.setCoinAmount(coinCount);
+                    aLFDto.setPositionSide("1x Long");
 
                     accountsList.add(aLFDto);
 
@@ -293,10 +293,10 @@ public class CommonFunction implements CommonUtils{
 
     protected List<AccountsListFormDto> exchngApiRequest(String exchngCd) {
         switch(exchngCd) {
-            case "01" : //upbit
-                return upbitDtoProcessor(upbit_accounts_info());
-            case "02" : //binance
+            case "01" : //binance
                 return binanceProcessor(binance_accounts_info());
+            case "02" : //upbit
+                return upbitDtoProcessor(upbit_accounts_info());
             default:
                 break;
         }

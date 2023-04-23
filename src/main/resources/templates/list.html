@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="main" style="width:100%;">
-    <section style="position: sticky; top: 72px;">
+    <section style="position: sticky; top: 72px; width:50%;" class="box">
         <article>
             <span>
                 <div>
@@ -17,7 +17,6 @@
                     <a href="#" class="btn" title="검색">검색</a>
                 </div>
                 <div>
-                    <!-- span 반복-->
                     <span>
                         <ul class=""></ul>
                         <table>
@@ -26,15 +25,16 @@
                                 <col width="200">
                                 <col width="200">
                                 <col width="200">
+                                <col width="200">
 <!--                                <col width="200">-->
                             </colgroup>
                             <thead>
                                 <tr>
-                                    <th colspan="1">거래소</th>
-                                    <th colspan="1">코인명</th>
-<!--                                    <th colspan="1">현재가</th>-->
-                                    <th colspan="1">보유수량</th>
-                                    <th colspan="1">보유금액</th>
+                                    <th colspan="1" class="jb-large">거래소</th>
+                                    <th colspan="1" class="jb-large">코인명</th>
+                                    <th colspan="1" class="jb-large">보유수량</th>
+                                    <th colspan="1" class="jb-large">보유금액</th>
+                                    <th colspan="1" class="jb-large">포지션</th>
                                 </tr>
                             </thead>
                         </table>
@@ -45,7 +45,7 @@
                                         <colgroup>
                                             <col width="100">
                                             <col width="200">
-<!--                                            <col width="200">-->
+                                            <col width="200">
                                             <col width="200">
                                             <col width="200">
                                         </colgroup>
@@ -57,17 +57,20 @@
                                                 </td>
                                                 <td class="tit">
                                                     <a href="#">
-                                                        <strong th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
+                                                        <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
                                                     </a>
                                                 </td>
 <!--                                                <td class="price">-->
 <!--                                                    <strong th:text="${accounts.nowAmt}"></strong><span class=""></span>-->
 <!--                                                </td>-->
                                                 <td class="percent">
-                                                    <p th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                                                    <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
                                                 </td>
                                                 <td class="rAlign">
-                                                    <strong th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                                                    <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                                                </td>
+                                                <td class="rAlign">
+                                                    <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
                                                 </td>
                                             </tr>
                                         </tbody>

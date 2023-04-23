@@ -11,7 +11,7 @@ public class AccountsListFormDto {
     public String exchngCd;
     public String tokenName;
     public Double coinAmount;
-    public int upDown;
+    public String positionSide;
 
 }
 

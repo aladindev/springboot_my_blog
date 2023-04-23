@@ -66,7 +66,7 @@ public class SseController extends CommonFunction {
 
                     emitter.send(listAccounts);
 
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 }
             } catch (Exception e) {
                 emitter.completeWithError(e);

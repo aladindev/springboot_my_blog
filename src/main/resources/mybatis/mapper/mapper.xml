@@ -8,5 +8,6 @@
              , CD_NM AS cdNm
              , SRC_URL AS srcUrl
          FROM USER_EXCHNG_LIST WHERE EMAIL = #{email, jdbcType=VARCHAR}
+        ORDER BY EXCHNG_CD ASC
     </select>
 </mapper>

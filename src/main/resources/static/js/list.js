@@ -32,6 +32,10 @@ window.onload = function(){
 
             if(Number(bfAmt) > Number(afAmt)) {
                 document.getElementById(amtId).style.color = "blue";
+            } else if(Number(bfAmt) < Number(afAmt)) {
+                document.getElementById(amtId).style.color = "red";
+            } else {
+                document.getElementById(amtId).style.color = "black";
             }
             $('#' + amtId).text(afAmt.toLocaleString() + " 원");
 
