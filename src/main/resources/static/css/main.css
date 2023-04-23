@@ -1,11 +1,4 @@
-h1 {
-    text-align:center;
-}
 
-div {
-    font-size: 30px;
-    text-align: center;
-}
 
 #main {
     display: grid;
@@ -42,8 +35,14 @@ footer {
 
 .jb-large { font-size: large; }
 
-#t-header th {
+.t-header th {
     position: sticky;
     top: 0px;
     background-color: gray !important;
+}
+
+.tab-area input:checked + label {
+  /* 해당 메뉴가 선택된 상태인지 아닌지를 사용자에게 알려줄 수 있음 */
+  font-weight: bold;
+  color: red;
 }

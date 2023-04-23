@@ -1,4 +1,5 @@
 window.onload = function(){
+
     var exchngCdArr = "";
     var reqUrl = "/api/v3/sse/subscribe?";
     var queryStr = "exchngCd=";
@@ -41,4 +42,15 @@ window.onload = function(){
 
         }
     };
+
+    /* tab */
+    $('ul.tabs li').click(function(){
+    		var tab_id = $(this).attr('data-tab');
+
+    		$('ul.tabs li').removeClass('current');
+    		$('.tab-content').removeClass('current');
+
+    		$(this).addClass('current');
+    		$("#"+tab_id).addClass('current');
+    })
 }

@@ -1,9 +1,40 @@
-<html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<button id="btn-login">
-    <a href="https://kauth.kakao.com/oauth/authorize?client_id=361217ade395037564a651e2593c1780&redirect_uri=http://localhost:8080/auth/kakao/callback&response_type=code">
-        <img src="/img/kakao_login_medium_narrow.png"/>
-    </a>
-</button>
+    <!-- Font online-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <!--        Animate.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+    <link rel="stylesheet" href="/css/login.css" >
+
+    <!-- Google JQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div>
+    <div class="panel shadow1">
+        <h1 class="animated fadeInUp animate1" id="title-login">Welcome Back !</h1>
+        <h1 class="animated fadeInUp animate1 hidden" id="title-signup">Welcome !</h1>
+        <button id="btn-login" class="login_form button animated fadeInUp animate4">
+            <a href="https://kauth.kakao.com/oauth/authorize?client_id=361217ade395037564a651e2593c1780&redirect_uri=http://localhost:8080/auth/kakao/callback&response_type=code">
+                <img src="/img/kakao_login_medium_narrow.png"/>
+            </a>
+        </button>
+        <input type="submit" id="login-form-submit" class="login_form button animated fadeInUp animate4" value="Log in">
+        <input type="submit" id="signup-form-submit" class="login_form button animated fadeInUp animate4 hidden" value="Sign up">
+        <p><a id="lost-password-link" href="" class="animated fadeIn animate5">I forgot my  login or password (!)</a></p>
+    </div>
+</div>
+<!--<script src="form.js"></script>-->
+</body>
 </html>
+
+
+
