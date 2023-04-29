@@ -1,10 +1,10 @@
 package com.aladin.springbootstudy.controller;
 
-import com.aladin.springbootstudy.dto.MemberDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.persistence.metamodel.Type;
 import java.util.Map;
 
 @RestController
@@ -66,14 +66,9 @@ public class X1 {
      * key와 value가 정해져있지만, 받아야할 파라미터가 많을 경우
      * DTO 객체를 사용한 방식
      * */
-    public String getRequestParam3(MemberDTO memberDto) {
+    public String getRequestParam3(Type<?> memberDto) {
 
         StringBuilder sb = new StringBuilder();
-
-        sb.append("name > " + memberDto.getName() + "\n");
-        sb.append("name > " + memberDto.getEmail() + "\n");
-        sb.append("name > " + memberDto.getOrganization() + "\n");
-
 
         return sb.toString();
     }

@@ -8,6 +8,7 @@ import com.aladin.springbootstudy.dto.OAuthToken;
 import com.aladin.springbootstudy.entity.KakaoProfileEntity;
 import com.aladin.springbootstudy.service.UserInfoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,7 @@ import static com.aladin.springbootstudy.common.CommonFunction.httpRequest;
 
 @RestController
 @RequestMapping("/auth/kakao") // infix = 공통 URL
+@Slf4j
 public class LoginController implements CommonUtils {
 
     @Autowired
@@ -39,6 +41,9 @@ public class LoginController implements CommonUtils {
     private String client_id;
     @Value("#{encrypt.session_key}")
     private String session_key;
+
+    private static final String PROC_URL = "http://129.154.50.230:8080/auth/kakao/callback";
+    private static final String LOCAL_URL = "http://localhost:8080/auth/kakao/callback";
 
     @GetMapping(value="/callback")
     public ModelAndView kakaoCallback(@RequestParam(name="code") String code, HttpServletRequest request, HttpServletResponse response) {
@@ -56,7 +61,7 @@ public class LoginController implements CommonUtils {
             Map<String, String> params = new LinkedHashMap<>();
             params.put("grant_type", "authorization_code");
             params.put("client_id", client_id);
-            params.put("redirect_uri", "http://129.154.50.230:8080/auth/kakao/callback");
+            params.put("redirect_uri", LOCAL_URL);
             params.put("code", code);
 
             ResponseEntity<String> oAuthResponse =  httpRequest(oauthHeaders, params, OAUTH_TOKEN_URL, HttpMethod.POST);

@@ -23,9 +23,13 @@
         <h1 class="animated fadeInUp animate1" id="title-login">Welcome Back !</h1>
         <h1 class="animated fadeInUp animate1 hidden" id="title-signup">Welcome !</h1>
         <button id="btn-login" class="login_form button animated fadeInUp animate4">
-            <a href="https://kauth.kakao.com/oauth/authorize?client_id=361217ade395037564a651e2593c1780&redirect_uri=http://129.154.50.230:8080/auth/kakao/callback&response_type=code">
+<!--            <a href="https://kauth.kakao.com/oauth/authorize?client_id=361217ade395037564a651e2593c1780&redirect_uri=http://129.154.50.230:8080/auth/kakao/callback&response_type=code">-->
+            <a href="https://kauth.kakao.com/oauth/authorize?client_id=361217ade395037564a651e2593c1780&redirect_uri=http://localhost:8080/auth/kakao/callback&response_type=code">
                 <img src="/img/kakao_login_medium_narrow.png"/>
             </a>
+        </button>
+        <button id="btn-login-google" class="login_form button animated fadeInUp animate4">
+            <a href="/oauth2/authorization/google">구글로그인</a>
         </button>
         <input type="submit" id="login-form-submit" class="login_form button animated fadeInUp animate4" value="Log in">
         <input type="submit" id="signup-form-submit" class="login_form button animated fadeInUp animate4 hidden" value="Sign up">
