@@ -3,9 +3,11 @@ package com.aladin.springbootstudy.auth;
 import com.aladin.springbootstudy.entity.KakaoProfileEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /*
  * 로그인 진행이 완료되면 Security Session 생성
@@ -19,14 +21,32 @@ import java.util.Collection;
  * 그렇기 때문에 UserDetails 타입의 객체만 담고 있는 Authentication 객체에
  * 주입할 수 있다.
  */
-public class PrincipalDetails implements UserDetails {
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
+    private Map<String, Object> attributes;
     private KakaoProfileEntity kakaoProfileEntity;
 
-    public PrincipalDetails() {};
+    //카카오
     public PrincipalDetails(KakaoProfileEntity kakaoProfileEntity) {
         this.kakaoProfileEntity = kakaoProfileEntity;
     }
+
+    public PrincipalDetails(Map<String, Object> attributes) {
+        this.attributes = attributes;
+    }
+
+
+    @Override
+    public <A> A getAttribute(String name) {
+        return OAuth2User.super.getAttribute(name);
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+
 
     /*
     *  해당 User의 권한을 리턴하는 메소드
@@ -66,6 +86,11 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return (String) attributes.get("sub");
     }
 
     @Override

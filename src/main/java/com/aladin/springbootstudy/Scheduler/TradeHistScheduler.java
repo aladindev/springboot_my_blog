@@ -46,7 +46,8 @@ public class TradeHistScheduler extends CommonFunction {
     @Autowired
     TradeHistRepository tradeHistRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    //@Scheduled(cron = "0 0 0 * * *") /* 매일 0시 */
+    @Scheduled(cron = "0 */5 * * * *") /* 5분 주기*/
     public void scheduleFixedDelayTask() throws InterruptedException {
 
         try {
