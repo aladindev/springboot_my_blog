@@ -5,14 +5,16 @@
 <mapper namespace="com.aladin.springbootstudy.repository.TradeHistRepository">
     <insert id="insertTradeHist" parameterType="com.aladin.springbootstudy.dto.TradeHistDto">
         INSERT INTO
-            TRADE_HIST(EMAIL, TRADE_DT, EXCHNG_CD, TOKEN_NAME, NOW_AMT, RGSTRN_DT)
+            TRADE_HIST(EMAIL, SN, TRADE_DT, EXCHNG_CD, TOKEN_NAME, NOW_AMT, RGSTRN_DT)
         VALUES(
             #{email}
-           ,SYSDATE
+           ,#{sn}
+           ,#{tradeDt}
            ,#{exchngCd}
            ,#{tokenName}
            ,#{nowAmt}
-           ,SYSDATE)
+           ,#{rgstrnDt}
+        )
     </insert>
     <select id="selectTradeHistToday" parameterType="String" resultType="com.aladin.springbootstudy.dto.TradeHistDto">
         SELECT
@@ -25,6 +27,32 @@
                 , SUM(NOW_AMT) OVER(PARTITION BY EXCHNG_CD) AS totAmt
           FROM TRADE_HIST
          WHERE EMAIL = #{email, jdbcType=VARCHAR}
+    </select>
+    <select id="selectMaxSn" parameterType="com.aladin.springbootstudy.dto.TradeHistDto" resultType="Integer">
+        SELECT NVL(MAX(SN), 0) AS SN
+          FROM TRADE_HIST
+         WHERE TO_CHAR(RGSTRN_DT, 'YYYYMMDD') = #{rgstrnDt}
+           AND EXCHNG_CD = #{exchngCd}
+           AND EMAIL = #{email}
+    </select>
+    <!-- 당일 거래내역  -->
+    <select id="selectTodayTradeHist" parameterType="com.aladin.springbootstudy.dto.TradeHistDto"
+                                    resultType="com.aladin.springbootstudy.dto.TradeHistDto">
+    SELECT SA.*
+      FROM (
+        SELECT SN AS sn, EXCHNG_CD AS exchngCd,
+            (SELECT SUM(NOW_AMT)
+               FROM TRADE_HIST
+              WHERE 1=1
+                AND RGSTRN_DT = #{rgstrnDt}
+                AND SN = '1'
+                AND EXCHNG_CD = #{exchngCd}) - SUM(NOW_AMT) OVER(PARTITION BY SN, EXCHNG_CD) AS nowAmt
+          FROM TRADE_HIST
+         WHERE EXCHNG_CD = #{exchngCd}
+           AND EMAIL = #{email}
+         GROUP BY SN, EXCHNG_CD, NOW_AMT
+         ORDER BY SN DESC) SA
+     WHERE ROWNUM = 1
     </select>
 </mapper>
 

@@ -7,5 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface TradeHistService {
-    public List<TradeHistDto> getTradeHistToday(@Param("email") String email);
+//    public List<TradeHistDto> getTradeHistToday(@Param("email") String email);
+    public TradeHistDto selectTodayTradeHist(TradeHistDto tradeHistDto);
 }

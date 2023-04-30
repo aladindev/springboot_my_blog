@@ -19,6 +19,7 @@ public class KakaoProfileDto {
         public Boolean is_email_verified;
         public String email;
         public String role;
+        public String appKey;
     }
 
     @Data

@@ -16,49 +16,54 @@
         <input type="text" placeholder="검색"/>
         <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
     </div>
-    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:35%;" class="container">
-        <article>
-            <table id="coinTable">
-                <colgroup>
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th colspan="1" class="fixedHeader">거래소</th>
-                        <th colspan="1" class="fixedHeader">코인명</th>
-                        <th colspan="1" class="fixedHeader">보유수량</th>
-                        <th colspan="1" class="fixedHeader">보유금액</th>
-                        <th colspan="1" class="fixedHeader">포지션</th>
-                    </tr>
-                </thead>
-                <tbody th:each="userExchngList : ${userExchngList}">
-                    <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
-                    <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                        <td>
-                            <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
-                        </td>
-                        <td>
-                            <a href="#">
-                                <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
-                            </a>
-                        </td>
-                        <td>
-                            <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
-                        </td>
-                        <td>
-                            <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                        </td>
-                        <td>
-                            <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </article>
+    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;" class="container">
+        <section style="position: reactive; overflow:auto; float:left; top: 72px; width:35%;" class="container">
+            <article>
+                <table id="coinTable">
+                    <colgroup>
+                        <col width="200">
+                        <col width="200">
+                        <col width="200">
+                        <col width="200">
+                        <col width="200">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th colspan="1" class="fixedHeader">거래소</th>
+                            <th colspan="1" class="fixedHeader">코인명</th>
+                            <th colspan="1" class="fixedHeader">보유수량</th>
+                            <th colspan="1" class="fixedHeader">보유금액</th>
+                            <th colspan="1" class="fixedHeader">포지션</th>
+                        </tr>
+                    </thead>
+                    <tbody th:each="userExchngList : ${userExchngList}">
+                        <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+                        <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                            <td>
+                                <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
+                            </td>
+                            <td>
+                                <a href="#">
+                                    <strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>
+                                </a>
+                            </td>
+                            <td>
+                                <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                            </td>
+                            <td>
+                                <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                            </td>
+                            <td>
+                                <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </article>
+        </section>
+<!--        <section style="width=35%; padding-left: 10px;">-->
+<!--            <iframe name="iframe" src="https://upbit.com/exchange?code=CRIX.UPBIT.KRW-GRS" width = "300" height = "200" ></iframe>-->
+<!--        </section>-->
     </section>
 </div>
 <div style="width:35%">
@@ -91,13 +96,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:each="tradeHistDto : ${tradeHistList}">
                 <td>
-<!--                    <img th:src="" id="tradeMarket" style="width: 30%; height: 30%;"/>-->
+                    <img th:src="${tradeHistDto.srcUrl}" id="tradeMarket" style="width: 30%; height: 30%;"/>
                 </td>
                 <td>
                     <a href="#">
-                        <strong id="endAmt" class="jb-large"></strong>
+                        <strong id="endAmt" th:text="${tradeHistDto.nowAmt}" class="jb-large"></strong>
                     </a>
                 </td>
                 <td>

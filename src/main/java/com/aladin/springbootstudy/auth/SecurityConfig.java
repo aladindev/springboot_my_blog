@@ -16,20 +16,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        http.csrf();
         http.authorizeRequests()
                 .antMatchers("/api/v1/get-api/login").permitAll()
-                .antMatchers("/accounts/**").authenticated()
+                //.antMatchers("/accounts/**").authenticated()
                 .antMatchers("/info/**").authenticated()
                 .antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGE')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .and()
-                .formLogin()
-                .loginPage("/api/v1/get-api/login")
-                .loginProcessingUrl("/accounts/info")
-                .and()
                 .oauth2Login()
                 .loginPage("/api/v1/get-api/login")
+                .loginProcessingUrl("/accounts/info")
                 /***
                  * 로그인 후 후처리
                  * 1. 로그인 후 access token(권한) 코드 받기(인증)
@@ -41,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  */
                 .userInfoEndpoint()
                 .userService(principalOAuthUserService)
+
 
         ;
 

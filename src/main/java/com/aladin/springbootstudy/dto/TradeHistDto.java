@@ -11,10 +11,12 @@ import java.util.Date;
 @Data
 public class TradeHistDto {
     public String email;
+    public Integer sn;
     public Date tradeDt;
     public String exchngCd;
     public String tokenName;
     public BigDecimal nowAmt;
-    public Date rgstrnDt;
     public BigDecimal totAmt;
+    public String rgstrnDt;
+    public String srcUrl;
 }

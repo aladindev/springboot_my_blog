@@ -4,7 +4,8 @@
 
 <mapper namespace="com.aladin.springbootstudy.repository.UserExchngListRepository">
     <select id="getUserExchngList" resultType="com.aladin.springbootstudy.dto.UserExchngListDto">
-        SELECT EXCHNG_CD AS exchngCd
+        SELECT EMAIL AS email
+             , EXCHNG_CD AS exchngCd
              , CD_NM AS cdNm
              , SRC_URL AS srcUrl
          FROM USER_EXCHNG_LIST WHERE EMAIL = #{email, jdbcType=VARCHAR}

@@ -13,7 +13,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -47,23 +49,37 @@ public class TradeHistScheduler extends CommonFunction {
     TradeHistRepository tradeHistRepository;
 
     //@Scheduled(cron = "0 0 0 * * *") /* 매일 0시 */
-    @Scheduled(cron = "0 */5 * * * *") /* 5분 주기*/
+    @Scheduled(cron = "0 */1 * * * *") /* 1분 주기*/
     public void scheduleFixedDelayTask() throws InterruptedException {
 
         try {
             List<UserExchngListDto> userExchngListDtoList = userExchngListRepository.getUserEmailList();
 
             if (userExchngListDtoList != null && userExchngListDtoList.size() > 0) {
+
+                Date date = getDate();
+                String yyyyMMdd = getDateFormat(date);
+
                 for (UserExchngListDto uELDto : userExchngListDtoList) {
                     List<AccountsListFormDto> accountsListFormDto = exchngApiRequest(uELDto.getExchngCd());
+
+                    TradeHistDto tradeHistDto1 = new TradeHistDto();
+                    tradeHistDto1.setEmail(uELDto.getEmail());
+                    tradeHistDto1.setRgstrnDt(yyyyMMdd);
+                    tradeHistDto1.setExchngCd(uELDto.getExchngCd());
+
+                    int maxSn = tradeHistRepository.selectMaxSn(tradeHistDto1);
 
                     for (AccountsListFormDto alFDto : accountsListFormDto) {
                         TradeHistDto tradeHistDto = new TradeHistDto();
 
                         tradeHistDto.setEmail(uELDto.getEmail());
+                        tradeHistDto.setTradeDt(date);
+                        tradeHistDto.setSn(maxSn+1);
                         tradeHistDto.setExchngCd(uELDto.getExchngCd());
                         tradeHistDto.setTokenName(alFDto.getTokenName());
                         tradeHistDto.setNowAmt(alFDto.getNowAmt().setScale(0, RoundingMode.DOWN));
+                        tradeHistDto.setRgstrnDt(yyyyMMdd);
 
                         int result = tradeHistRepository.insertTradeHist(tradeHistDto);
 

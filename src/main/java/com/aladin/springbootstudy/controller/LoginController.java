@@ -82,8 +82,6 @@ public class LoginController implements CommonUtils {
 
                 // entity builder pattern
                 kakaoProfileDto = objectMapper.readValue(userInfoResponse.getBody(), KakaoProfileDto.class);
-                System.out.println("kakaoProfile dto > > " + kakaoProfileDto);
-
                 KakaoProfileEntity entity = new KakaoProfileEntity.KakaoBuilder(kakaoProfileDto).build();
 
                 entity = userInfoService.getOne(kakaoProfileDto.getId());
@@ -92,10 +90,10 @@ public class LoginController implements CommonUtils {
                     String email = kakaoProfileDto.getKakao_account().getEmail();
 
                     if(encryptModule.encrypt(email).equals(entity.getEmail())) {
-                        System.out.println("인증성공 list redirect");
                         /* 세션 등록 */
                         session.setAttribute("session_key", UUID.randomUUID().toString());
                         session.setAttribute("email", entity.getEmail());
+                        session.setAttribute("app_key", entity.getAppKey());
                         RedirectView rv = new RedirectView("/accounts/list");
                         return new ModelAndView(rv);
                     }
@@ -103,14 +101,12 @@ public class LoginController implements CommonUtils {
                 }
 
             } catch (Exception e) {
-                System.out.println("kakaoProfile exception > " + e.getMessage());
+                log.error("kakaoProfile exception > " + e.getMessage());
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
         }
         return new ModelAndView("error");
     }
-
-
 
 }

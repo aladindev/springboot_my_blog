@@ -18,9 +18,12 @@ public class PrincipalOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
+        log.error(" ? " + super.loadUser(userRequest));
         // 스코프 회원 프로필 담고 있는 객체
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        return super.loadUser(userRequest);
+        log.error(" ? " + super.loadUser(userRequest));
+
+        return oAuth2User;
     }
 }

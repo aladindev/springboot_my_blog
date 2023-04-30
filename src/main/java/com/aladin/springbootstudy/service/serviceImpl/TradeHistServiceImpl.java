@@ -19,9 +19,8 @@ public class TradeHistServiceImpl implements TradeHistService {
 
     @Autowired
     TradeHistRepository mapper;
-
     @Override
-    public List<TradeHistDto> getTradeHistToday(@Param("email") String email) {
-        return mapper.selectTradeHist(email);
+    public TradeHistDto selectTodayTradeHist(TradeHistDto tradeHistDto) {
+        return mapper.selectTodayTradeHist(tradeHistDto);
     }
 }

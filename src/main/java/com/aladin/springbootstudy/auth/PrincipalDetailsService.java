@@ -1,6 +1,7 @@
 package com.aladin.springbootstudy.auth;
 
 import com.aladin.springbootstudy.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 * loadUserByUsername 함수가 실행된다. (Spring Security 구성임)
 * */
 @Service
+@Slf4j
 public class PrincipalDetailsService implements UserDetailsService {
 
     @Autowired
@@ -21,6 +23,8 @@ public class PrincipalDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        log.error(username);
+
         return null;
     }
 }

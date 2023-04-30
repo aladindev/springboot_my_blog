@@ -9,6 +9,7 @@ import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -34,16 +35,20 @@ public class SseController extends CommonFunction {
     //이벤트 발행을 비동기로 처리하기 위해 별도 스레드를 통해 처리함
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
+    @Value("#{kakao.app_key}")
+    String appKey;
+
     @GetMapping(value="/subscribe", produces = "text/event-stream")
     public SseEmitter subscribe(@SessionAttribute(name = "session_key", required = false) String session_key
+                                ,@SessionAttribute(name = "app_key", required = false) String appKey
                                 ,HttpServletResponse response
                                 ,@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) throws IOException {
 
 
         /*
-        *  세션 보안 등록 !!!!!!!!!!! 중요함 !!!
+        *  최초 차단
         * */
-        if("".equals(session_key) || session_key == null) {
+        if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
@@ -75,14 +80,21 @@ public class SseController extends CommonFunction {
             try {
                 while(true) {
 
-                    List<AccountsListFormDto> listAccounts = new ArrayList<>();
-                    for(String s : exchngCdArr) {
-                        listAccounts.addAll(exchngApiRequest(s));
+                    if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
+                        response.setContentType("text/html; charset=UTF-8");
+                        PrintWriter out = response.getWriter();
+                        out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
+                        out.flush();
+                    } else {
+                        List<AccountsListFormDto> listAccounts = new ArrayList<>();
+                        for(String s : exchngCdArr) {
+                            listAccounts.addAll(exchngApiRequest(s));
+                        }
+
+                        emitter.send(listAccounts);
+
+                        Thread.sleep(1000);
                     }
-
-                    emitter.send(listAccounts);
-
-                    Thread.sleep(1000);
                 }
             } catch (Exception e) {
                 emitter.completeWithError(e);

@@ -24,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -289,6 +290,15 @@ public class CommonFunction implements CommonUtils{
             System.out.println("upbit dto processor exception " + e.getMessage());
             return null;
         }
+    }
+
+    public Date getDate() {
+        return new Date();
+    }
+
+    public String getDateFormat(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+        return simpleDateFormat.format(date);
     }
 
     protected List<AccountsListFormDto> exchngApiRequest(String exchngCd) {
