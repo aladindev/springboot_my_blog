@@ -25,9 +25,10 @@ public class KakaoProfileEntity {
     private String connected_at;
     @Column(name="email")
     private String email;
-
     @Column(name="role")
     private String role;
+    @Column(name="app_key")
+    private String appKey;
 
     private KakaoProfileEntity() {}
     /* builder pattern */
@@ -37,6 +38,7 @@ public class KakaoProfileEntity {
         this.connected_at = builder.connected_at;
         this.email = builder.email;
         this.role = builder.role;
+        this.appKey = builder.appKey;
     }
 
     /* Kakao Profile builder class */
@@ -46,6 +48,7 @@ public class KakaoProfileEntity {
         private String connected_at;
         private String email;
         private String role;
+        private String appKey;
 
         /* 생성자 */
         public KakaoBuilder(KakaoProfileDto kakaoProfileDto) {
@@ -54,6 +57,7 @@ public class KakaoProfileEntity {
             this.connected_at = kakaoProfileDto.getConnected_at();
             this.email = kakaoProfileDto.getKakao_account().getEmail();
             this.role = kakaoProfileDto.getKakao_account().getRole();
+            this.appKey = kakaoProfileDto.getKakao_account().getAppKey();
         }
 
         @Override
