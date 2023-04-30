@@ -37,22 +37,29 @@
     </select>
     <!-- 당일 거래내역  -->
     <select id="selectTodayTradeHist" parameterType="com.aladin.springbootstudy.dto.TradeHistDto"
-                                    resultType="com.aladin.springbootstudy.dto.TradeHistDto">
-    SELECT SA.*
-      FROM (
-        SELECT SN AS sn, EXCHNG_CD AS exchngCd,
-            (SELECT SUM(NOW_AMT)
-               FROM TRADE_HIST
-              WHERE 1=1
-                AND RGSTRN_DT = #{rgstrnDt}
-                AND SN = '1'
-                AND EXCHNG_CD = #{exchngCd}) - SUM(NOW_AMT) OVER(PARTITION BY SN, EXCHNG_CD) AS nowAmt
-          FROM TRADE_HIST
-         WHERE EXCHNG_CD = #{exchngCd}
-           AND EMAIL = #{email}
-         GROUP BY SN, EXCHNG_CD, NOW_AMT
-         ORDER BY SN DESC) SA
-     WHERE ROWNUM = 1
+                                    resultType="com.aladin.springbootstudy.dto.TradeHistTodayDto">
+        SELECT SA.*
+          FROM (
+                SELECT SN AS sn, EXCHNG_CD AS exchngCd,
+                (SELECT SUM(NOW_AMT)
+                   FROM TRADE_HIST
+                  WHERE 1=1
+                    AND RGSTRN_DT = '20230430'
+                    AND SN = '1'
+                    AND EXCHNG_CD = #{exchngCd}) AS startAmt
+        , SUM(NOW_AMT) OVER(PARTITION BY SN, EXCHNG_CD) AS nowAmt
+        , SUM(NOW_AMT) OVER(PARTITION BY SN, EXCHNG_CD) -
+                                    (SELECT SUM(NOW_AMT)
+                                       FROM TRADE_HIST
+                                      WHERE 1=1
+                                        AND RGSTRN_DT = #{rgstrnDt}
+                                        AND SN = '1'
+                                        AND EXCHNG_CD = #{exchngCd}) AS diffAmt
+         FROM TRADE_HIST
+        WHERE EXCHNG_CD = #{exchngCd}
+        GROUP BY SN, EXCHNG_CD, NOW_AMT
+        ORDER BY SN DESC) SA
+      WHERE ROWNUM = 1
     </select>
 </mapper>
 

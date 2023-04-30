@@ -67,13 +67,13 @@
     </section>
 </div>
 <div style="width:35%">
-    <input id="tab1" type="radio" name="tabs" class="input" checked>
+    <input id="tab1" type="radio" name="tabs" class="input" checked onclick="eleClick(this.id)">
     <label colspan="1" for="tab1">당일손익</label>
 
-    <input id="tab2" type="radio" name="tabs" class="input">
+    <input id="tab2" type="radio" name="tabs" class="input" onclick="eleClick(this.id)">
     <label colspan="1" for="tab2">전일대비손익</label>
 
-    <input id="tab3" type="radio" name="tabs" class="input">
+    <input id="tab3" type="radio" name="tabs" class="input" onclick="eleClick(this.id)">
     <label colspan="1" for="tab3">주간손익</label>
 
 
@@ -89,30 +89,30 @@
             <thead>
             <tr>
                 <th colspan="1" class="fixedHeader">거래소</th>
-                <th colspan="1" class="fixedHeader">마감금액</th>
-                <th colspan="1" class="fixedHeader">현재금액</th>
-                <th colspan="1" class="fixedHeader">손익금액</th>
-                <th colspan="1" class="fixedHeader">%</th>
+                <th colspan="1" id="thCol2" class="fixedHeader">당일시작가</th>
+                <th colspan="1" id="thCol3" class="fixedHeader">당일현재가</th>
+                <th colspan="1" id="thCol4" class="fixedHeader">손익금액</th>
+                <th colspan="1" id="thCol5" class="fixedHeader">%</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="tradeHistDto : ${tradeHistList}">
+            <tr th:each="tradeHistTodayDto : ${tradeHistTodayList}">
                 <td>
-                    <img th:src="${tradeHistDto.srcUrl}" id="tradeMarket" style="width: 30%; height: 30%;"/>
+                    <img th:src="${tradeHistTodayDto.srcUrl}" id="tradeMarket" style="width: 30%; height: 30%;"/>
                 </td>
                 <td>
                     <a href="#">
-                        <strong id="endAmt" th:text="${tradeHistDto.nowAmt}" class="jb-large"></strong>
+                        <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>
                     </a>
                 </td>
                 <td>
-                    <p class="jb-large"></p>
+                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
                 </td>
                 <td>
-                    <strong class="jb-large" id="nowAmt"></strong><span class=""></span>
+                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>
                 </td>
                 <td>
-                    <strong class="jb-large" id="diffAmt"></strong>
+                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}per|" th:text="|${tradeHistTodayDto.percent} %|"></strong>
                 </td>
             </tr>
             </tbody>

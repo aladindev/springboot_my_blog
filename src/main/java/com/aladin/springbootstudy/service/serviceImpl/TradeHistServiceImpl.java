@@ -1,6 +1,7 @@
 package com.aladin.springbootstudy.service.serviceImpl;
 
 import com.aladin.springbootstudy.dto.TradeHistDto;
+import com.aladin.springbootstudy.dto.TradeHistTodayDto;
 import com.aladin.springbootstudy.dto.UserExchngListDto;
 import com.aladin.springbootstudy.repository.TradeHistRepository;
 import com.aladin.springbootstudy.repository.UserExchngListRepository;
@@ -20,7 +21,7 @@ public class TradeHistServiceImpl implements TradeHistService {
     @Autowired
     TradeHistRepository mapper;
     @Override
-    public TradeHistDto selectTodayTradeHist(TradeHistDto tradeHistDto) {
+    public TradeHistTodayDto selectTodayTradeHist(TradeHistDto tradeHistDto) {
         return mapper.selectTodayTradeHist(tradeHistDto);
     }
 }

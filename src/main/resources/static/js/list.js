@@ -26,31 +26,7 @@ window.onload = function(){
             var tokenName = eventJsonArr[i].tokenName;
 
             if($('#' + tokenName + "Amt").text() == "" || $('#' + tokenName + "Amt").text() == undefined) {
-                console.log("코인 새로 추가");
-
-//                var addRow = "<td>";
-//                addRow +=       '<img th:src=' + '"' + eventJsonArr[i].imgUrl + '"' + 'style="width: 30%; height: 30%;"/>';
-//                addRow +=   '</td>';
-//                addRow +=   '<td>';
-//                addRow +=       '<a href="#">';
-//                addRow +=           '<strong class="jb-large" th:id="${accounts.tokenName}" th:text="${accounts.tokenName}"></strong>';
-//                addRow +=       '</a>';
-//                addRow +=   '</td>';
-//                addRow +=   '<td>';
-//                addRow +=       '<p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, ';
-//                addRow +=               "'" + 'COMMA' + "'" + ')} 원|"></p>';
-//                addRow +=   '</td>';
-//                addRow +=   '<td>';
-//                addRow +=       '<strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, '
-//                                        "'" + 'COMMA' + "'" + ')} 원|"></strong><span class=""></span>';
-//                addRow +=   '</td>';
-//                addRow +=   '<td>';
-//                addRow +=       '<strong class="jb-large" th:text="${accounts.positionSide}"></strong>';
-//                addRow +=   '</td>';
-//
-//                $('#coinTable > tbody:last').append(addRow);
-
-
+                console.log("코인 새로 추가 로직 추가");
             } else {
                 var amtId = tokenName+"Amt";
                 var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
@@ -68,9 +44,6 @@ window.onload = function(){
                 }
                 $('#' + amtId).text(afAmt.toLocaleString() + " 원");
             }
-
-
-
         }
     };
 
@@ -83,30 +56,82 @@ window.onload = function(){
 
     		$(this).addClass('current');
     		$("#"+tab_id).addClass('current');
-    })
+
+    		console.log(tab_id);
+    });
+
+    eleClick("tab1");
+}
+
+function eleClick(chkId) {
+    var eventSource;
+
+  switch(chkId) {
+    case 'tab1' :
+        var url = "/api/v3/sse/subscribe/today?";
+        var qStr = "exchngCd=";
+        for(var i = 0 ; i < document.getElementsByName("exchngCdArr").length ; i++) {
+                if(i == document.getElementsByName("exchngCdArr").length-1) {
+                    qStr += document.getElementsByName("exchngCdArr")[i].value;
+                    break;
+                }
+                qStr += document.getElementsByName("exchngCdArr")[i].value;
+                qStr += "&exchngCd=";
+        }
+
+        eventSource = new EventSource(url + qStr);
+
+        $("#thCol2").text("당일시작가");
+        $("#thCol3").text("당일현재가");
+        $("#thCol4").text("손익금액");
+        $("#thCol5").text("%");
+
+        eventSource.onopen = (e) => {
+            console.log("hist sse open");
+        };
+
+        eventSource.onmessage = event => {
+           var eventJsonArr = JSON.parse(event.data);
+
+           for(var i = 0 ; i < eventJsonArr.length ; i++) {
+              var startAmt = Math.floor(eventJsonArr[i].startAmt);
+              var nowAmt = Math.floor(eventJsonArr[i].nowAmt);
+              var diffAmt = Math.floor(eventJsonArr[i].diffAmt);
+              var percent = (nowAmt - startAmt) / startAmt;
+              var exchngCd = eventJsonArr[i].exchngCd;
+              percent = percent.toFixed(2);
+
+              $("#" + exchngCd + "startAmt").text(startAmt.toLocaleString() + " 원");
+              $("#" + exchngCd + "nowAmt").text(nowAmt.toLocaleString() + " 원");
+              $("#" + exchngCd + "diffAmt").text(diffAmt.toLocaleString() + " 원");
+              $("#" + exchngCd + "per").text(percent + " %");
 
 
-    //iframe
-//    var iframe = document.getElementsByTagName('iframe')[0];
-//    var url = iframe.src;
-//    var getData = function (data) {
-//        if (data && data.query && data.query.results && data.query.results.resources && data.query.results.resources.content && data.query.results.resources.status == 200) loadHTML(data.query.results.resources.content);
-//        else if (data && data.error && data.error.description) loadHTML(data.error.description);
-//        else loadHTML('Error: Cannot load ' + url);
-//    };
-//    var loadURL = function (src) {
-//        url = src;
-//        var script = document.createElement('script');
-//        script.src = 'https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.headers%20where%20url%3D%22' + encodeURIComponent(url) + '%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=getData';
-//        document.body.appendChild(script);
-//    };
-//    var loadHTML = function (html) {
-//        iframe.src = 'about:blank';
-//        iframe.contentWindow.document.open();
-//        iframe.contentWindow.document.write(html.replace(/<head>/i, '<head><base href="' + url + '"><scr' + 'ipt>document.addEventListener("click", function(e) { if(e.target && e.target.nodeName == "A") { e.preventDefault(); parent.loadURL(e.target.href); } });</scr' + 'ipt>'));
-//        iframe.contentWindow.document.close();
-//    }
-//
-//    loadURL(iframe.src);
+              if(startAmt > nowAmt) {
+                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "blue";
+                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "blue";
+                  document.getElementById("#" + exchngCd + "per").style.color = "blue";
+              } else if(Number(bfAmt) < Number(afAmt)) {
+                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "red";
+                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "red";
+                  document.getElementById("#" + exchngCd + "per").style.color = "red";
+              } else {
+                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "block";
+                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "block";
+                  document.getElementById("#" + exchngCd + "per").style.color = "block";
+              }
+              $('#' + amtId).text(afAmt.toLocaleString() + " 원");
+           }
+        };
 
+        break;
+    case 'tab2' :
+        console.log(chkId);
+        $("#thCol2").text("전일종료가");
+        $("#thCol3").text("당일현재가");
+        $("#thCol4").text("손익금액");
+        $("#thCol5").text("%");
+        break;
+    default : break;
+  }
 }

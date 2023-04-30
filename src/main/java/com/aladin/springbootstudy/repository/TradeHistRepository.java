@@ -1,6 +1,7 @@
 package com.aladin.springbootstudy.repository;
 
 import com.aladin.springbootstudy.dto.TradeHistDto;
+import com.aladin.springbootstudy.dto.TradeHistTodayDto;
 import com.aladin.springbootstudy.dto.UserExchngListDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,5 +16,5 @@ public interface TradeHistRepository {
     int insertTradeHist(TradeHistDto tradeHistDto);
     List<TradeHistDto> selectTradeHist(String email);
     int selectMaxSn(TradeHistDto tradeHistDto);
-    TradeHistDto selectTodayTradeHist(TradeHistDto tradeHistDto);
+    TradeHistTodayDto selectTodayTradeHist(TradeHistDto tradeHistDto);
 }

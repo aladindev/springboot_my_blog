@@ -1,9 +1,8 @@
 package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonFunction;
-import com.aladin.springbootstudy.dto.AccountsListFormDto;
-import com.aladin.springbootstudy.dto.UpbitAccountDto;
-import com.aladin.springbootstudy.dto.UserExchngListDto;
+import com.aladin.springbootstudy.dto.*;
+import com.aladin.springbootstudy.service.TradeHistService;
 import com.aladin.springbootstudy.service.UserInfoService;
 import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +36,9 @@ public class SseController extends CommonFunction {
 
     @Value("#{kakao.app_key}")
     String appKey;
+
+    @Autowired
+    TradeHistService tradeHistService;
 
     @GetMapping(value="/subscribe", produces = "text/event-stream")
     public SseEmitter subscribe(@SessionAttribute(name = "session_key", required = false) String session_key
@@ -79,7 +81,6 @@ public class SseController extends CommonFunction {
         executorService.execute(() -> {
             try {
                 while(true) {
-
                     if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
                         response.setContentType("text/html; charset=UTF-8");
                         PrintWriter out = response.getWriter();
@@ -101,30 +102,71 @@ public class SseController extends CommonFunction {
             }
         });
         return emitter;
-
     }
 
 
-    public void upbitAccountList(@SessionAttribute(name = "session_key", required = false) String session_key
-                                   , HttpServletResponse response) throws IOException, InterruptedException {
+    @GetMapping(value="/subscribe/today", produces = "text/event-stream")
+    public SseEmitter todayTradeHist(
+             @SessionAttribute(name = "session_key", required = false) String session_key
+            ,@SessionAttribute(name = "app_key", required = false) String appKey
+            ,@SessionAttribute(name = "email", required = false) String email
+            ,HttpServletResponse response
+            ,@RequestParam(value = "exchngCd", required = false) Set<String> exchngCdSet) throws IOException {
 
-        HttpHeaders headers = new HttpHeaders();
-        if("".equals(session_key) || session_key == null) {
-            response.sendRedirect("/api/v1/get-api/login");
+        /*
+         *  최초 차단
+         * */
+        if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
+            out.flush();
 
-        } else {
-            //upbit
-            List<UpbitAccountDto> upbitAccountDtoList = upbit_accounts_info();
-            List<AccountsListFormDto> UpbitAccountsListForm = upbitDtoProcessor(upbitAccountDtoList);
-
-            Writer writer = response.getWriter();
-            for(AccountsListFormDto alFDto : UpbitAccountsListForm) {
-                writer.write(alFDto.toString());
-                writer.write("\n");
-                writer.flush();
-                Thread.sleep(2000);
-            }
-            writer.close();
+            return null;
         }
+
+        final SseEmitter emitter = new SseEmitter();
+
+        // String 배열로 받아도 되지만 굳이 Set으로 받는다.
+        Iterator<String> iterator = exchngCdSet.iterator();
+        String[] exchngCdArr = exchngCdSet != null && exchngCdSet.size() > 0 ? new String[exchngCdSet.size()] : null;
+        int idx = 0;
+        while(iterator.hasNext()) exchngCdArr[idx++] = iterator.next();
+
+        // 503 에러 방지를 위한 최초 연결 시 더미 데이터 전송
+        emitter.send(SseEmitter.event()
+                .name("connect")
+                .data("connected!"));
+
+        executorService.execute(() -> {
+            try {
+                while(true) {
+                    if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
+                        response.setContentType("text/html; charset=UTF-8");
+                        PrintWriter out = response.getWriter();
+                        out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
+                        out.flush();
+                    } else {
+                        List<TradeHistTodayDto> tradeHistTodayDtoList = new ArrayList<>();
+                        for(String s : exchngCdArr) {
+                            TradeHistDto thDto = new TradeHistDto();
+                            thDto.setEmail(email);
+                            thDto.setRgstrnDt(getDateFormat(getDate()));
+                            thDto.setExchngCd(s);
+
+                            TradeHistTodayDto thTodayDt = tradeHistService.selectTodayTradeHist(thDto);
+                            tradeHistTodayDtoList.add(thTodayDt);
+                        }
+
+                        emitter.send(tradeHistTodayDtoList);
+
+                        Thread.sleep(1000);
+                    }
+                }
+            } catch (Exception e) {
+                emitter.completeWithError(e);
+            }
+        });
+        return emitter;
     }
 }

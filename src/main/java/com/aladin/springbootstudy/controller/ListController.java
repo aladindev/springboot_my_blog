@@ -2,6 +2,7 @@ package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.common.CommonFunction;
 import com.aladin.springbootstudy.dto.TradeHistDto;
+import com.aladin.springbootstudy.dto.TradeHistTodayDto;
 import com.aladin.springbootstudy.dto.UserExchngListDto;
 import com.aladin.springbootstudy.service.TradeHistService;
 import com.aladin.springbootstudy.service.UserInfoService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,27 +59,35 @@ public class ListController extends CommonFunction {
                 List<UserExchngListDto> userExchngList = userService.getUserExchngList(email);
 
                 // 당일 매매 일지
-                List<TradeHistDto> tradeHistList = new ArrayList<>();
+                List<TradeHistTodayDto> tradeHistTodayDtoList = new ArrayList<>();
 
                 // 리스트 별 보유 종목 Api 호출
                 for(int i = 0 ; i < userExchngList.size() ; i++) {
                     userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
 
                     TradeHistDto tHDto = new TradeHistDto();
+                    TradeHistTodayDto tHTodayDto = new TradeHistTodayDto();
+
                     tHDto.setEmail(userExchngList.get(i).getEmail());
                     tHDto.setExchngCd(userExchngList.get(i).getExchngCd());
                     tHDto.setRgstrnDt(getDateFormat(getDate()));
-                    tHDto = tradeHistService.selectTodayTradeHist(tHDto);
 
-                    tHDto.setSrcUrl(userExchngList.get(i).getSrcUrl());
+                    tHTodayDto = tradeHistService.selectTodayTradeHist(tHDto);
+                    tHTodayDto.setSrcUrl(userExchngList.get(i).getSrcUrl());
 
-                    tradeHistList.add(tHDto);
+                    BigDecimal percent =
+                             tHTodayDto.getNowAmt()
+                             .subtract(tHTodayDto.getStartAmt())
+                             .divide(tHTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING)
+                            ;
+                    tHTodayDto.setPercent(percent);
+                    tradeHistTodayDtoList.add(tHTodayDto);
 
                 }
                 model.addAttribute("userExchngList", userExchngList);
 
-                if(tradeHistList != null && tradeHistList.size() > 0) {
-                    model.addAttribute("tradeHistList", tradeHistList);
+                if(tradeHistTodayDtoList != null && tradeHistTodayDtoList.size() > 0) {
+                    model.addAttribute("tradeHistTodayList", tradeHistTodayDtoList);
                 }
             }
         } catch (Exception e) {

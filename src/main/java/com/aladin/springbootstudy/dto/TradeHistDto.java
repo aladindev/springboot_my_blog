@@ -19,4 +19,5 @@ public class TradeHistDto {
     public BigDecimal totAmt;
     public String rgstrnDt;
     public String srcUrl;
+    public double percent;
 }
