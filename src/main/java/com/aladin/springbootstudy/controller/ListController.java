@@ -62,6 +62,9 @@ public class ListController extends CommonFunction {
                 List<TradeHistTodayDto> tradeHistTodayDtoList = new ArrayList<>();
 
                 // 리스트 별 보유 종목 Api 호출
+                BigDecimal startAmtSum = BigDecimal.ZERO;
+                BigDecimal nowAmtSum = BigDecimal.ZERO;
+                BigDecimal diffAmtSum = BigDecimal.ZERO;
                 for(int i = 0 ; i < userExchngList.size() ; i++) {
                     userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
 
@@ -81,12 +84,32 @@ public class ListController extends CommonFunction {
                              .divide(tHTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING)
                             ;
                     tHTodayDto.setPercent(percent);
+
+                    startAmtSum = startAmtSum.add(tHTodayDto.getStartAmt());
+                    nowAmtSum = nowAmtSum.add(tHTodayDto.getNowAmt());
+                    diffAmtSum = diffAmtSum.add(tHTodayDto.getDiffAmt());
+
                     tradeHistTodayDtoList.add(tHTodayDto);
 
                 }
                 model.addAttribute("userExchngList", userExchngList);
 
                 if(tradeHistTodayDtoList != null && tradeHistTodayDtoList.size() > 0) {
+                    TradeHistTodayDto sumDto = new TradeHistTodayDto();
+                    sumDto.setStartAmt(startAmtSum);
+                    sumDto.setNowAmt(nowAmtSum);
+                    sumDto.setDiffAmt(diffAmtSum);
+                    sumDto.setSrcUrl("/img/sigma.png");
+
+                    BigDecimal percent =
+                            nowAmtSum
+                            .subtract(startAmtSum)
+                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING)
+                    ;
+                    sumDto.setPercent(percent);
+
+                    tradeHistTodayDtoList.add(sumDto);
+
                     model.addAttribute("tradeHistTodayList", tradeHistTodayDtoList);
                 }
             }

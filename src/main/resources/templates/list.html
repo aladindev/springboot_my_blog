@@ -39,7 +39,7 @@
                     <tbody th:each="userExchngList : ${userExchngList}">
                         <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
                         <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                            <td>
+                            <td th:if="${not #strings.isEmpty(userExchngList.srcUrl)}">
                                 <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 30%;"/>
                             </td>
                             <td>
@@ -98,7 +98,7 @@
             <tbody>
             <tr th:each="tradeHistTodayDto : ${tradeHistTodayList}">
                 <td>
-                    <img th:src="${tradeHistTodayDto.srcUrl}" id="tradeMarket" style="width: 30%; height: 30%;"/>
+                    <img th:src="${tradeHistTodayDto.srcUrl}" id="tradeMarket" style="width: 35%; height: 35%;"/>
                 </td>
                 <td>
                     <a href="#">

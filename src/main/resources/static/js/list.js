@@ -60,7 +60,22 @@ window.onload = function(){
     		console.log(tab_id);
     });
 
-    eleClick("tab1");
+
+    //Trade Hist
+//    if(startAmt > nowAmt) {
+//                      document.getElementById(exchngCd + "nowAmt").style.color = "blue";
+//                      document.getElementById(exchngCd + "diffAmt").style.color = "blue";
+//                      document.getElementById(exchngCd + "per").style.color = "blue";
+//                  } else if(Number(bfAmt) < Number(afAmt)) {
+//                      document.getElementById(exchngCd + "nowAmt").style.color = "red";
+//                      document.getElementById(exchngCd + "diffAmt").style.color = "red";
+//                      document.getElementById(exchngCd + "per").style.color = "red";
+//                  } else {
+//                      document.getElementById(exchngCd + "nowAmt").style.color = "block";
+//                      document.getElementById(exchngCd + "diffAmt").style.color = "block";
+//                      document.getElementById(exchngCd + "per").style.color = "block";
+//                  }
+
 }
 
 function eleClick(chkId) {
@@ -108,22 +123,20 @@ function eleClick(chkId) {
 
 
               if(startAmt > nowAmt) {
-                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "blue";
-                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "blue";
-                  document.getElementById("#" + exchngCd + "per").style.color = "blue";
+                  document.getElementById(exchngCd + "nowAmt").style.color = "blue";
+                  document.getElementById(exchngCd + "diffAmt").style.color = "blue";
+                  document.getElementById(exchngCd + "per").style.color = "blue";
               } else if(Number(bfAmt) < Number(afAmt)) {
-                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "red";
-                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "red";
-                  document.getElementById("#" + exchngCd + "per").style.color = "red";
+                  document.getElementById(exchngCd + "nowAmt").style.color = "red";
+                  document.getElementById(exchngCd + "diffAmt").style.color = "red";
+                  document.getElementById(exchngCd + "per").style.color = "red";
               } else {
-                  document.getElementById("#" + exchngCd + "nowAmt").style.color = "block";
-                  document.getElementById("#" + exchngCd + "diffAmt").style.color = "block";
-                  document.getElementById("#" + exchngCd + "per").style.color = "block";
+                  document.getElementById(exchngCd + "nowAmt").style.color = "block";
+                  document.getElementById(exchngCd + "diffAmt").style.color = "block";
+                  document.getElementById(exchngCd + "per").style.color = "block";
               }
-              $('#' + amtId).text(afAmt.toLocaleString() + " 원");
            }
         };
-
         break;
     case 'tab2' :
         console.log(chkId);
