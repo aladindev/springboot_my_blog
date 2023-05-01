@@ -4,16 +4,15 @@
 
 <mapper namespace="com.aladin.springbootstudy.repository.UserExchngListRepository">
     <select id="getUserExchngList" resultType="com.aladin.springbootstudy.dto.UserExchngListDto">
-        SELECT EMAIL AS email
-             , EXCHNG_CD AS exchngCd
+        SELECT
+               EXCHNG_CD AS exchngCd
              , CD_NM AS cdNm
              , SRC_URL AS srcUrl
          FROM USER_EXCHNG_LIST WHERE EMAIL = #{email, jdbcType=VARCHAR}
         ORDER BY EXCHNG_CD ASC
     </select>
     <select id="getUserEmailList" resultType="com.aladin.springbootstudy.dto.UserExchngListDto">
-        SELECT EMAIL AS email
-             , EXCHNG_CD AS exchngCd
+        SELECT EXCHNG_CD AS exchngCd
           FROM USER_EXCHNG_LIST
     </select>
 </mapper>

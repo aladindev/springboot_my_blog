@@ -58,6 +58,11 @@ public class ListController extends CommonFunction {
                 // 이용중인 거래소 리스트
                 List<UserExchngListDto> userExchngList = userService.getUserExchngList(email);
 
+                for(int i = 0 ; i < userExchngList.size() ; i++) {
+                    userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
+                }
+                model.addAttribute("userExchngList", userExchngList);
+
                 // 당일 매매 일지
                 List<TradeHistTodayDto> tradeHistTodayDtoList = new ArrayList<>();
 
@@ -65,45 +70,27 @@ public class ListController extends CommonFunction {
                 BigDecimal startAmtSum = BigDecimal.ZERO;
                 BigDecimal nowAmtSum = BigDecimal.ZERO;
                 BigDecimal diffAmtSum = BigDecimal.ZERO;
-                for(int i = 0 ; i < userExchngList.size() ; i++) {
-                    userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
 
-                    TradeHistDto tHDto = new TradeHistDto();
-                    TradeHistTodayDto tHTodayDto = new TradeHistTodayDto();
+                TradeHistDto tHDto = new TradeHistDto();
+                tHDto.setEmail(email);
+                tHDto.setRgstrnDt(getDateFormat(getDate()));
 
-                    tHDto.setEmail(userExchngList.get(i).getEmail());
-                    tHDto.setExchngCd(userExchngList.get(i).getExchngCd());
-                    tHDto.setRgstrnDt(getDateFormat(getDate()));
-
-                    tHTodayDto = tradeHistService.selectTodayTradeHist(tHDto);
-                    tHTodayDto.setSrcUrl(userExchngList.get(i).getSrcUrl());
-
-                    BigDecimal percent =
-                             tHTodayDto.getNowAmt()
-                             .subtract(tHTodayDto.getStartAmt())
-                             .divide(tHTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING)
-                            ;
-                    tHTodayDto.setPercent(percent);
-
-                    startAmtSum = startAmtSum.add(tHTodayDto.getStartAmt());
-                    nowAmtSum = nowAmtSum.add(tHTodayDto.getNowAmt());
-                    diffAmtSum = diffAmtSum.add(tHTodayDto.getDiffAmt());
-
-                    log.error("?? " + tHTodayDto);
-
-                    tradeHistTodayDtoList.add(tHTodayDto);
-
-                }
-                model.addAttribute("userExchngList", userExchngList);
+                tradeHistTodayDtoList = tradeHistService.selectTodayTradeHist(tHDto);
 
                 /* 총 합계 매매일지 */
                 if(tradeHistTodayDtoList != null && tradeHistTodayDtoList.size() > 0) {
+
+                    for(TradeHistTodayDto tradeHistTodayDto : tradeHistTodayDtoList) {
+                        startAmtSum = startAmtSum.subtract(tradeHistTodayDto.getStartAmt());
+                        nowAmtSum = nowAmtSum.subtract(tradeHistTodayDto.getNowAmt());
+                        diffAmtSum = diffAmtSum.subtract(tradeHistTodayDto.getDiffAmt());
+                    }
+
                     TradeHistTodayDto sumDto = new TradeHistTodayDto();
                     sumDto.setStartAmt(startAmtSum);
                     sumDto.setNowAmt(nowAmtSum);
                     sumDto.setDiffAmt(diffAmtSum);
                     sumDto.setSrcUrl("/img/sigma.png");
-
                     BigDecimal percent =
                             nowAmtSum
                             .subtract(startAmtSum)
@@ -115,6 +102,7 @@ public class ListController extends CommonFunction {
 
                     model.addAttribute("tradeHistTodayList", tradeHistTodayDtoList);
                 }
+                log.error("tradeHistTodayList>> " + tradeHistTodayDtoList);
             }
         } catch (Exception e) {
             log.error("listController exception " + e.getMessage());

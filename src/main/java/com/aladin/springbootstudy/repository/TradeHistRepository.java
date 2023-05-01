@@ -16,5 +16,5 @@ public interface TradeHistRepository {
     int insertTradeHist(TradeHistDto tradeHistDto);
     List<TradeHistDto> selectTradeHist(String email);
     int selectMaxSn(TradeHistDto tradeHistDto);
-    TradeHistTodayDto selectTodayTradeHist(TradeHistDto tradeHistDto);
+    List<TradeHistTodayDto> selectTodayTradeHist(TradeHistDto tradeHistDto);
 }

@@ -296,6 +296,14 @@ public class CommonFunction implements CommonUtils{
         return new Date();
     }
 
+    public String getDateYesterday() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, -1); // 오늘날짜로부터 -1
+
+        return sdf.format(c.getTime());
+    }
+
     public String getDateFormat(Date date) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
         return simpleDateFormat.format(date);

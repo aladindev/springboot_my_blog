@@ -21,7 +21,7 @@ public class TradeHistServiceImpl implements TradeHistService {
     @Autowired
     TradeHistRepository mapper;
     @Override
-    public TradeHistTodayDto selectTodayTradeHist(TradeHistDto tradeHistDto) {
+    public List<TradeHistTodayDto> selectTodayTradeHist(TradeHistDto tradeHistDto) {
         return mapper.selectTodayTradeHist(tradeHistDto);
     }
 }
