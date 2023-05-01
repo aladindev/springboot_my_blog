@@ -86,15 +86,14 @@ window.onload = function(){
 
 function tabClick(tabId) {
     var eventSource;
-    var map = { "tabId" : tabId };
+    var map = { 'tabId' : tabId };
 
     $.ajax({
-        url: "/accounts/tabChange",
+        url: "/accounts/tab_change",
         type: "GET",
-        data: encodeURI(JSON.stringify(map)),
+        data: map,
         success: function(data){
             console.log(JSON.stringify(data));
-
             for(var i = 0 ; i < document.getElementsByName("diffAmt").length ; i++) {
                 var diffAmt = document.getElementsByName("diffAmtVal")[i].value;
                 var diffId = document.getElementsByName('diffAmt')[i].id;
