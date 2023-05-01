@@ -24,4 +24,9 @@ public class TradeHistServiceImpl implements TradeHistService {
     public List<TradeHistTodayDto> selectTodayTradeHist(TradeHistDto tradeHistDto) {
         return mapper.selectTodayTradeHist(tradeHistDto);
     }
+
+    @Override
+    public List<TradeHistTodayDto> selectYesterDayTradeHist(TradeHistDto tradeHistDto) {
+        return mapper.selectYesterDayTradeHist(tradeHistDto);
+    }
 }

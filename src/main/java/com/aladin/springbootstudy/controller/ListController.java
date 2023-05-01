@@ -135,17 +135,14 @@ public class ListController extends CommonFunction {
             } else {
                 String tabId = (String)tabMap.get("tabId");
 
+                TradeHistDto tradeHistDto = new TradeHistDto();
+                tradeHistDto.setEmail(email);
+                tradeHistDto.setRgstrnDt(getDateFormat(getDate()));
                 switch (tabId) {
                     case "tab1" :
-                        TradeHistDto tradeHistDto = new TradeHistDto();
-                        tradeHistDto.setEmail(email);
-                        tradeHistDto.setRgstrnDt(getDateFormat(getDate()));
-
-                        List<TradeHistTodayDto> resultList = tradeHistService.selectTodayTradeHist(tradeHistDto);
-                        return resultList;
-
+                        return tradeHistService.selectTodayTradeHist(tradeHistDto);
                     case "tab2" :
-                        break;
+                        return tradeHistService.selectYesterDayTradeHist(tradeHistDto);
                     case "tab3" :
                         break;
                     default :

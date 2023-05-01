@@ -57,6 +57,38 @@
          WHERE RGSTRN_DT = #{rgstrnDt}
            AND A.EMAIL = #{email}
     </select>
+    <select id="selectYesterDayTradeHist" parameterType="com.aladin.springbootstudy.dto.TradeHistDto"
+            resultMap="tradeHistDtoList">
+        SELECT DISTINCT
+            A.EXCHNG_CD AS exchngCd
+            , SUM(NOW_AMT) OVER(PARTITION BY EXCHNG_CD) AS nowAmt
+            ,  (SELECT SUM(NOW_AMT)
+                  FROM TRADE_HIST
+                WHERE RGSTRN_DT = TO_CHAR( TO_DATE(#{rgstrnDt}, 'YYYYMMDD') -1, 'YYYYMMDD')
+                  AND SN = '1'
+                  AND EXCHNG_CD = A.EXCHNG_CD) AS startAmt
+            , SUM(NOW_AMT) OVER(PARTITION BY EXCHNG_CD)
+                    - (SELECT SUM(NOW_AMT)
+                         FROM TRADE_HIST
+                        WHERE RGSTRN_DT = TO_CHAR( TO_DATE(#{rgstrnDt}, 'YYYYMMDD') -1, 'YYYYMMDD')
+                          AND SN = '1'
+                          AND EXCHNG_CD = A.EXCHNG_CD) AS diffAmt
+            , C.srcUrl AS srcUrl
+          FROM TRADE_HIST  A
+            INNER JOIN
+                (SELECT DISTINCT MAX(SN) OVER(PARTITION BY EXCHNG_CD ORDER BY SN DESC) AS SN
+                    , EXCHNG_CD AS exchngCd
+                   FROM TRADE_HIST
+                  WHERE RGSTRN_DT = TO_CHAR( TO_DATE(#{rgstrnDt}, 'YYYYMMDD') -1, 'YYYYMMDD')) B
+              ON A.SN  = B.SN
+             AND A.EXCHNG_CD  = B.exchngCd
+            INNER JOIN
+                (SELECT EXCHNG_CD AS exchngCd, SRC_URL AS srcUrl
+                   FROM USER_EXCHNG_LIST) C
+              ON B.exchngCd = C.exchngCd
+            WHERE RGSTRN_DT = #{rgstrnDt}
+              AND A.EMAIL = #{email}
+    </select>
     <resultMap id="tradeHistDtoList" type="com.aladin.springbootstudy.dto.TradeHistTodayDto">
         <result column="exchngCd" property="exchngCd"/>
         <result column="nowAmt" property="nowAmt"/>
