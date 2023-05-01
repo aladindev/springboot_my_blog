@@ -106,13 +106,18 @@
                     </a>
                 </td>
                 <td>
-                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"
+                            th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
                 </td>
                 <td>
-                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>
+                    <input type="hidden" name="diffAmtVal" th:value="${tradeHistTodayDto.diffAmt}"/>
+                    <strong class="jb-large" name="diffAmt" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:value="${tradeHistTodayDto.diffAmt}"
+                            th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>
                 </td>
                 <td>
-                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}per|" th:text="|${tradeHistTodayDto.percent} %|"></strong>
+                    <input type="hidden" name="percentVal" th:value="${tradeHistTodayDto.percent}"/>
+                    <strong class="jb-large" name="percent" th:id="|${tradeHistTodayDto.exchngCd}per|" th:value="${tradeHistTodayDto.percent}"
+                            th:text="|${tradeHistTodayDto.percent} %|"></strong>
                 </td>
             </tr>
             </tbody>

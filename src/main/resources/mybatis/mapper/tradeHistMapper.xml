@@ -16,18 +16,7 @@
            ,#{rgstrnDt}
         )
     </insert>
-    <select id="selectTradeHistToday" parameterType="String" resultType="com.aladin.springbootstudy.dto.TradeHistDto">
-        SELECT
-                EMAIL AS email
-                , TRADE_DT AS tradeDt
-                , EXCHNG_CD AS exchngCd
-                , TOKEN_NAME AS tokenName
-                , NOW_AMT AS nowAmt
-                , RGSTRN_DT AS rgstrnDt
-                , SUM(NOW_AMT) OVER(PARTITION BY EXCHNG_CD) AS totAmt
-          FROM TRADE_HIST
-         WHERE EMAIL = #{email, jdbcType=VARCHAR}
-    </select>
+
     <select id="selectMaxSn" parameterType="com.aladin.springbootstudy.dto.TradeHistDto" resultType="Integer">
         SELECT NVL(MAX(SN), 0) AS SN
           FROM TRADE_HIST
@@ -44,7 +33,7 @@
                 (SELECT SUM(NOW_AMT)
                    FROM TRADE_HIST
                   WHERE 1=1
-                    AND RGSTRN_DT = '20230430'
+                    AND RGSTRN_DT = #{rgstrnDt}
                     AND SN = '1'
                     AND EXCHNG_CD = #{exchngCd}) AS startAmt
         , SUM(NOW_AMT) OVER(PARTITION BY SN, EXCHNG_CD) AS nowAmt
@@ -56,7 +45,9 @@
                                         AND SN = '1'
                                         AND EXCHNG_CD = #{exchngCd}) AS diffAmt
          FROM TRADE_HIST
-        WHERE EXCHNG_CD = #{exchngCd}
+        WHERE 1=1
+          AND EXCHNG_CD = #{exchngCd}
+          AND RGSTRN_DT = #{rgstrnDt}
         GROUP BY SN, EXCHNG_CD, NOW_AMT
         ORDER BY SN DESC) SA
       WHERE ROWNUM = 1

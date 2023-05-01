@@ -50,6 +50,8 @@ public class CommonFunction implements CommonUtils{
     @Value("#{crypto.binance_s_key}")
     String binance_s_key;
 
+    public final static int DOLLAR = 1000;
+
     public static ResponseEntity<String> httpRequest(Map<String, String> headerMap, Map<String
                                 , String> params, String url, HttpMethod type) {
 
@@ -172,14 +174,12 @@ public class CommonFunction implements CommonUtils{
 
         List<AccountsListFormDto> accountsList = new ArrayList<>();
         try {
-
-            //BinanceAccountsDto.Position(symbol=EOSUSDT, initialMargin=2789.80828234, maintMargin=100.28695500, unrealizedProfit=485.15629866, positionInitialMargin=2075.52803234, openOrderInitialMargin=714.28025000, leverage=7, isolated=true, entryPrice=1.081962440096, maxNotional=1000000, bidNotional=0, askNotional=4999.96150000, positionSide=BOTH, positionAmt=-13876.5, notional=-14528.69550000, isolatedWallet=2165.25519849, updateTime=1682121601400, additionalProperties={}),
             for(BinanceAccountsDto.Position dto : binanceAccountsDtoList) {
                 if("USDT".equals(dto.getSymbol())) {
                     AccountsListFormDto listFormDto = new AccountsListFormDto();
                     listFormDto.setTokenName("USDT");
                     listFormDto.setExchngCd("02");
-                    listFormDto.setNowAmt(new BigDecimal(dto.getPositionInitialMargin()).multiply(new BigDecimal("1280")));
+                    listFormDto.setNowAmt(new BigDecimal(dto.getPositionInitialMargin()).multiply(new BigDecimal(DOLLAR)));
                     listFormDto.setCoinAmount(Double.valueOf(dto.getPositionInitialMargin()));
                     listFormDto.setPositionSide("1x Long");
 
@@ -190,7 +190,7 @@ public class CommonFunction implements CommonUtils{
                         AccountsListFormDto listFormDto = new AccountsListFormDto();
                         listFormDto.setTokenName(dto.getSymbol());
                         listFormDto.setExchngCd("02");
-                        listFormDto.setNowAmt(new BigDecimal(totAmt * 1280));
+                        listFormDto.setNowAmt(new BigDecimal(totAmt * DOLLAR));
                         listFormDto.setCoinAmount(totAmt / Double.valueOf(dto.getEntryPrice()));
                         listFormDto.setPositionSide(dto.getLeverage() + "x"
                                                     + ("BOTH".equals(dto.getPositionSide()) ? " Short" : " Long"));

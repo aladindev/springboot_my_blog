@@ -89,11 +89,14 @@ public class ListController extends CommonFunction {
                     nowAmtSum = nowAmtSum.add(tHTodayDto.getNowAmt());
                     diffAmtSum = diffAmtSum.add(tHTodayDto.getDiffAmt());
 
+                    log.error("?? " + tHTodayDto);
+
                     tradeHistTodayDtoList.add(tHTodayDto);
 
                 }
                 model.addAttribute("userExchngList", userExchngList);
 
+                /* 총 합계 매매일지 */
                 if(tradeHistTodayDtoList != null && tradeHistTodayDtoList.size() > 0) {
                     TradeHistTodayDto sumDto = new TradeHistTodayDto();
                     sumDto.setStartAmt(startAmtSum);
