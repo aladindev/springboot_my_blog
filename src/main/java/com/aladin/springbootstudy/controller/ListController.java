@@ -80,10 +80,16 @@ public class ListController extends CommonFunction {
                 /* 총 합계 매매일지 */
                 if(tradeHistTodayDtoList != null && tradeHistTodayDtoList.size() > 0) {
 
+                    BigDecimal percent = BigDecimal.ZERO;
+
                     for(TradeHistTodayDto tradeHistTodayDto : tradeHistTodayDtoList) {
-                        startAmtSum = startAmtSum.subtract(tradeHistTodayDto.getStartAmt());
-                        nowAmtSum = nowAmtSum.subtract(tradeHistTodayDto.getNowAmt());
-                        diffAmtSum = diffAmtSum.subtract(tradeHistTodayDto.getDiffAmt());
+                        percent = tradeHistTodayDto.getNowAmt().subtract(tradeHistTodayDto.getStartAmt())
+                                .divide(tradeHistTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING);
+                        tradeHistTodayDto.setPercent(percent);
+
+                        startAmtSum = startAmtSum.add(tradeHistTodayDto.getStartAmt());
+                        nowAmtSum = nowAmtSum.add(tradeHistTodayDto.getNowAmt());
+                        diffAmtSum = diffAmtSum.add(tradeHistTodayDto.getDiffAmt());
                     }
 
                     TradeHistTodayDto sumDto = new TradeHistTodayDto();
@@ -91,18 +97,14 @@ public class ListController extends CommonFunction {
                     sumDto.setNowAmt(nowAmtSum);
                     sumDto.setDiffAmt(diffAmtSum);
                     sumDto.setSrcUrl("/img/sigma.png");
-                    BigDecimal percent =
-                            nowAmtSum
-                            .subtract(startAmtSum)
-                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING)
-                    ;
+                    percent = nowAmtSum.subtract(startAmtSum)
+                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING);
                     sumDto.setPercent(percent);
 
                     tradeHistTodayDtoList.add(sumDto);
 
                     model.addAttribute("tradeHistTodayList", tradeHistTodayDtoList);
                 }
-                log.error("tradeHistTodayList>> " + tradeHistTodayDtoList);
             }
         } catch (Exception e) {
             log.error("listController exception " + e.getMessage());

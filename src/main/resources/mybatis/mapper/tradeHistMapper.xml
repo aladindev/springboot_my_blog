@@ -41,6 +41,7 @@
                    WHERE RGSTRN_DT = #{rgstrnDt}
                      AND SN = '1'
                      AND EXCHNG_CD = A.EXCHNG_CD) AS diffAmt
+            , C.srcUrl AS srcUrl
          FROM TRADE_HIST  A
            INNER JOIN
               (SELECT DISTINCT MAX(SN) OVER(PARTITION BY EXCHNG_CD ORDER BY SN DESC) AS SN
@@ -49,14 +50,19 @@
                 WHERE RGSTRN_DT = #{rgstrnDt}) B
             ON A.SN  = B.SN
            AND A.EXCHNG_CD  = B.exchngCd
-        WHERE RGSTRN_DT = #{rgstrnDt}
-          AND EMAIL = #{email}
+           INNER JOIN
+               (SELECT EXCHNG_CD AS exchngCd, SRC_URL AS srcUrl
+                 FROM USER_EXCHNG_LIST) C
+            ON B.exchngCd = C.exchngCd
+         WHERE RGSTRN_DT = #{rgstrnDt}
+           AND A.EMAIL = #{email}
     </select>
     <resultMap id="tradeHistDtoList" type="com.aladin.springbootstudy.dto.TradeHistTodayDto">
         <result column="exchngCd" property="exchngCd"/>
         <result column="nowAmt" property="nowAmt"/>
         <result column="startAmt" property="startAmt"/>
         <result column="diffAmt" property="diffAmt"/>
+        <result column="srcUrl" property="srcUrl"/>
     </resultMap>
 </mapper>
 
