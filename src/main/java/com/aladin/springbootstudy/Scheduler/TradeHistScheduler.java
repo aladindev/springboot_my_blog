@@ -42,6 +42,9 @@ public class TradeHistScheduler extends CommonFunction {
     @Value("#{crypto.binance_s_key}")
     String binance_s_key;
 
+    @Value("#{kakao.email}")
+    String email;
+
     @Autowired
     UserExchngListRepository userExchngListRepository;
 
@@ -49,7 +52,8 @@ public class TradeHistScheduler extends CommonFunction {
     TradeHistRepository tradeHistRepository;
 
     //@Scheduled(cron = "0 0 0 * * *") /* 매일 0시 */
-    @Scheduled(cron = "0 0 0/1 * * *") /* 1시간 주기*/
+    //@Scheduled(cron = "0 0 0/1 * * *") /* 1시간 주기*/
+    @Scheduled(cron = "0 * * * * *") /* 1분 주기*/
     public void scheduleFixedDelayTask() throws InterruptedException {
 
         try {
@@ -64,7 +68,7 @@ public class TradeHistScheduler extends CommonFunction {
                     List<AccountsListFormDto> accountsListFormDto = exchngApiRequest(uELDto.getExchngCd());
 
                     TradeHistDto tradeHistDto1 = new TradeHistDto();
-                    tradeHistDto1.setEmail(uELDto.getEmail());
+                    tradeHistDto1.setEmail(email);
                     tradeHistDto1.setRgstrnDt(yyyyMMdd);
                     tradeHistDto1.setExchngCd(uELDto.getExchngCd());
 
@@ -73,7 +77,7 @@ public class TradeHistScheduler extends CommonFunction {
                     for (AccountsListFormDto alFDto : accountsListFormDto) {
                         TradeHistDto tradeHistDto = new TradeHistDto();
 
-                        tradeHistDto.setEmail(uELDto.getEmail());
+                        tradeHistDto.setEmail(email);
                         tradeHistDto.setTradeDt(date);
                         tradeHistDto.setSn(maxSn+1);
                         tradeHistDto.setExchngCd(uELDto.getExchngCd());
@@ -87,7 +91,7 @@ public class TradeHistScheduler extends CommonFunction {
                 }
             }
         } catch(Exception e) {
-            log.error("trade hist scheduler exception > " + e.getMessage());
+            log.error("trade hist scheduler exception > " + e);
         }
     }
 }

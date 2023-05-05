@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
-public class CommonFunction implements CommonUtils{
+public class CommonFunction implements CommonUtils {
     @Value("#{crypto.upbit_a_key}")
     String upbit_a_key;
 
@@ -51,6 +51,8 @@ public class CommonFunction implements CommonUtils{
     String binance_s_key;
 
     public final static int DOLLAR = 1000;
+
+    public static String IP = null;
 
     public static ResponseEntity<String> httpRequest(Map<String, String> headerMap, Map<String
                                 , String> params, String url, HttpMethod type) {

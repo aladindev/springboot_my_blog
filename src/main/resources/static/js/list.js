@@ -93,14 +93,15 @@ function tabClick(tabId) {
         type: "GET",
         data: map,
         success: function(data){
-            console.log(JSON.stringify(data));
-            for(var i = 0 ; i < document.getElementsByName("diffAmt").length ; i++) {
-                var diffAmt = document.getElementsByName("diffAmtVal")[i].value;
-                var diffId = document.getElementsByName('diffAmt')[i].id;
-                var perId = document.getElementsByName('percent')[i].id;
+            var resultJson = JSON.stringify(data);
+            resultJson = JSON.parse(resultJson);
 
+            for(var i = 0 ; i < resultJson.length ; i++) {
+                var diffAmt = resultJson[i].diffAmt;
+                var exchngCd = resultJson[i].exchngCd;
+                var diffId = resultJson[i].exchngCd + "diffAmt";
+                var perId = resultJson[i].exchngCd + "per";
 
-                console.log(Number(diffAmt) + " / " + diffId);
                 if(Number(diffAmt) < 0) {
                     document.getElementById(diffId).style.color = "blue";
                     document.getElementById(perId).style.color = "blue";
@@ -111,86 +112,18 @@ function tabClick(tabId) {
                     document.getElementById(diffId).style.color = "black";
                     document.getElementById(perId).style.color = "black";
                 }
-                }
+                var startAmt = resultJson[i].startAmt;
+                var nowAmt = resultJson[i].nowAmt;
+                var diffAmt = resultJson[i].diffAmt;
+                $("#" + exchngCd + "startAmt").text(startAmt.toLocaleString('ko-KR') + " 원");
+                $("#" + exchngCd + "nowAmt").text(nowAmt.toLocaleString('ko-KR') + " 원");
+                $("#" + exchngCd + "diffAmt").text(diffAmt.toLocaleString('ko-KR') + " 원");
+                $("#" + exchngCd + "per").text(((nowAmt - startAmt)/startAmt).toFixed(3) + " %");
+            }
         },
         error: function(){
             alert("simpleWithObject err");
         }
     });
 
-
-  switch(tabId) {
-    case 'tab1' :
-        $("#thCol2").text("당일시작가");
-        $("#thCol3").text("당일현재가");
-        $("#thCol4").text("손익금액");
-        $("#thCol5").text("%");
-        break;
-    case 'tab2' :
-        $("#thCol2").text("전일종료가");
-        $("#thCol3").text("당일현재가");
-        $("#thCol4").text("손익금액");
-        $("#thCol5").text("%");
-        break;
-    default : break;
-
-  }
 }
-
-
-
-
-var url = "/api/v3/sse/subscribe/today?";
-//        var qStr = "exchngCd=";
-//        for(var i = 0 ; i < document.getElementsByName("exchngCdArr").length ; i++) {
-//                if(i == document.getElementsByName("exchngCdArr").length-1) {
-//                    qStr += document.getElementsByName("exchngCdArr")[i].value;
-//                    break;
-//                }
-//                qStr += document.getElementsByName("exchngCdArr")[i].value;
-//                qStr += "&exchngCd=";
-//        }
-//
-//        eventSource = new EventSource(url + qStr);
-//
-//        $("#thCol2").text("당일시작가");
-//        $("#thCol3").text("당일현재가");
-//        $("#thCol4").text("손익금액");
-//        $("#thCol5").text("%");
-//
-//        eventSource.onopen = (e) => {
-//            console.log("hist sse open");
-//        };
-//
-//        eventSource.onmessage = event => {
-//           var eventJsonArr = JSON.parse(event.data);
-//
-//           for(var i = 0 ; i < eventJsonArr.length ; i++) {
-//              var startAmt = Math.floor(eventJsonArr[i].startAmt);
-//              var nowAmt = Math.floor(eventJsonArr[i].nowAmt);
-//              var diffAmt = Math.floor(eventJsonArr[i].diffAmt);
-//              var percent = (nowAmt - startAmt) / startAmt;
-//              var exchngCd = eventJsonArr[i].exchngCd;
-//              percent = percent.toFixed(2);
-//
-//              $("#" + exchngCd + "startAmt").text(startAmt.toLocaleString() + " 원");
-//              $("#" + exchngCd + "nowAmt").text(nowAmt.toLocaleString() + " 원");
-//              $("#" + exchngCd + "diffAmt").text(diffAmt.toLocaleString() + " 원");
-//              $("#" + exchngCd + "per").text(percent + " %");
-//
-//
-//              if(startAmt > nowAmt) {
-//                  document.getElementById(exchngCd + "nowAmt").style.color = "blue";
-//                  document.getElementById(exchngCd + "diffAmt").style.color = "blue";
-//                  document.getElementById(exchngCd + "per").style.color = "blue";
-//              } else if(Number(bfAmt) < Number(afAmt)) {
-//                  document.getElementById(exchngCd + "nowAmt").style.color = "red";
-//                  document.getElementById(exchngCd + "diffAmt").style.color = "red";
-//                  document.getElementById(exchngCd + "per").style.color = "red";
-//              } else {
-//                  document.getElementById(exchngCd + "nowAmt").style.color = "block";
-//                  document.getElementById(exchngCd + "diffAmt").style.color = "block";
-//                  document.getElementById(exchngCd + "per").style.color = "block";
-//              }
-//           }
-//        };
