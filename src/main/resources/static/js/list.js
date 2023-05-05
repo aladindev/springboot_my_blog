@@ -99,6 +99,12 @@ function tabClick(tabId) {
             $("#thCol4").text("손익금액");
             $("#thCol5").text("%");
             break;
+        case 'tab3' :
+            $("#thCol2").text("주간시작가");
+            $("#thCol3").text("당일현재가");
+            $("#thCol4").text("손익금액");
+            $("#thCol5").text("%");
+            break;
         default : break;
     }
 
@@ -139,5 +145,4 @@ function tabClick(tabId) {
             alert("simpleWithObject err");
         }
     });
-
 }
