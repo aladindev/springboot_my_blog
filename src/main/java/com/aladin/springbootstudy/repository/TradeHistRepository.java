@@ -18,4 +18,5 @@ public interface TradeHistRepository {
     int selectMaxSn(TradeHistDto tradeHistDto);
     List<TradeHistTodayDto> selectTodayTradeHist(TradeHistDto tradeHistDto);
     List<TradeHistTodayDto> selectYesterDayTradeHist(TradeHistDto tradeHistDto);
+    List<TradeHistTodayDto> selectWeekTradeHist(TradeHistDto tradeHistDto);
 }

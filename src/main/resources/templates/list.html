@@ -17,7 +17,7 @@
         <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
     </div>
     <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;" class="container">
-        <section style="position: reactive; overflow:auto; float:left; top: 72px; width:35%;" class="container">
+        <section style="position: reactive; overflow:auto; float:left; top: 72px; width:40%;" class="container">
             <article>
                 <table id="coinTable">
                     <colgroup>
@@ -66,7 +66,7 @@
 <!--        </section>-->
     </section>
 </div>
-<div style="width:35%">
+<div style="width:40%">
     <input id="tab1" type="radio" name="tabs" class="input" checked onclick="tabClick(this.id)">
     <label colspan="1" for="tab1">당일손익</label>
 
@@ -100,11 +100,11 @@
                 </td>
                 <td>
                     <a href="#">
-                        <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>
+                        <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" name="startAmt" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>
                     </a>
                 </td>
                 <td>
-                    <strong class="jb-large" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"
+                    <strong class="jb-large" name="nowAmt" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"
                             th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
                 </td>
                 <td>
@@ -118,27 +118,6 @@
                             th:text="|${tradeHistTodayDto.percent} %|"></strong>
                 </td>
             </tr>
-<!--            <tr>-->
-<!--                <td>-->
-<!--                    <img src="/img/sigma.png" style="width: 35%; height: 35%;"/>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <a href="#">-->
-<!--                        <strong id="sumStartAmt" class="jb-large"></strong>-->
-<!--                    </a>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <strong class="jb-large" id="sumNowAmt"></strong><span class=""></span>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <strong class="jb-large" id="sumDiffAmt"></strong>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <input type="hidden"  />-->
-<!--                    <strong class="jb-large" id="sumPer"></strong>-->
-<!--                </td>-->
-<!--            </tr>-->
-
             </tbody>
         </table>
     </section>

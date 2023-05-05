@@ -8,4 +8,5 @@ import java.util.List;
 public interface TradeHistService {
     public List<TradeHistTodayDto> selectTodayTradeHist(TradeHistDto tradeHistDto);
     public List<TradeHistTodayDto> selectYesterDayTradeHist(TradeHistDto tradeHistDto);
+    public List<TradeHistTodayDto> selectWeekTradeHist(TradeHistDto tradeHistDto);
 }

@@ -98,7 +98,7 @@ public class ListController extends CommonFunction {
                     sumDto.setDiffAmt(diffAmtSum);
                     sumDto.setSrcUrl("/img/sigma.png");
                     percent = nowAmtSum.subtract(startAmtSum)
-                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING);
+                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING).multiply(new BigDecimal(100));
                     sumDto.setPercent(percent);
 
                     tradeHistTodayDtoList.add(sumDto);
@@ -144,7 +144,7 @@ public class ListController extends CommonFunction {
                     case "tab2" :
                         return tradeHistService.selectYesterDayTradeHist(tradeHistDto);
                     case "tab3" :
-                        break;
+                        return tradeHistService.selectWeekTradeHist(tradeHistDto);
                     default :
                         break;
                 }

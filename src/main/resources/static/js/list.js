@@ -68,8 +68,6 @@ window.onload = function(){
         var diffId = document.getElementsByName('diffAmt')[i].id;
         var perId = document.getElementsByName('percent')[i].id;
 
-
-        console.log(Number(diffAmt) + " / " + diffId);
         if(Number(diffAmt) < 0) {
             document.getElementById(diffId).style.color = "blue";
             document.getElementById(perId).style.color = "blue";
@@ -87,6 +85,22 @@ window.onload = function(){
 function tabClick(tabId) {
     var eventSource;
     var map = { 'tabId' : tabId };
+
+    switch(tabId) {
+        case 'tab1' :
+            $("#thCol2").text("당일시작가");
+            $("#thCol3").text("당일현재가");
+            $("#thCol4").text("손익금액");
+            $("#thCol5").text("%");
+            break;
+        case 'tab2' :
+            $("#thCol2").text("전일종료가");
+            $("#thCol3").text("당일현재가");
+            $("#thCol4").text("손익금액");
+            $("#thCol5").text("%");
+            break;
+        default : break;
+    }
 
     $.ajax({
         url: "/accounts/tab_change",
@@ -118,7 +132,7 @@ function tabClick(tabId) {
                 $("#" + exchngCd + "startAmt").text(startAmt.toLocaleString('ko-KR') + " 원");
                 $("#" + exchngCd + "nowAmt").text(nowAmt.toLocaleString('ko-KR') + " 원");
                 $("#" + exchngCd + "diffAmt").text(diffAmt.toLocaleString('ko-KR') + " 원");
-                $("#" + exchngCd + "per").text(((nowAmt - startAmt)/startAmt).toFixed(3) + " %");
+                $("#" + exchngCd + "per").text(((nowAmt - startAmt)/startAmt*100).toFixed(2) + " %");
             }
         },
         error: function(){
