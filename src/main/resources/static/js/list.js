@@ -116,6 +116,10 @@ function tabClick(tabId) {
             var resultJson = JSON.stringify(data);
             resultJson = JSON.parse(resultJson);
 
+            var totStartAmt = 0;
+            var totNowAmt = 0;
+            var totDiffAmt = 0;
+            var totPercent = 0;
             for(var i = 0 ; i < resultJson.length ; i++) {
                 var diffAmt = resultJson[i].diffAmt;
                 var exchngCd = resultJson[i].exchngCd;
@@ -135,11 +139,36 @@ function tabClick(tabId) {
                 var startAmt = resultJson[i].startAmt;
                 var nowAmt = resultJson[i].nowAmt;
                 var diffAmt = resultJson[i].diffAmt;
+                var percent = ((nowAmt - startAmt)/startAmt*100).toFixed(2);
+
+                totStartAmt += startAmt;
+                totNowAmt += nowAmt;
+                totDiffAmt += diffAmt;
+                totPercent += percent;
+
+                if(Number(totDiffAmt) < 0) {
+                    document.getElementById("nulldiffAmt").style.color = "blue";
+                    document.getElementById("nullper").style.color = "blue";
+                } else if(Number(totDiffAmt) > 0) {
+                    document.getElementById("nulldiffAmt").style.color = "red";
+                    document.getElementById("nullper").style.color = "red";
+                } else {
+                    document.getElementById("nulldiffAmt").style.color = "black";
+                    document.getElementById("nullper").style.color = "black";
+                }
+
+
                 $("#" + exchngCd + "startAmt").text(startAmt.toLocaleString('ko-KR') + " 원");
                 $("#" + exchngCd + "nowAmt").text(nowAmt.toLocaleString('ko-KR') + " 원");
                 $("#" + exchngCd + "diffAmt").text(diffAmt.toLocaleString('ko-KR') + " 원");
-                $("#" + exchngCd + "per").text(((nowAmt - startAmt)/startAmt*100).toFixed(2) + " %");
+                $("#" + exchngCd + "per").text(percent + " %");
             }
+
+            $("#nullStartAmt").text(totStartAmt.toLocaleString('ko-KR') + " 원");
+            $("#nullNowAmt").text(totNowAmt.toLocaleString('ko-KR') + " 원");
+            $("#nulldiffAmt").text(totDiffAmt.toLocaleString('ko-KR') + " 원");
+
+            $("#nullPer").text(((totNowAmt - totStartAmt)/totStartAmt*100).toFixed(2) + " %");
         },
         error: function(){
             alert("simpleWithObject err");

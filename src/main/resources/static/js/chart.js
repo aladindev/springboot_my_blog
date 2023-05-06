@@ -2,6 +2,16 @@
   google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
+
+    /* 분봉 차트 */
+    const request = new XMLHttpRequest();
+    const url = 'https://api.upbit.com/v1/candles/minutes/5?market=KRW-GRS&count=100';
+
+    request.open("GET", url, false);
+    request.send();
+    var obj = JSON.parse(request.responseText);
+    console.log(obj);
+
 var data = google.visualization.arrayToDataTable([
   ['Mon', 20, 28, 38, 45],
   ['Tue', 31, 38, 55, 66],

@@ -99,23 +99,23 @@
           , ( SELECT SUM(NOW_AMT)
                 FROM TRADE_HIST
                WHERE RGSTRN_DT = A.RGSTRN_DT
-                 AND SN = ( SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = '20230505' )
+                 AND SN = ( SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = #{rgstrnDt} )
                  AND EXCHNG_CD = A.EXCHNG_CD
              ) AS nowAmt
           ,  (SELECT SUM(NOW_AMT)
                 FROM TRADE_HIST
-               WHERE RGSTRN_DT = TO_CHAR(TO_DATE('20230505', 'YYYYMMDD')-7, 'YYYYMMDD')
-                 AND SN = (SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = TO_CHAR(TO_DATE('20230505', 'YYYYMMDD')-7, 'YYYYMMDD'))
+               WHERE RGSTRN_DT = TO_CHAR(TO_DATE(#{rgstrnDt}, 'YYYYMMDD')-7, 'YYYYMMDD')
+                 AND SN = (SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = TO_CHAR(TO_DATE(#{rgstrnDt}, 'YYYYMMDD')-7, 'YYYYMMDD'))
                  AND EXCHNG_CD = A.EXCHNG_CD) AS startAmt
           , ( SELECT SUM(NOW_AMT)
                 FROM TRADE_HIST
                WHERE RGSTRN_DT = A.RGSTRN_DT
-                 AND SN = ( SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = '20230505' )
+                 AND SN = ( SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = #{rgstrnDt} )
                  AND EXCHNG_CD = A.EXCHNG_CD
             ) - (SELECT SUM(NOW_AMT)
                    FROM TRADE_HIST
-                  WHERE RGSTRN_DT = TO_CHAR(TO_DATE('20230505', 'YYYYMMDD')-7, 'YYYYMMDD')
-                    AND SN = (SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = TO_CHAR(TO_DATE('20230505', 'YYYYMMDD')-7, 'YYYYMMDD'))
+                  WHERE RGSTRN_DT = TO_CHAR(TO_DATE(#{rgstrnDt}, 'YYYYMMDD')-7, 'YYYYMMDD')
+                    AND SN = (SELECT MAX(SN) FROM TRADE_HIST WHERE RGSTRN_DT = TO_CHAR(TO_DATE(#{rgstrnDt}, 'YYYYMMDD')-7, 'YYYYMMDD'))
                     AND EXCHNG_CD = A.EXCHNG_CD) AS diffAmt
           , C.srcUrl AS srcUrl
         FROM TRADE_HIST  A
@@ -123,7 +123,7 @@
             (SELECT EXCHNG_CD AS exchngCd, SRC_URL AS srcUrl
                FROM USER_EXCHNG_LIST) C
            ON A.EXCHNG_CD = C.exchngCd
-        WHERE RGSTRN_DT BETWEEN '20230505' AND TO_CHAR(TO_DATE('20230505', 'YYYYMMDD')-7)
+        WHERE RGSTRN_DT BETWEEN #{rgstrnDt} AND TO_CHAR(TO_DATE(#{rgstrnDt}, 'YYYYMMDD')-7)
           AND A.EMAIL = #{email}
     </select>
     <resultMap id="tradeHistDtoList" type="com.aladin.springbootstudy.dto.TradeHistTodayDto">
