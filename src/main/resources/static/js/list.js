@@ -79,6 +79,9 @@ window.onload = function(){
             document.getElementById(perId).style.color = "black";
         }
     }
+
+    // 초기 차트 비트코인
+    drawChart("01BTC");
 }
 
 
