@@ -5,27 +5,26 @@ function drawChart() {
 
     /* 분봉 차트 */
     const request = new XMLHttpRequest();
-    const url = 'https://api.upbit.com/v1/candles/minutes/5?market=KRW-GRS&count=100';
+    const url = 'https://api.upbit.com/v1/candles/minutes/5?market=KRW-GRS&count=50';
 
     request.open("GET", url, false);
     request.send();
-    var obj = JSON.parse(request.responseText);
-    console.log(obj);
+    var jsonData = JSON.parse(request.responseText);
+    var array = [];
+    array.push(['LineName', 'Car', 'Bus','Motorcycle', 'Person']);
+    jsonData.forEach((item, i)=>{
+      var hd = i % 10 == 0 ? item.candle_date_time_kst : ' ';
 
-var data = google.visualization.arrayToDataTable([
-  ['Mon', 20, 28, 38, 45],
-  ['Tue', 31, 38, 55, 66],
-  ['Wed', 50, 55, 77, 80],
-  ['Thu', 77, 77, 66, 50],
-  ['Fri', 68, 66, 22, 15]
-  // Treat first row as data as well.
-], true);
+      array.push([hd, item.high_price, item.opening_price, item.trade_price, item.low_price]);
+    })
 
-var options = {
-  legend:'none'
-};
+    var data = google.visualization.arrayToDataTable(array);
 
-var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+    var options = {
+      legend:'none'
+    };
 
-chart.draw(data, options);
+    var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+
+    chart.draw(data, options);
 }
