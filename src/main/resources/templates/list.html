@@ -20,51 +20,50 @@
         <input type="text" placeholder="검색"/>
         <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:20px; heigth:20px;" alt=""></a>
     </div>
-<!--    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;" class="container">-->
-    <section style="float:left; top: 72px; width:100%;" class="container">
+    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;">
         <section style="position: reactive; overflow:auto; float:left; top: 72px; width:40%;" class="container">
-                <table id="coinTable" style="height:100%; table-layout: fixed;">
-                    <colgroup>
-                        <col width="115">
-                        <col width="115">
-                        <col width="115">
-                        <col width="115">
-                        <col width="115">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th colspan="1" class="fixedHeader">거래소</th>
-                            <th colspan="1" class="fixedHeader">코인명</th>
-                            <th colspan="1" class="fixedHeader">보유수량</th>
-                            <th colspan="1" class="fixedHeader">보유금액</th>
-                            <th colspan="1" class="fixedHeader">포지션</th>
-                        </tr>
-                    </thead>
-                    <tbody th:each="userExchngList : ${userExchngList}">
-                        <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
-                        <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                            <td th:if="${not #strings.isEmpty(userExchngList.srcUrl)}" style="height:100px; width:100px;">
-                                <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 55%;"/>
-                            </td>
-                            <td style="height:10px;">
-                                <a href="#">
-                                    <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|" th:text="${accounts.tokenName}"
-                                            onclick="drawChart(this.id); "></strong>
-                                </a>
-                            </td>
-                            <td style="height:10px;">
-                                <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
-                            </td>
-                            <td style="height:10px;">
-                                <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                            </td>
-                            <td style="height:10px;">
-                                <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-<!--            </article>-->
+            <table id="coinTable" style="height:100%; table-layout: fixed;">
+                <colgroup>
+                    <col width="115">
+                    <col width="115">
+                    <col width="115">
+                    <col width="115">
+                    <col width="115">
+                </colgroup>
+                <thead>
+                <tr>
+                    <th colspan="1" class="fixedHeader">거래소</th>
+                    <th colspan="1" class="fixedHeader">코인명</th>
+                    <th colspan="1" class="fixedHeader">보유수량</th>
+                    <th colspan="1" class="fixedHeader">보유금액</th>
+                    <th colspan="1" class="fixedHeader">포지션</th>
+                </tr>
+                </thead>
+                <tbody th:each="userExchngList : ${userExchngList}">
+                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
+                <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
+                    <td th:if="${not #strings.isEmpty(userExchngList.srcUrl)}" style="height:100px; width:100px;">
+                        <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 55%;"/>
+                    </td>
+                    <td style="height:10px;">
+                        <a href="#">
+                            <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|" th:text="${accounts.tokenName}"
+                                    onclick="drawChart(this.id); "></strong>
+                        </a>
+                    </td>
+                    <td style="height:10px;">
+                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                    </td>
+                    <td style="height:10px;">
+                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                    </td>
+                    <td style="height:10px;">
+                        <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--            </article>-->
         </section>
         <strong style="padding-left:3%;" id="chartTokenName"></strong>
         <input type="hidden" id="coinInfo"/>
