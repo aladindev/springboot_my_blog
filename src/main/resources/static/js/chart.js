@@ -1,32 +1,37 @@
-//google.charts.load('current', {'packages':['corechart']});
-//google.charts.setOnLoadCallback(drawChart);
+function chartRefresh() {
+    drawChart($("#coinInfo").val());
+}
 
 function drawChart(id) {
 
     /* 분봉 차트 */
+    $("#chart_div").empty();
     var exchngCd = id.substring(0, 2);
     var tokenName = id.substring(2);
-    console.log(exchngCd + " / " + tokenName);
     $("#chartTokenName").text(tokenName + " 1분 차트");
+    $("#coinInfo").val(id);
 
-
-    setInterval(function(){
-                       requestHttp(exchngCd, tokenName);
-    }, 1000);
-
+    requestHttp(exchngCd, tokenName);
 
 }
 
 
 function requestHttp(exchngCd, tokenName) {
 
+    $("#chart_div").empty();
     var request = new XMLHttpRequest();
-    var url = 'https://api.upbit.com/v1/candles/minutes/5?market=KRW-' + tokenName + '&count=100';
+    var url = '';
+
+    if(exchngCd == "02") { // upbit
+        url = 'https://api.upbit.com/v1/candles/minutes/5?market=KRW-' + tokenName + '&count=100';
+    } else if(exchngCd == "01") {
+        url = 'https://binance.com/api/v3/klines?symbol=BTCUSDT&interval=12h';
+        //TODO CORS
+    }
 
     request.open("GET", url, false);
     request.send();
     var jsonData = JSON.parse(request.responseText);
-    console.log(jsonData);
 
     var array = [];
     for(var i = jsonData.length-1 ; i >= 0 ; i--) {
@@ -45,7 +50,7 @@ function requestHttp(exchngCd, tokenName) {
         }],
         chart: {
             type: 'candlestick'
-            //,height: 750
+            ,height: 350
         },
         title: {
             text: 'CandleStick Chart',
@@ -61,6 +66,6 @@ function requestHttp(exchngCd, tokenName) {
         }
     };
 
-    var chart = new ApexCharts(document.querySelector("#chart_div"), options);
+    var chart = new ApexCharts(document.getElementById("chart_div"), options);
     chart.render();
 }

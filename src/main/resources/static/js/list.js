@@ -26,7 +26,11 @@ window.onload = function(){
             var tokenName = eventJsonArr[i].tokenName;
 
             if($('#' + tokenName + "Amt").text() == "" || $('#' + tokenName + "Amt").text() == undefined) {
-                console.log("코인 새로 추가 로직 추가");
+                console.log(tokenName + "  코인 새로 추가 로직 추가");
+                console.log(eventJsonArr[i]);
+                console.log('#' + tokenName + "Amt" + " //////   " + $('#' + tokenName + "Amt").text());
+                addNewCoin(eventJsonArr[i].exchngCd, eventJsonArr[i].tokenName, eventJsonArr[i].coinAmount, eventJsonArr[i].nowAmt, eventJsonArr[i].positionSide);
+
             } else {
                 var amtId = tokenName+"Amt";
                 var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
@@ -81,7 +85,7 @@ window.onload = function(){
     }
 
     // 초기 차트 비트코인
-    drawChart("01BTC");
+    drawChart("02BTC");
 }
 
 
@@ -177,4 +181,46 @@ function tabClick(tabId) {
             alert("simpleWithObject err");
         }
     });
+}
+
+function addNewCoin(exchngCd, tokenName, coinAmount, nowAmt, positionSide) {
+
+
+var srcUrl = "";
+
+if(exchngCd == "02") {
+    srcUrl = '/img/binance.png';
+}
+
+var html = '';
+html += '<tr>';
+html += '<td>';
+html +=    '<img src="' + srcUrl + '" style="width: 30%; height: 55%;"/>';
+html +=    '</td>';
+html +=    '<td>';
+html +=        '<a href="#">';
+html +=            '<strong class="jb-large" id="' + exchngCd + tokenName + '"  text="' + tokenName + '"';
+html +=                    'onclick="drawChart(this.id); "></strong>';
+html +=        '</a>';
+html +=    '</td>';
+html +=    '<td>';
+var coinCnt = coinAmount.toLocaleString();
+html +=        '<p class="jb-large" value="' + tokenName + '" id="' + tokenName + 'Cnt">' + coinCnt + ' 개"</p>';
+html +=    '</td>';
+html +=    '<td>';
+html +=        '<strong class="jb-large" value="' + nowAmt + '" id="' + tokenName + 'Amt" text="' + nowAmt.toLocaleString() + ' 원"></strong><span class=""></span>';
+html +=    '</td>';
+html +=    '<td>';
+html +=        '<strong class="jb-large" id="newCoin' + tokenName + '" text="' + positionSide + '"></strong>';
+html +=    '</td>';
+html +='</tr>';
+
+$('#coinTable > tbody:last').append(html);
+
+$("#" + exchngCd + tokenName).text(tokenName);
+$("#" + tokenName + 'Cnt').text(coinAmount.toLocaleString() + ' 개');
+$("#" + tokenName + 'Amt').text(nowAmt.toLocaleString() + ' 원');
+$("#" + "newCoin" + tokenName).text(positionSide);
+
+
 }

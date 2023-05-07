@@ -244,15 +244,16 @@ public class CommonFunction implements CommonUtils {
 
             for(UpbitAccountDto upbitAccountDto : upbitAccountsList) {
                 AccountsListFormDto aLFDto = new AccountsListFormDto();
-                if("KRW".equals(upbitAccountDto.getCurrency())) {
+                if("KRW".equals(upbitAccountDto.getCurrency())
+                        || BigDecimal.ONE.compareTo(new BigDecimal(upbitAccountDto.getBalance())) > 0) {
                     //sb.append("원화 : " + roundUp(upbitAccountDto.getBalance()) + "<br/>");
-                    aLFDto.setTokenName("KRW");
-                    aLFDto.setExchngCd("01");
-                    aLFDto.setNowAmt(new BigDecimal(roundUp(upbitAccountDto.getBalance())));
-                    aLFDto.setCoinAmount(0.0);
-                    aLFDto.setPositionSide("1x Long");
-
-                    accountsList.add(aLFDto);
+//                    aLFDto.setTokenName("KRW");
+//                    aLFDto.setExchngCd("01");
+//                    aLFDto.setNowAmt(new BigDecimal(roundUp(upbitAccountDto.getBalance())));
+//                    aLFDto.setCoinAmount(0.0);
+//                    aLFDto.setPositionSide("1x Long");
+//
+//                    accountsList.add(aLFDto);
 
                 } else {
                     Map<String, String> tickerHeader = new LinkedHashMap<>();

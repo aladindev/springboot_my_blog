@@ -67,17 +67,8 @@ a {
     top: 0px;
   }
 
-  tbody {
-    overflow-x: auto;
-    overflow-y: relative;
-    position: relative;
-    white-space: nowrap;
-  }
 
-  tr {
-    display: inline-block;
-    vertical-align: top;
-  }
+
 
   th {
     border-bottom: 1px solid #a39485;
