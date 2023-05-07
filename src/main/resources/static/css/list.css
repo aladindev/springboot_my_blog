@@ -67,8 +67,17 @@ a {
     top: 0px;
   }
 
+  tbody {
+    overflow-x: auto;
+    overflow-y: relative;
+    position: relative;
+    white-space: nowrap;
+  }
 
-
+  tr {
+    display: inline-block;
+    vertical-align: top;
+  }
 
   th {
     border-bottom: 1px solid #a39485;
@@ -85,7 +94,7 @@ a {
 
 .jb-large { font-size: large; }
 .container {
-	height: 420px;
+	height: 500px;
 	overflow: auto;
 }
 .fixedHeader {
