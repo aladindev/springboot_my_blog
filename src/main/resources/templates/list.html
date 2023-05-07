@@ -43,7 +43,7 @@
                 <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
                 <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
                     <td th:if="${not #strings.isEmpty(userExchngList.srcUrl)}" style="height:100px; width:100px;">
-                        <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 55%;"/>
+                        <img th:src="${userExchngList.srcUrl}" style="width: 30%; height: 35%;"/>
                     </td>
                     <td style="height:10px;">
                         <a href="#">
