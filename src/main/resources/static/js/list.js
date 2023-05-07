@@ -186,16 +186,18 @@ function tabClick(tabId) {
 function addNewCoin(exchngCd, tokenName, coinAmount, nowAmt, positionSide) {
 
 
-var srcUrl = "";
+var exchngCdNm = "";
 
 if(exchngCd == "02") {
-    srcUrl = '/img/binance.png';
+    exchngCdNm = '<strong style="color:black;">binance</strong></td>';
+} else if(exchngCd == "01") {
+    exchngCdNm = '<strong style="color:blue;">upbit</strong></td>';
 }
 
 var html = '';
 html += '<tr>';
-html += '<td>';
-html +=    '<img src="' + srcUrl + '" style="width: 30%; height: 55%;"/>';
+html +=    '<td>';
+html +=     exchngCdNm;
 html +=    '</td>';
 html +=    '<td>';
 html +=        '<a href="#">';
