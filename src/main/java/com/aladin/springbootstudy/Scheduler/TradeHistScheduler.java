@@ -52,11 +52,12 @@ public class TradeHistScheduler extends CommonFunction {
     TradeHistRepository tradeHistRepository;
 
     //@Scheduled(cron = "0 0 0 * * *") /* 매일 0시 */
-//    @Scheduled(cron = "0 0 0/1 * * *") /* 1시간 주기*/
-    @Scheduled(cron = "0 * * * * *") /* 1분 주기*/
+    @Scheduled(cron = "0 0 0/1 * * *") /* 1시간 주기*/
+    //@Scheduled(cron = "0 * * * * *") /* 1분 주기*/
     public void scheduleFixedDelayTask() throws InterruptedException {
 
         try {
+
             List<UserExchngListDto> userExchngListDtoList = userExchngListRepository.getUserEmailList();
 
             if (userExchngListDtoList != null && userExchngListDtoList.size() > 0) {
