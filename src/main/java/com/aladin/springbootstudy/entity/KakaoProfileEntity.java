@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+// jpa -> mybatis
 @Getter
 @Table(name = "USER_INFO")
 @Entity
