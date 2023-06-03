@@ -53,7 +53,7 @@ public class KakaoProfileEntity {
         private String appKey;
 
         /* 생성자 */
-        public KakaoBuilder(KakaoProfileDto kakaoProfileDto) { 
+        public KakaoBuilder(KakaoProfileDto kakaoProfileDto) {  
             this.id = kakaoProfileDto.getId();
             this.nickname = kakaoProfileDto.getProperties().getNickname();
             this.connected_at = kakaoProfileDto.getConnected_at();
