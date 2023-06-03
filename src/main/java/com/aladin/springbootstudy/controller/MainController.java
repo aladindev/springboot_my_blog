@@ -10,6 +10,6 @@ public class MainController {
     @GetMapping(value="/login")
     public ModelAndView login() {
         ModelAndView mv = new ModelAndView("login");
-        return mv;
+        return mv;   
     }
 }
