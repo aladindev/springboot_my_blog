@@ -1,12 +1,65 @@
-
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Accounts Info</title>
+    <style>
+    /* CSS for the sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 200px;
+        background-color: #D2B48C; /* 옅은 갈색 */
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .sidebar a {
+        display: block;
+        color: white;
+        padding: 16px;
+        text-decoration: none;
+        position: relative;
+    }
+
+    .sidebar a:before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: white;
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .sidebar a:hover:before {
+        transform: scaleX(1);
+    }
+
+    .sidebar a:hover {
+        background-color: #555;
+        color: white;
+    }
+
+    /* CSS for the main content area */
+    #main {
+        margin-left: 200px;
+        padding: 20px;
+    }
+
+    /* CSS to remove horizontal scroll */
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    </style>
+
+
     <link rel="stylesheet" href="../css/tab.css">
     <link rel="stylesheet" href="../css/list.css">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -17,84 +70,102 @@
     <script type="text/javascript" src="../js/tab.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#">항목 1</a>
+    <a href="#">항목 2</a>
+    <a href="#">항목 3</a>
+</div>
+
+<!-- Main Content -->
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Accounts Info</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        #sidebar {
-            width: 200px;
+        /* CSS for the sidebar */
+        .sidebar {
             position: fixed;
+            top: 0;
+            left: 0;
             height: 100%;
-            background-color: #f1f1f1;
-            overflow: auto;
+            width: 200px;
+            background-color: #D2B48C; /* 옅은 갈색 */
+            overflow-x: hidden;
+            padding-top: 20px;
         }
 
-        #sidebar a {
+        .sidebar a {
             display: block;
-            padding: 10px;
+            color: white;
+            padding: 16px;
             text-decoration: none;
-            color: #000;
+            position: relative;
         }
 
-        #sidebar a:hover {
-            background-color: #ccc;
+        .sidebar a:before {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transform: scaleX(0);
+            transition: transform 0.3s ease-in-out;
         }
 
+        .sidebar a:hover:before {
+            transform: scaleX(1);
+        }
+
+        .sidebar a:hover {
+            background-color: #555;
+            color: white;
+        }
+
+        /* CSS for the main content area */
         #main {
             margin-left: 200px;
-            width: 100%;
-            display: none;
-        }
-
-        #gptSection {
             padding: 20px;
         }
 
-        #gptSection h2 {
-            margin-bottom: 10px;
+        /* CSS to remove horizontal scroll */
+        html,
+        body {
+            overflow-x: hidden;
         }
 
-        #codeTextArea {
-            width: 100%;
-            height: 150px;
-            resize: vertical;
-            padding: 5px;
-            margin-bottom: 10px;
+        /* CSS to hide inactive content */
+        .content {
+            display: none;
         }
 
-        #codeSubmitButton {
+        /* CSS to show active content */
+        .active {
             display: block;
-            width: 100%;
-            padding: 8px 10px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            cursor: pointer;
         }
 
-        #codeSubmitButton:hover {
-            background-color: #45a049;
-        }
-
-        #codeReviewResults {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #e1e1e1;
-            color: #333;
-        }
     </style>
 </head>
 <body>
-<div id="sidebar">
-    <!-- Sidebar content here -->
-    <a href="#main" onclick="activateMainSection()">Accounts Info</a>
-    <a href="#gptSection">Code Review with Gpt</a>
+<!-- Sidebar -->
+<div class="sidebar">
+    <a href="#" onclick="activateContent(event, 'main')">항목 1</a>
+    <a href="#" onclick="activateContent(event, 'content2')">항목 2</a>
+    <a href="#" onclick="activateContent(event, 'content3')">항목 3</a>
 </div>
 
-<div id="main" style="width:100%; top:0px; display:block;">
+<!-- Main Content -->
+<div id="main" class="content active">
     <div>
         <input type="text" placeholder="검색"/>
         <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:15px; heigth:15px;" alt=""></a>
@@ -126,15 +197,19 @@
 
                     <td>
                         <a href="#">
-                            <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|" th:text="${accounts.tokenName}"
+                            <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|"
+                                    th:text="${accounts.tokenName}"
                                     onclick="drawChart(this.id); "></strong>
                         </a>
                     </td>
                     <td>
-                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
+                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|"
+                           th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
                     </td>
                     <td>
-                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|"
+                                th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span
+                            class=""></span>
                     </td>
                     <td>
                         <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
@@ -182,21 +257,27 @@
                     </td>
                     <td>
                         <a href="#">
-                            <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" name="startAmt" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>
+                            <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" name="startAmt"
+                                    th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|"
+                                    class="jb-large"></strong>
                         </a>
                     </td>
                     <td>
-                        <strong class="jb-large" name="nowAmt" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"
-                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
+                        <strong class="jb-large" name="nowAmt" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|"
+                                th:value="${tradeHistTodayDto.nowAmt}"
+                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span
+                            class=""></span>
                     </td>
                     <td>
                         <input type="hidden" name="diffAmtVal" th:value="${tradeHistTodayDto.diffAmt}"/>
-                        <strong class="jb-large" name="diffAmt" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:value="${tradeHistTodayDto.diffAmt}"
+                        <strong class="jb-large" name="diffAmt" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|"
+                                th:value="${tradeHistTodayDto.diffAmt}"
                                 th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>
                     </td>
                     <td>
                         <input type="hidden" name="percentVal" th:value="${tradeHistTodayDto.percent}"/>
-                        <strong class="jb-large" name="percent" th:id="|${tradeHistTodayDto.exchngCd}per|" th:value="${tradeHistTodayDto.percent}"
+                        <strong class="jb-large" name="percent" th:id="|${tradeHistTodayDto.exchngCd}per|"
+                                th:value="${tradeHistTodayDto.percent}"
                                 th:text="|${tradeHistTodayDto.percent} %|"></strong>
                     </td>
                 </tr>
@@ -206,19 +287,33 @@
     </div>
 </div>
 
-<div id="gptSection" style="display: none;">
-    <h2>Code Review with Gpt</h2>
-    <textarea id="codeTextArea" placeholder="Enter your code here"></textarea>
-    <button id="codeSubmitButton">Submit Code</button>
-    <div id="codeReviewResults"></div>
+<div id="content2" class="content">
+    <!-- Content for 항목 2 -->
+    ...
 </div>
 
+<div id="content3" class="content">
+    <!-- Content for 항목 3 -->
+    ...
+</div>
 
 <script>
-    function activateMainSection() {
-        document.getElementById("main").style.display = "block";
-        document.getElementById("gptSection").style.display = "none";
+    function activateContent(event, id) {
+        event.preventDefault();
+
+        // Get all content elements
+        const contents = document.querySelectorAll('.content');
+
+        // Hide all contents
+        contents.forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // Show the clicked content
+        const targetContent = document.getElementById(id);
+        targetContent.classList.add('active');
     }
+
 </script>
 
 </body>
