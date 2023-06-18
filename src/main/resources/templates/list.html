@@ -18,46 +18,54 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+    }
 
-        #sidebar {
-            width: 200px;
-            position: fixed;
-            height: 100%;
-            background-color: #D2691E;
-            /* Change the background color to black */
-            overflow: auto;
-            margin-bottom: 20px; /* Add margin-bottom for spacing */
-        }
+    #sidebar {
+        width: 200px;
+        position: fixed;
+        height: 100%;
+        background-color: #000;
+        overflow: auto;
+        margin-bottom: 20px;
+    }
 
-        #sidebar a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #fff;
-            /* Change the text color to white */
-            font-weight: bold;
-            /* Add a bold font weight to the links */
-        }
+    #sidebar a {
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        border-bottom: 1px solid #fff; /* Add a bottom border */
+    }
 
-        #sidebar a:hover {
-            background-color: #333;
-            /* Darken the background color on hover */
-        }
+    #sidebar a:hover {
+        background-color: #333;
+    }
 
-        #main {
-            margin-left: 220px; /* Adjusted margin-left to create spacing */
-            width: calc(100% - 220px); /* Adjusted width to accommodate the increased margin */
-            display: block;
-            margin-top: 10px; /* Add margin-top to create spacing between sidebar and div */
-        }
+    #sidebar a.active {
+        background-color: #555;
+    }
 
-        /* Rest of the CSS code... */
-    </style>
+    #main {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        display: block;
+        margin-top: 10px;
+    }
+
+    /* Rest of the CSS code... */
+</style>
+
+    <!-- Rest of the HTML code... -->
+
+
+    <!-- Rest of the HTML code... -->
+
 
 
 
@@ -193,6 +201,11 @@
     function activateMainSection() {
         document.getElementById("main").style.display = "block";
         document.getElementById("gptSection").style.display = "none";
+        var sidebarLinks = document.querySelectorAll("#sidebar a");
+        for (var i = 0; i < sidebarLinks.length; i++) {
+            sidebarLinks[i].classList.remove("active");
+        }
+        event.target.classList.add("active");
     }
 </script>
 
