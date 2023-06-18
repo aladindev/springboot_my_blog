@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -13,9 +17,84 @@
     <script type="text/javascript" src="../js/tab.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        #sidebar {
+            width: 200px;
+            position: fixed;
+            height: 100%;
+            background-color: #f1f1f1;
+            overflow: auto;
+        }
+
+        #sidebar a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #000;
+        }
+
+        #sidebar a:hover {
+            background-color: #ccc;
+        }
+
+        #main {
+            margin-left: 200px;
+            width: 100%;
+            display: none;
+        }
+
+        #gptSection {
+            padding: 20px;
+        }
+
+        #gptSection h2 {
+            margin-bottom: 10px;
+        }
+
+        #codeTextArea {
+            width: 100%;
+            height: 150px;
+            resize: vertical;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        #codeSubmitButton {
+            display: block;
+            width: 100%;
+            padding: 8px 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #codeSubmitButton:hover {
+            background-color: #45a049;
+        }
+
+        #codeReviewResults {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #e1e1e1;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<div id="main" style="width:100%; top:0px;">
+<div id="sidebar">
+    <!-- Sidebar content here -->
+    <a href="#main" onclick="activateMainSection()">Accounts Info</a>
+    <a href="#gptSection">Code Review with Gpt</a>
+</div>
+
+<div id="main" style="width:100%; top:0px; display:block;">
     <div>
         <input type="text" placeholder="검색"/>
         <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:15px; heigth:15px;" alt=""></a>
@@ -126,5 +205,21 @@
         </section>
     </div>
 </div>
+
+<div id="gptSection" style="display: none;">
+    <h2>Code Review with Gpt</h2>
+    <textarea id="codeTextArea" placeholder="Enter your code here"></textarea>
+    <button id="codeSubmitButton">Submit Code</button>
+    <div id="codeReviewResults"></div>
+</div>
+
+
+<script>
+    function activateMainSection() {
+        document.getElementById("main").style.display = "block";
+        document.getElementById("gptSection").style.display = "none";
+    }
+</script>
+
 </body>
 </html>
