@@ -111,7 +111,7 @@ public class ListController extends CommonFunction {
             PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
             out.flush();
-        }
+        } // 
         return "list";
     }
 
