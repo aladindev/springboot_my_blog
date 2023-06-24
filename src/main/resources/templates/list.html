@@ -24,12 +24,13 @@
     }
 
     #sidebar {
-        width: 200px;
-        position: fixed;
-        height: 100%;
-        background-color: #000;
-        overflow: auto;
-        margin-bottom: 20px;
+      width: 200px;
+      position: fixed;
+      height: 100%;
+      background-color: #000;
+      overflow: auto;
+      margin-bottom: 20px;
+      z-index: 1; /* 사이드 바를 최상위로 배치 */
     }
 
     #sidebar a {
@@ -57,15 +58,16 @@
         margin-top: 10px;
     }
 
+    #gptSection {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        display: block;
+        margin-top: 10px;
+    }
+
+
     /* Rest of the CSS code... */
 </style>
-
-    <!-- Rest of the HTML code... -->
-
-
-    <!-- Rest of the HTML code... -->
-
-
 
 
 </head>
