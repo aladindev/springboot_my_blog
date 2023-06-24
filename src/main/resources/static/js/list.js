@@ -226,3 +226,26 @@ $("#" + "newCoin" + tokenName).text(positionSide);
 
 
 }
+// script.js
+
+var previousDivId = "main";
+
+function showDiv(id) {
+  var previousDiv = document.getElementById(previousDivId);
+  if (previousDiv) {
+    previousDiv.style.display = "none";
+  }
+
+  var currentDiv = document.getElementById(id);
+  if (currentDiv) {
+    currentDiv.style.display = "block";
+  }
+
+  var sidebarLinks = document.querySelectorAll("#sidebar a");
+  for (var i = 0; i < sidebarLinks.length; i++) {
+    sidebarLinks[i].classList.remove("active");
+  }
+  event.target.classList.add("active");
+
+  previousDivId = id;
+}
