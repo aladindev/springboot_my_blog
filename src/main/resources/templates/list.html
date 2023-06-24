@@ -77,117 +77,117 @@
     <a href="#gptSection">Code Review with Gpt</a>
 </div>
 
-<div id="main" style="width:100%; top:0px; display:block;">
-    <div>
-        <input type="text" placeholder="검색"/>
-        <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:15px; heigth:15px;" alt=""></a>
-    </div>
-    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;">
-        <section style="position: reactive; overflow:auto; float:left; top: 72px; width:43%;" class="container">
-            <table id="coinTable" style="height:100%;">
-                <colgroup>
-                    <col width="120">
-                    <col width="120">
-                    <col width="120">
-                    <col width="150">
-                    <col width="120">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th colspan="1" class="fixedHeader">거래소</th>
-                    <th colspan="1" class="fixedHeader">코인명</th>
-                    <th colspan="1" class="fixedHeader">보유수량</th>
-                    <th colspan="1" class="fixedHeader">보유금액</th>
-                    <th colspan="1" class="fixedHeader">포지션</th>
-                </tr>
-                </thead>
-                <tbody th:each="userExchngList : ${userExchngList}">
-                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>
-                <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">
-                    <td th:if="${userExchngList.exchngCd == '01'}"><strong style="color:black;">binance</strong></td>
-                    <td th:if="${userExchngList.exchngCd == '02'}"><strong style="color:blue;">upbit</strong></td>
+<!--<div id="main" style="width:100%; top:0px; display:block;">-->
+<!--    <div>-->
+<!--        <input type="text" placeholder="검색"/>-->
+<!--        <a href="#" class="btn" title="검색"><img src="/img/search.png" style="width:15px; heigth:15px;" alt=""></a>-->
+<!--    </div>-->
+<!--    <section style="position: reactive; overflow:auto; float:left; top: 72px; width:100%;">-->
+<!--        <section style="position: reactive; overflow:auto; float:left; top: 72px; width:43%;" class="container">-->
+<!--            <table id="coinTable" style="height:100%;">-->
+<!--                <colgroup>-->
+<!--                    <col width="120">-->
+<!--                    <col width="120">-->
+<!--                    <col width="120">-->
+<!--                    <col width="150">-->
+<!--                    <col width="120">-->
+<!--                </colgroup>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th colspan="1" class="fixedHeader">거래소</th>-->
+<!--                    <th colspan="1" class="fixedHeader">코인명</th>-->
+<!--                    <th colspan="1" class="fixedHeader">보유수량</th>-->
+<!--                    <th colspan="1" class="fixedHeader">보유금액</th>-->
+<!--                    <th colspan="1" class="fixedHeader">포지션</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody th:each="userExchngList : ${userExchngList}">-->
+<!--                <input type="hidden" id="exchngCdArr" name="exchngCdArr" th:value="${userExchngList.exchngCd}"/>-->
+<!--                <tr th:each="accounts : ${userExchngList.accountsListFormDtoList}">-->
+<!--                    <td th:if="${userExchngList.exchngCd == '01'}"><strong style="color:black;">binance</strong></td>-->
+<!--                    <td th:if="${userExchngList.exchngCd == '02'}"><strong style="color:blue;">upbit</strong></td>-->
 
-                    <td>
-                        <a href="#">
-                            <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|" th:text="${accounts.tokenName}"
-                                    onclick="drawChart(this.id); "></strong>
-                        </a>
-                    </td>
-                    <td>
-                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>
-                    </td>
-                    <td>
-                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                    </td>
-                    <td>
-                        <strong class="jb-large" th:text="${accounts.positionSide}"></strong>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-        <strong style="padding-left:3%;" id="chartTokenName"></strong>
-        <input type="hidden" id="coinInfo"/>
-        <img src="/img/refresh.png" style="width:15px; height:15px;" onclick="chartRefresh();"/>
-        <aside id="chart_div" style="width:100%; height:100%; sticky; padding-left:43%;"></aside>
-    </section>
-    <div style="width:43%">
-        <input id="tab1" type="radio" name="tabs" class="input" checked onclick="tabClick(this.id)">
-        <label colspan="1" for="tab1">당일손익</label>
+<!--                    <td>-->
+<!--                        <a href="#">-->
+<!--                            <strong class="jb-large" th:id="|${userExchngList.exchngCd}${accounts.tokenName}|" th:text="${accounts.tokenName}"-->
+<!--                                    onclick="drawChart(this.id); "></strong>-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <p class="jb-large" th:value="${accounts.tokenName}" th:id="|${accounts.tokenName}Cnt|" th:text="|${#numbers.formatInteger(accounts.coinAmount, 1, 'COMMA')} 개|"></p>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <strong class="jb-large" th:value="${accounts.nowAmt}" th:id="|${accounts.tokenName}Amt|" th:text="|${#numbers.formatInteger(accounts.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <strong class="jb-large" th:text="${accounts.positionSide}"></strong>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </section>-->
+<!--        <strong style="padding-left:3%;" id="chartTokenName"></strong>-->
+<!--        <input type="hidden" id="coinInfo"/>-->
+<!--        <img src="/img/refresh.png" style="width:15px; height:15px;" onclick="chartRefresh();"/>-->
+<!--        <aside id="chart_div" style="width:100%; height:100%; sticky; padding-left:43%;"></aside>-->
+<!--    </section>-->
+<!--    <div style="width:43%">-->
+<!--        <input id="tab1" type="radio" name="tabs" class="input" checked onclick="tabClick(this.id)">-->
+<!--        <label colspan="1" for="tab1">당일손익</label>-->
 
-        <input id="tab2" type="radio" name="tabs" class="input" onclick="tabClick(this.id)">
-        <label colspan="1" for="tab2">전일대비손익</label>
+<!--        <input id="tab2" type="radio" name="tabs" class="input" onclick="tabClick(this.id)">-->
+<!--        <label colspan="1" for="tab2">전일대비손익</label>-->
 
-        <input id="tab3" type="radio" name="tabs" class="input" onclick="tabClick(this.id)">
-        <label colspan="1" for="tab3">주간손익</label>
-        <section id="content1">
-            <table>
-                <colgroup>
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                    <col width="200">
-                </colgroup>
-                <thead>
-                <tr>
-                    <th colspan="1" class="fixedHeader">거래소</th>
-                    <th colspan="1" id="thCol2" class="fixedHeader">당일시작가</th>
-                    <th colspan="1" id="thCol3" class="fixedHeader">당일현재가</th>
-                    <th colspan="1" id="thCol4" class="fixedHeader">손익금액</th>
-                    <th colspan="1" id="thCol5" class="fixedHeader">%</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="tradeHistTodayDto : ${tradeHistTodayList}">
-                    <td>
-                        <img th:src="${tradeHistTodayDto.srcUrl}" id="tradeMarket" style="width: 35%; height: 35%;"/>
-                    </td>
-                    <td>
-                        <a href="#">
-                            <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" name="startAmt" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>
-                        </a>
-                    </td>
-                    <td>
-                        <strong class="jb-large" name="nowAmt" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"
-                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>
-                    </td>
-                    <td>
-                        <input type="hidden" name="diffAmtVal" th:value="${tradeHistTodayDto.diffAmt}"/>
-                        <strong class="jb-large" name="diffAmt" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:value="${tradeHistTodayDto.diffAmt}"
-                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>
-                    </td>
-                    <td>
-                        <input type="hidden" name="percentVal" th:value="${tradeHistTodayDto.percent}"/>
-                        <strong class="jb-large" name="percent" th:id="|${tradeHistTodayDto.exchngCd}per|" th:value="${tradeHistTodayDto.percent}"
-                                th:text="|${tradeHistTodayDto.percent} %|"></strong>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
-</div>
+<!--        <input id="tab3" type="radio" name="tabs" class="input" onclick="tabClick(this.id)">-->
+<!--        <label colspan="1" for="tab3">주간손익</label>-->
+<!--        <section id="content1">-->
+<!--            <table>-->
+<!--                <colgroup>-->
+<!--                    <col width="200">-->
+<!--                    <col width="200">-->
+<!--                    <col width="200">-->
+<!--                    <col width="200">-->
+<!--                    <col width="200">-->
+<!--                </colgroup>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th colspan="1" class="fixedHeader">거래소</th>-->
+<!--                    <th colspan="1" id="thCol2" class="fixedHeader">당일시작가</th>-->
+<!--                    <th colspan="1" id="thCol3" class="fixedHeader">당일현재가</th>-->
+<!--                    <th colspan="1" id="thCol4" class="fixedHeader">손익금액</th>-->
+<!--                    <th colspan="1" id="thCol5" class="fixedHeader">%</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr th:each="tradeHistTodayDto : ${tradeHistTodayList}">-->
+<!--                    <td>-->
+<!--                        <img th:src="${tradeHistTodayDto.srcUrl}" id="tradeMarket" style="width: 35%; height: 35%;"/>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <a href="#">-->
+<!--                            <strong th:id="|${tradeHistTodayDto.exchngCd}startAmt|" name="startAmt" th:text="|${#numbers.formatInteger(tradeHistTodayDto.startAmt, 1, 'COMMA')} 원|" class="jb-large"></strong>-->
+<!--                        </a>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <strong class="jb-large" name="nowAmt" th:id="|${tradeHistTodayDto.exchngCd}nowAmt|" th:value="${tradeHistTodayDto.nowAmt}"-->
+<!--                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.nowAmt, 1, 'COMMA')} 원|"></strong><span class=""></span>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <input type="hidden" name="diffAmtVal" th:value="${tradeHistTodayDto.diffAmt}"/>-->
+<!--                        <strong class="jb-large" name="diffAmt" th:id="|${tradeHistTodayDto.exchngCd}diffAmt|" th:value="${tradeHistTodayDto.diffAmt}"-->
+<!--                                th:text="|${#numbers.formatInteger(tradeHistTodayDto.diffAmt, 1, 'COMMA')} 원|"></strong>-->
+<!--                    </td>-->
+<!--                    <td>-->
+<!--                        <input type="hidden" name="percentVal" th:value="${tradeHistTodayDto.percent}"/>-->
+<!--                        <strong class="jb-large" name="percent" th:id="|${tradeHistTodayDto.exchngCd}per|" th:value="${tradeHistTodayDto.percent}"-->
+<!--                                th:text="|${tradeHistTodayDto.percent} %|"></strong>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--        </section>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div id="gptSection" style="display: none;">
     <h2>Code Review with Gpt</h2>

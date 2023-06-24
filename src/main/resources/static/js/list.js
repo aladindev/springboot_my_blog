@@ -1,91 +1,91 @@
 window.onload = function(){
 
-    var exchngCdArr = "";
-    var reqUrl = "/api/v3/sse/subscribe?";
-    var queryStr = "exchngCd=";
-
-    for(var i = 0 ; i < document.getElementsByName("exchngCdArr").length ; i++) {
-        if(i == document.getElementsByName("exchngCdArr").length-1) {
-            queryStr += document.getElementsByName("exchngCdArr")[i].value;
-            break;
-        }
-        queryStr += document.getElementsByName("exchngCdArr")[i].value;
-        queryStr += "&exchngCd=";
-    }
-
-    const eventSource = new EventSource(reqUrl + queryStr);
-
-    eventSource.onopen = (e) => {
-        console.log("open >");
-    };
-
-    eventSource.onmessage = event => {
-        var eventJsonArr = JSON.parse(event.data);
-
-        for(var i = 0 ; i < eventJsonArr.length ; i++) {
-            var tokenName = eventJsonArr[i].tokenName;
-
-            if($('#' + tokenName + "Amt").text() == "" || $('#' + tokenName + "Amt").text() == undefined) {
-                console.log(tokenName + "  코인 새로 추가 로직 추가");
-                console.log(eventJsonArr[i]);
-                console.log('#' + tokenName + "Amt" + " //////   " + $('#' + tokenName + "Amt").text());
-                addNewCoin(eventJsonArr[i].exchngCd, eventJsonArr[i].tokenName, eventJsonArr[i].coinAmount, eventJsonArr[i].nowAmt, eventJsonArr[i].positionSide);
-
-            } else {
-                var amtId = tokenName+"Amt";
-                var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
-                var bfAmt = $('#' + tokenName+"Amt").text();
-                bfAmt = bfAmt.replace(regex, "");
-                var afAmt = eventJsonArr[i].nowAmt;
-                afAmt = Math.floor(afAmt);
-
-                if(Number(bfAmt) > Number(afAmt)) {
-                    document.getElementById(amtId).style.color = "blue";
-                } else if(Number(bfAmt) < Number(afAmt)) {
-                    document.getElementById(amtId).style.color = "red";
-                } else {
-                    document.getElementById(amtId).style.color = "black";
-                }
-                $('#' + amtId).text(afAmt.toLocaleString() + " 원");
-            }
-        }
-    };
-
-    /* tab */
-    $('ul.tabs li').click(function(){
-    		var tab_id = $(this).attr('data-tab');
-
-    		$('ul.tabs li').removeClass('current');
-    		$('.tab-content').removeClass('current');
-
-    		$(this).addClass('current');
-    		$("#"+tab_id).addClass('current');
-
-    		console.log(tab_id);
-    });
-
-
-    /* 매매일지 */
-    for(var i = 0 ; i < document.getElementsByName("diffAmt").length ; i++) {
-
-        var diffAmt = document.getElementsByName("diffAmtVal")[i].value;
-        var diffId = document.getElementsByName('diffAmt')[i].id;
-        var perId = document.getElementsByName('percent')[i].id;
-
-        if(Number(diffAmt) < 0) {
-            document.getElementById(diffId).style.color = "blue";
-            document.getElementById(perId).style.color = "blue";
-        } else if(Number(diffAmt) > 0) {
-            document.getElementById(diffId).style.color = "red";
-            document.getElementById(perId).style.color = "red";
-        } else {
-            document.getElementById(diffId).style.color = "black";
-            document.getElementById(perId).style.color = "black";
-        }
-    }
-
-    // 초기 차트 비트코인
-    drawChart("02BTC");
+//    var exchngCdArr = "";
+//    var reqUrl = "/api/v3/sse/subscribe?";
+//    var queryStr = "exchngCd=";
+//
+//    for(var i = 0 ; i < document.getElementsByName("exchngCdArr").length ; i++) {
+//        if(i == document.getElementsByName("exchngCdArr").length-1) {
+//            queryStr += document.getElementsByName("exchngCdArr")[i].value;
+//            break;
+//        }
+//        queryStr += document.getElementsByName("exchngCdArr")[i].value;
+//        queryStr += "&exchngCd=";
+//    }
+//
+//    const eventSource = new EventSource(reqUrl + queryStr);
+//
+//    eventSource.onopen = (e) => {
+//        console.log("open >");
+//    };
+//
+//    eventSource.onmessage = event => {
+//        var eventJsonArr = JSON.parse(event.data);
+//
+//        for(var i = 0 ; i < eventJsonArr.length ; i++) {
+//            var tokenName = eventJsonArr[i].tokenName;
+//
+//            if($('#' + tokenName + "Amt").text() == "" || $('#' + tokenName + "Amt").text() == undefined) {
+//                console.log(tokenName + "  코인 새로 추가 로직 추가");
+//                console.log(eventJsonArr[i]);
+//                console.log('#' + tokenName + "Amt" + " //////   " + $('#' + tokenName + "Amt").text());
+//                addNewCoin(eventJsonArr[i].exchngCd, eventJsonArr[i].tokenName, eventJsonArr[i].coinAmount, eventJsonArr[i].nowAmt, eventJsonArr[i].positionSide);
+//
+//            } else {
+//                var amtId = tokenName+"Amt";
+//                var regex = /[^0-9]/g;				// 숫자가 아닌 문자열을 선택하는 정규식
+//                var bfAmt = $('#' + tokenName+"Amt").text();
+//                bfAmt = bfAmt.replace(regex, "");
+//                var afAmt = eventJsonArr[i].nowAmt;
+//                afAmt = Math.floor(afAmt);
+//
+//                if(Number(bfAmt) > Number(afAmt)) {
+//                    document.getElementById(amtId).style.color = "blue";
+//                } else if(Number(bfAmt) < Number(afAmt)) {
+//                    document.getElementById(amtId).style.color = "red";
+//                } else {
+//                    document.getElementById(amtId).style.color = "black";
+//                }
+//                $('#' + amtId).text(afAmt.toLocaleString() + " 원");
+//            }
+//        }
+//    };
+//
+//    /* tab */
+//    $('ul.tabs li').click(function(){
+//    		var tab_id = $(this).attr('data-tab');
+//
+//    		$('ul.tabs li').removeClass('current');
+//    		$('.tab-content').removeClass('current');
+//
+//    		$(this).addClass('current');
+//    		$("#"+tab_id).addClass('current');
+//
+//    		console.log(tab_id);
+//    });
+//
+//
+//    /* 매매일지 */
+//    for(var i = 0 ; i < document.getElementsByName("diffAmt").length ; i++) {
+//
+//        var diffAmt = document.getElementsByName("diffAmtVal")[i].value;
+//        var diffId = document.getElementsByName('diffAmt')[i].id;
+//        var perId = document.getElementsByName('percent')[i].id;
+//
+//        if(Number(diffAmt) < 0) {
+//            document.getElementById(diffId).style.color = "blue";
+//            document.getElementById(perId).style.color = "blue";
+//        } else if(Number(diffAmt) > 0) {
+//            document.getElementById(diffId).style.color = "red";
+//            document.getElementById(perId).style.color = "red";
+//        } else {
+//            document.getElementById(diffId).style.color = "black";
+//            document.getElementById(perId).style.color = "black";
+//        }
+//    }
+//
+//    // 초기 차트 비트코인
+//    drawChart("02BTC");
 }
 
 
