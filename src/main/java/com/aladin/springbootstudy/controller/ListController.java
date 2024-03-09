@@ -67,7 +67,6 @@ public class ListController extends CommonFunction {
                 .url("https://api.upbit.com/v1/market/all")
                 .build();
 
-        log.info("start");
         try (Response upResponse = client.newCall(request).execute()) {
             if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
 
