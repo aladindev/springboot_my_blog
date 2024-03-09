@@ -115,6 +115,12 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>3.7.0</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>3.1.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

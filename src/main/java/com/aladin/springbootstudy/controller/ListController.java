@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -58,6 +59,8 @@ public class ListController extends CommonFunction {
 //            , @SessionAttribute(name = "app_key", required = false) String appKey
              HttpServletResponse response
             , Model model) throws IOException {
+
+        KafkaTemplate t;
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
