@@ -73,6 +73,8 @@ public class ListController extends CommonFunction {
             Type listType = new TypeToken<List<Map<String, String>>>(){}.getType();
             List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
 
+
+            //kafka cluster 구축 브로커 3대
             for (Map<String, String> market : markets) {
                 log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
             }
