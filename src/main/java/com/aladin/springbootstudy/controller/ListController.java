@@ -10,9 +10,12 @@ import com.aladin.springbootstudy.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -58,9 +61,9 @@ public class ListController extends CommonFunction {
                 // 이용중인 거래소 리스트
                 List<UserExchngListDto> userExchngList = userService.getUserExchngList(email);
 
-                for(int i = 0 ; i < userExchngList.size() ; i++) {
-                    userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
-                }
+//                for(int i = 0 ; i < userExchngList.size() ; i++) {
+//                    userExchngList.get(i).setAccountsListFormDtoList(exchngApiRequest(userExchngList.get(i).getExchngCd()));
+//                }
                 model.addAttribute("userExchngList", userExchngList);
 
                 // 당일 매매 일지
@@ -82,26 +85,26 @@ public class ListController extends CommonFunction {
 
                     BigDecimal percent = BigDecimal.ZERO;
 
-                    for(TradeHistTodayDto tradeHistTodayDto : tradeHistTodayDtoList) {
-                        percent = tradeHistTodayDto.getNowAmt().subtract(tradeHistTodayDto.getStartAmt())
-                                .divide(tradeHistTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING);
-                        tradeHistTodayDto.setPercent(percent);
-
-                        startAmtSum = startAmtSum.add(tradeHistTodayDto.getStartAmt());
-                        nowAmtSum = nowAmtSum.add(tradeHistTodayDto.getNowAmt());
-                        diffAmtSum = diffAmtSum.add(tradeHistTodayDto.getDiffAmt());
-                    }
-
-                    TradeHistTodayDto sumDto = new TradeHistTodayDto();
-                    sumDto.setStartAmt(startAmtSum);
-                    sumDto.setNowAmt(nowAmtSum);
-                    sumDto.setDiffAmt(diffAmtSum);
-                    sumDto.setSrcUrl("/img/sigma.png");
-                    percent = nowAmtSum.subtract(startAmtSum)
-                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING).multiply(new BigDecimal(100));
-                    sumDto.setPercent(percent);
-
-                    tradeHistTodayDtoList.add(sumDto);
+//                    for(TradeHistTodayDto tradeHistTodayDto : tradeHistTodayDtoList) {
+//                        percent = tradeHistTodayDto.getNowAmt().subtract(tradeHistTodayDto.getStartAmt())
+//                                .divide(tradeHistTodayDto.getStartAmt(), 2, BigDecimal.ROUND_CEILING);
+//                        tradeHistTodayDto.setPercent(percent);
+//
+//                        startAmtSum = startAmtSum.add(tradeHistTodayDto.getStartAmt());
+//                        nowAmtSum = nowAmtSum.add(tradeHistTodayDto.getNowAmt());
+//                        diffAmtSum = diffAmtSum.add(tradeHistTodayDto.getDiffAmt());
+//                    }
+//
+//                    TradeHistTodayDto sumDto = new TradeHistTodayDto();
+//                    sumDto.setStartAmt(startAmtSum);
+//                    sumDto.setNowAmt(nowAmtSum);
+//                    sumDto.setDiffAmt(diffAmtSum);
+//                    sumDto.setSrcUrl("/img/sigma.png");
+//                    percent = nowAmtSum.subtract(startAmtSum)
+//                            .divide(startAmtSum, 2, BigDecimal.ROUND_CEILING).multiply(new BigDecimal(100));
+//                    sumDto.setPercent(percent);
+//
+//                    tradeHistTodayDtoList.add(sumDto);
 
                     model.addAttribute("tradeHistTodayList", tradeHistTodayDtoList);
                 }
@@ -111,7 +114,7 @@ public class ListController extends CommonFunction {
             PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 세션 정보가 없습니다. 로그인 후 이용 바랍니다.'); location.href='/api/v1/get-api/login';</script>");
             out.flush();
-        } // 
+        } //
         return "list";
     }
 
@@ -133,21 +136,21 @@ public class ListController extends CommonFunction {
                 out.flush();
                 return null;
             } else {
-                String tabId = (String)tabMap.get("tabId");
-
-                TradeHistDto tradeHistDto = new TradeHistDto();
-                tradeHistDto.setEmail(email);
-                tradeHistDto.setRgstrnDt(getDateFormat(getDate()));
-                switch (tabId) {
-                    case "tab1" :
-                        return tradeHistService.selectTodayTradeHist(tradeHistDto);
-                    case "tab2" :
-                        return tradeHistService.selectYesterDayTradeHist(tradeHistDto);
-                    case "tab3" :
-                        return tradeHistService.selectWeekTradeHist(tradeHistDto);
-                    default :
-                        break;
-                }
+//                String tabId = (String)tabMap.get("tabId");
+//
+//                TradeHistDto tradeHistDto = new TradeHistDto();
+//                tradeHistDto.setEmail(email);
+//                tradeHistDto.setRgstrnDt(getDateFormat(getDate()));
+//                switch (tabId) {
+//                    case "tab1" :
+//                        return tradeHistService.selectTodayTradeHist(tradeHistDto);
+//                    case "tab2" :
+//                        return tradeHistService.selectYesterDayTradeHist(tradeHistDto);
+//                    case "tab3" :
+//                        return tradeHistService.selectWeekTradeHist(tradeHistDto);
+//                    default :
+//                        break;
+//                }
 
             }
         } catch(Exception e) {

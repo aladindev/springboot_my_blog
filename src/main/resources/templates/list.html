@@ -59,12 +59,97 @@
     }
 
     #gptSection {
-        margin-left: 220px;
+        position: fixed;
+        top: 0;
+        right: 0;
         width: calc(100% - 220px);
-        display: block;
-        margin-top: 10px;
+        height: 100%;
+        background-color: #fff;
+        padding: 20px;
+        color: #333;
+        display: none;
+        z-index: 1; /* gptSection을 최상위로 배치 */
     }
 
+    #gptSection h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    #gptSection textarea {
+      width: 100%;
+      height: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+      background-color: #fff;
+      color: #333;
+    }
+
+    #gptSection button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #fff;
+      color: #555;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #gptSection button:hover {
+      background-color: #ddd;
+    }
+
+    #gptSection #codeReviewResults {
+      margin-top: 20px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #333;
+    }
+
+    #gptSection textarea {
+        width: 100%;
+        height: 300px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+        background-color: #fff;
+        color: #333;
+        margin-bottom: 10px; /* 아래 여백 추가 */
+    }
+
+    #gptSection button {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #fff;
+        color: #555;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    #gptSection button:hover {
+        background-color: #ddd;
+    }
+
+    #gptSection #codeReviewResults {
+        margin-top: 20px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+        color: #333;
+    }
 
     /* Rest of the CSS code... */
 </style>
@@ -192,8 +277,12 @@
 
 <div id="gptSection" style="display: none;">
     <h2>Code Review with Gpt</h2>
-    <textarea id="codeTextArea" placeholder="Enter your code here"></textarea>
-    <button id="codeSubmitButton">Submit Code</button>
+    <div style="margin-bottom: 20px;">
+        <textarea id="codeTextArea" placeholder="Enter your code here"></textarea>
+    </div>
+    <div style="text-align: center;">
+        <button id="codeSubmitButton" onclick="sendToChatGpt();">Submit Code</button>
+    </div>
     <div id="codeReviewResults"></div>
 </div>
 

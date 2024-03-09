@@ -249,3 +249,35 @@ function showDiv(id) {
 
   previousDivId = id;
 }
+
+function sendToChatGpt() {
+  // 텍스트 박스 내용 가져오기
+  var textbox = document.getElementById("codeTextArea");
+  var message = textbox.value;
+
+  // Chat GPT API 요청을 보낼 URL
+  var apiUrl = "/chat-gpt";
+
+  // Chat GPT API 요청에 필요한 데이터 생성
+  var data = {
+    message: message
+  };
+
+  // Chat GPT API 요청 보내기
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+    .then(response => response.text())
+    .then(result => {
+      // Chat GPT 응답 처리
+      console.log(result);
+    })
+    .catch(error => {
+      // 오류 처리
+      console.error("Error:", error);
+    });
+}
