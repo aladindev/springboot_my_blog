@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -36,6 +37,8 @@ import java.util.Map;
 @RequestMapping("/accounts") // infix = 공통 URL
 public class ListController extends CommonFunction {
 
+    private Logger logger = Logger.getLogger(ListController.class);
+
     @Autowired
     UserInfoService userInfoService; // JPA
 
@@ -50,10 +53,10 @@ public class ListController extends CommonFunction {
 
     @GetMapping(value="/list")
     public String accountsList(
-              @SessionAttribute(name = "session_key", required = false) String session_key
-            , @SessionAttribute(name = "email", required = false) String email
-            , @SessionAttribute(name = "app_key", required = false) String appKey
-            , HttpServletResponse response
+//              @SessionAttribute(name = "session_key", required = false) String session_key
+//            , @SessionAttribute(name = "email", required = false) String email
+//            , @SessionAttribute(name = "app_key", required = false) String appKey
+             HttpServletResponse response
             , Model model) throws IOException {
 
         OkHttpClient client = new OkHttpClient();
@@ -61,6 +64,7 @@ public class ListController extends CommonFunction {
                 .url("https://api.upbit.com/v1/market/all")
                 .build();
 
+        log.info("start");
         try (Response upResponse = client.newCall(request).execute()) {
             if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
 
@@ -73,6 +77,7 @@ public class ListController extends CommonFunction {
                 log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
             }
         } catch (IOException e) {
+            log.error(e.getMessage());
             e.printStackTrace();
         }
 
