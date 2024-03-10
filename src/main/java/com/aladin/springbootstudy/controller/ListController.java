@@ -65,6 +65,9 @@ public class ListController extends CommonFunction {
              HttpServletResponse response
             , Model model) throws IOException {
 
+        //kafka produce test
+        kafkaTemplate.send(TOPIC_NAME, "test message");
+        System.out.println("Produced message: " + "test message");
 
 
         OkHttpClient client = new OkHttpClient();
