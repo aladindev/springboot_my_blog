@@ -38,6 +38,11 @@ import java.util.Map;
 @RequestMapping("/accounts") // infix = 공통 URL
 public class ListController extends CommonFunction {
 
+    // 카프카 produce test
+    private static final String TOPIC_NAME = "TestTopic"; // 토픽 이름
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
     private Logger logger = Logger.getLogger(ListController.class);
 
     @Autowired
@@ -60,7 +65,7 @@ public class ListController extends CommonFunction {
              HttpServletResponse response
             , Model model) throws IOException {
 
-        KafkaTemplate t;
+
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
