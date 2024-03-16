@@ -88,28 +88,28 @@ public class ListController extends CommonFunction {
         System.out.println("Produced message: " + "test message");
 
 
-//        OkHttpClient client = new OkHttpClient();
-//        Request request = new Request.Builder()
-//                .url("https://api.upbit.com/v1/market/all")
-//                .build();
-//
-//        try (Response upResponse = client.newCall(request).execute()) {
-//            if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
-//
-//            String responseBody = upResponse.body().string();
-//            Gson gson = new Gson();
-//            Type listType = new TypeToken<List<Map<String, String>>>(){}.getType();
-//            List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
-//
-//
-//            //kafka cluster 구축 브로커 3대
-//            for (Map<String, String> market : markets) {
-//                log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
-//            }
-//        } catch (IOException e) {
-//            log.error(e.getMessage());
-//            e.printStackTrace();
-//        }
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("https://api.upbit.com/v1/ticker?markets=KRW-BTC")
+                .build();
+
+        try (Response upResponse = client.newCall(request).execute()) {
+            if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
+
+            String responseBody = upResponse.body().string();
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<Map<String, String>>>(){}.getType();
+            List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
+
+
+            //kafka cluster 구축 브로커 3대
+            for (Map<String, String> market : markets) {
+                log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+        }
 
 //        try {
 //            if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
