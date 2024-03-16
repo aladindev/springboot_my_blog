@@ -41,7 +41,7 @@ import java.util.Map;
 public class ListController extends CommonFunction {
 
     // 카프카 produce test
-    private static final String TOPIC_NAME = "Test"; // 토픽 이름
+    private static final String TOPIC_NAME = "coin-now-price"; // 토픽 이름
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
@@ -69,28 +69,10 @@ public class ListController extends CommonFunction {
 
         //kafka produce test
 
-        log.info("list controller ");
-        kafkaTemplate.send(TOPIC_NAME, "2", "테스트").addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                log.error("kafka onFailure \n");
-                log.error(ex.getMessage(), ex);
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                log.info("kafka onSuccess \n");
-                log.info(result.toString());
-            }
-        });
-
-        //kafkaTemplate.send(TOPIC_NAME, "test message");
-        System.out.println("Produced message: " + "test message");
-
-
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://api.upbit.com/v1/ticker?markets=KRW-BTC")
+                .url("https://api.upbit.com/v1/market/all")
+                //.url("https://api.upbit.com/v1/ticker?markets=KRW-BTC")
                 .build();
 
         try (Response upResponse = client.newCall(request).execute()) {
@@ -102,9 +84,22 @@ public class ListController extends CommonFunction {
             List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
 
 
-            //kafka cluster 구축 브로커 3대
             for (Map<String, String> market : markets) {
-                log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
+                //log.info(market.get("market") + " / " + new BigDecimal(market.get("opening_price")).toString());
+                log.info("market > " + market);
+//                kafkaTemplate.send(TOPIC_NAME, market.get("market"), new BigDecimal(market.get("opening_price")).toString()).addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+//                    @Override
+//                    public void onFailure(Throwable ex) {
+//                        log.error("kafka onFailure \n");
+//                        log.error(ex.getMessage(), ex);
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(SendResult<String, String> result) {
+//                        log.info("kafka onSuccess \n");
+//                        log.info(result.toString());
+//                    }
+//                });
             }
         } catch (IOException e) {
             log.error(e.getMessage());
