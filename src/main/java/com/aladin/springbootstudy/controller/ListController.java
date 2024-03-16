@@ -45,7 +45,7 @@ public class ListController extends CommonFunction {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    private Logger logger = Logger.getLogger(ListController.class);
+    //private Logger logger = Logger.getLogger(ListController.class);
 
     @Autowired
     UserInfoService userInfoService; // JPA
@@ -68,17 +68,19 @@ public class ListController extends CommonFunction {
             , Model model) throws IOException {
 
         //kafka produce test
-        kafkaTemplate.send(TOPIC_NAME, "1").addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+
+        log.info("list controller ");
+        kafkaTemplate.send(TOPIC_NAME, "2", "테스트").addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onFailure(Throwable ex) {
-                logger.error("kafka onFailure \n");
-                logger.error(ex.getMessage(), ex);
+                log.error("kafka onFailure \n");
+                log.error(ex.getMessage(), ex);
             }
 
             @Override
             public void onSuccess(SendResult<String, String> result) {
-                logger.info("kafka onSuccess \n");
-                logger.info(result.toString());
+                log.info("kafka onSuccess \n");
+                log.info(result.toString());
             }
         });
 
@@ -86,28 +88,28 @@ public class ListController extends CommonFunction {
         System.out.println("Produced message: " + "test message");
 
 
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url("https://api.upbit.com/v1/market/all")
-                .build();
-
-        try (Response upResponse = client.newCall(request).execute()) {
-            if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
-
-            String responseBody = upResponse.body().string();
-            Gson gson = new Gson();
-            Type listType = new TypeToken<List<Map<String, String>>>(){}.getType();
-            List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
-
-
-            //kafka cluster 구축 브로커 3대
-            for (Map<String, String> market : markets) {
-                log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-        }
+//        OkHttpClient client = new OkHttpClient();
+//        Request request = new Request.Builder()
+//                .url("https://api.upbit.com/v1/market/all")
+//                .build();
+//
+//        try (Response upResponse = client.newCall(request).execute()) {
+//            if (!upResponse.isSuccessful()) throw new IOException("서버 문제로 요청에 실패했습니다: " + response);
+//
+//            String responseBody = upResponse.body().string();
+//            Gson gson = new Gson();
+//            Type listType = new TypeToken<List<Map<String, String>>>(){}.getType();
+//            List<Map<String, String>> markets = gson.fromJson(responseBody, listType);
+//
+//
+//            //kafka cluster 구축 브로커 3대
+//            for (Map<String, String> market : markets) {
+//                log.info("마켓 ID: " + market.get("market") + ", 한글명: " + market.get("korean_name") + ", 영문명: " + market.get("english_name"));
+//            }
+//        } catch (IOException e) {
+//            log.error(e.getMessage());
+//            e.printStackTrace();
+//        }
 
 //        try {
 //            if("".equals(session_key) || session_key == null || appKey == null || !appKey.equals(this.appKey)) {
