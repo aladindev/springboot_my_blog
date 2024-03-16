@@ -71,16 +71,18 @@ public class ListController extends CommonFunction {
         kafkaTemplate.send(TOPIC_NAME, "1").addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
             @Override
             public void onFailure(Throwable ex) {
+                logger.error("kafka onFailure \n");
                 logger.error(ex.getMessage(), ex);
             }
 
             @Override
             public void onSuccess(SendResult<String, String> result) {
+                logger.info("kafka onSuccess \n");
                 logger.info(result.toString());
             }
         });
 
-        kafkaTemplate.send(TOPIC_NAME, "test message");
+        //kafkaTemplate.send(TOPIC_NAME, "test message");
         System.out.println("Produced message: " + "test message");
 
 
