@@ -87,19 +87,32 @@ public class ListController extends CommonFunction {
             for (Map<String, String> market : markets) {
                 //log.info(market.get("market") + " / " + new BigDecimal(market.get("opening_price")).toString());
                 log.info("market > " + market);
-//                kafkaTemplate.send(TOPIC_NAME, market.get("market"), new BigDecimal(market.get("opening_price")).toString()).addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
-//                    @Override
-//                    public void onFailure(Throwable ex) {
-//                        log.error("kafka onFailure \n");
-//                        log.error(ex.getMessage(), ex);
-//                    }
+
+                String simbol = market.get("market");
+                if("KRW-BTC".equals(simbol)
+                  || "KRW-GRS".equals(simbol)
+                ) {
+                    Request requestUnit = new Request.Builder()
+                            .url("https://api.upbit.com/v1/ticker?markets=" + simbol)
+                            .build();
+                    List<Map<String, String>> unitMapList = gson.fromJson(responseBody, listType);
+
+                    log.info("unitMap > " + unitMapList);
+//                    kafkaTemplate.send(TOPIC_NAME, unitMap.get("market"), new BigDecimal(unitMap.get("opening_price")).toString()).addCallback(new ListenableFutureCallback<SendResult<String, String>>() {
+//                        @Override
+//                        public void onFailure(Throwable ex) {
+//                            log.error("kafka onFailure \n");
+//                            log.error(ex.getMessage(), ex);
+//                        }
 //
-//                    @Override
-//                    public void onSuccess(SendResult<String, String> result) {
-//                        log.info("kafka onSuccess \n");
-//                        log.info(result.toString());
-//                    }
-//                });
+//                        @Override
+//                        public void onSuccess(SendResult<String, String> result) {
+//                            log.info("kafka onSuccess \n");
+//                            log.info(result.toString());
+//                        }
+//                    });
+                }
+
             }
         } catch (IOException e) {
             log.error(e.getMessage());
