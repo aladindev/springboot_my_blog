@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/") // infix = 공통 URL
 public class MainController {
 
-    
+    // 로컬 서버 포트 변경
     @GetMapping(value="/index")
     public ModelAndView login() {
         // 클라우드 변경 Oracle -> AWS
