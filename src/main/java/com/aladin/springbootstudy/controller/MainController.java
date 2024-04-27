@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/") // infix = 공통 URL
 public class MainController {
 
+    
     @GetMapping(value="/index")
     public ModelAndView login() {
         // 클라우드 변경 Oracle -> AWS
