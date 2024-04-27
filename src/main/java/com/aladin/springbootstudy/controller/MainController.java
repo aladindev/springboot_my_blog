@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 //}
 
 @RestController
-@RequestMapping("/") // infix = 공통 URL
+@RequestMapping("/") //
 public class MainController {
 
     // 로컬 서버 포트 변경
