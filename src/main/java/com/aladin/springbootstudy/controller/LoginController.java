@@ -42,6 +42,7 @@ public class LoginController implements CommonUtils {
     @Value("#{encrypt.session_key}")
     private String session_key;
 
+    // 서버 L / D 
     //private static final String PROC_URL = "http://129.154.50.230:8080/auth/kakao/callback";
     private static final String LOCAL_URL = "http://localhost:8080/auth/kakao/callback";
 
