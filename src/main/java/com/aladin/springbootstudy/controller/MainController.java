@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 //}
 
 @RestController
-@RequestMapping("/") //
+@RequestMapping("/") // 
 public class MainController {
 
     // 로컬 서버 포트 변경
