@@ -344,9 +344,9 @@
       }, timeout);
     }
   }
-  function injectAssets(url, waitFor, callback) {
+  function inject/assets(url, waitFor, callback) {
     if (isNil(url)) {
-      console.error('Inject assets error');
+      console.error('Inject /assets error');
       return;
     }
     if (isFunction(waitFor)) {
@@ -944,12 +944,12 @@
     addClass(slideContainer, 'gvideo-container');
     slideMedia.insertBefore(createHTML('<div class="gvideo-wrapper"></div>'), slideMedia.firstChild);
     var videoWrapper = slide.querySelector('.gvideo-wrapper');
-    injectAssets(this.settings.plyr.css, 'Plyr');
+    inject/assets(this.settings.plyr.css, 'Plyr');
     var url = data.href;
     var provider = data === null || data === void 0 ? void 0 : data.videoProvider;
     var customPlaceholder = false;
     slideMedia.style.maxWidth = data.width;
-    injectAssets(this.settings.plyr.js, 'Plyr', function () {
+    inject/assets(this.settings.plyr.js, 'Plyr', function () {
       if (!provider && url.match(/vimeo\.com\/([0-9]*)/)) {
         provider = 'vimeo';
       }
