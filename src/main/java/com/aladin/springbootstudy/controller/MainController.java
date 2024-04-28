@@ -1,29 +1,28 @@
 package com.aladin.springbootstudy.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-//@RestController
-//@RequestMapping("/api/v1/get-api") // infix = 공통 URL
-//public class MainController {
-//
-//    @GetMapping(value="/login")
-//    public ModelAndView login() {
-//        // 클라우드 변경 Oracle -> AWS
-//        ModelAndView mv = new ModelAndView("login");
-//        return mv;
-//    }
-//}
 
 @RestController
 @RequestMapping("/") // 
 public class MainController {
 
+    private Logger logger = Logger.getLogger(MainController.class);
     // 로컬 서버 포트 변경
     @GetMapping(value="/index")
-    public ModelAndView login() {
-        // 클라우드 변경 Oracle -> AWS
-        ModelAndView mv = new ModelAndView("login");
+    public ModelAndView index() {
+        logger.info("/index");
+        ModelAndView mv = new ModelAndView("index");
+        return mv;
+    }
+
+    // 로컬 서버 포트 변경
+    @GetMapping(value="/")
+    public ModelAndView main() {
+        logger.info("/");
+        ModelAndView mv = new ModelAndView("index");
         return mv;
     }
 }
