@@ -1,4 +1,4 @@
-package com.aladin;
+package com.aladin.springbootstudy;
 
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
@@ -10,7 +10,7 @@ public class Configuration {
     @Bean(name="oauth")
     public PropertiesFactoryBean kakaoPropertiesFactoryBean() throws Exception {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        ClassPathResource classPathResource = new ClassPathResource("outh.yml");
+        ClassPathResource classPathResource = new ClassPathResource("oauth.yml");
         propertiesFactoryBean.setLocation(classPathResource);
 
         return propertiesFactoryBean;

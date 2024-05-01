@@ -12,14 +12,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController {
     private Logger logger = Logger.getLogger(BoardController.class);
 
-    @Value("restapi_key")
+    @Value("#{oauth.restapi_key}")
     String restapi_key;
-    @Value("redirect_url")
+    @Value("#{oauth.redirect_url}")
     String redirect_url;
 
     @GetMapping(value="/kakao")
     public ModelAndView post() {
-        logger.info(restapi_key + " / " + redirect_url);
+        
         return null;
     }
 }
