@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -38,7 +39,6 @@
     * License: https:///bootstrapmade.com/license/
     ======================================================== -->
 </head>
-
 <body>
 
 <!-- ======= Header ======= -->
@@ -82,7 +82,7 @@
         </nav><!-- .navbar -->
 
         <div class="position-relative">
-            <a href="/login/kakao" class="mx-2"><img src="/assets/img/kakao.png" alt="" class="img-fluid"
+            <a onclick="kakaoLogin();" href="#" class="mx-2"><img src="/assets/img/kakao.png" alt="" class="img-fluid"
                                             width="50" height="50"></a>
             <a href="#" class="mx-2"><span class="bi-twitter"></span></a>
             <a href="#" class="mx-2"><span class="bi-instagram"></span></a>
@@ -863,6 +863,7 @@
 
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
+<script type="text/javascript" th:src="@{/js/oauth/oauth.js}"></script>
 
 </body>
 

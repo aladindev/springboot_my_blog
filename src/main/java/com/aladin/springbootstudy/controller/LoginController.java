@@ -19,7 +19,7 @@ public class LoginController {
 
     @GetMapping(value="/kakao")
     public ModelAndView post() {
-        
+
         return null;
     }
 }

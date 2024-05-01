@@ -1,0 +1,3 @@
+function kakaoLogin() {
+    alert("test");
+}
