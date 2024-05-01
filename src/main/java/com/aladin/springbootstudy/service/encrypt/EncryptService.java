@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 @Service
 public class EncryptService {
     /** 대칭키 */
-    @Value("#{encrypt.kakao-kakao_encrpy_key-key}")
+    @Value("#{encrypt.kakao_encrpy_key}")
     String kakao_encrpy_key;
 
     public String aesBytesEncryptor(String value) {
