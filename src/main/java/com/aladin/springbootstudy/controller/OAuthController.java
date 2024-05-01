@@ -29,7 +29,7 @@ public class OAuthController {
     String client_id;
 
     @GetMapping(value="/kakao/callback")
-    public Map<String, String> kakaoCallback(@RequestParam("code") String code) throws IOException {
+    public Map<String, String> kakaoCallback(@RequestParam("code") String code) throws Exception {
 
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
@@ -38,7 +38,7 @@ public class OAuthController {
 
         String email = userInfoMap.get("email") != null ? userInfoMap.get("email").toString() : "";
 
-        String encryptResult = encryptService.aesBytesEncryptor(email);
+        String encryptResult = encryptService.aesCBCEncode(email);
 
         logger.info("encryptResult > " + encryptResult);
         return null;
