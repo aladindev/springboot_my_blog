@@ -29,6 +29,4 @@ public class LoginController {
         // 클라이언트 ID와 콜백 URL을 포함하는 Map을 반환합니다.
         return kakaoConfig;
     }
-
-
 }
