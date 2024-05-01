@@ -27,8 +27,6 @@ public class OAuthController {
 
     @Value("#{oauth.client_id}")
     String client_id;
-    @Value("#{oauth.redirect_uri}")
-    String redirect_uri;
 
     @GetMapping(value="/kakao/callback")
     public Map<String, String> kakaoCallback(@RequestParam("code") String code) throws IOException {

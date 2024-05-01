@@ -1,7 +1,7 @@
 async function kakaoLogin() {
     try {
         // `/api/get/url` 엔드포인트에 비동기적으로 GET 요청을 보냅니다.
-        const response = await fetch('/login/kakao/get-url');
+        const response = await fetch('/login/kakao/');
         
         // 응답을 JSON 형태로 변환
         const data = await response.json();
@@ -9,6 +9,7 @@ async function kakaoLogin() {
         // 변수에 카카오 클라이언트 ID와 콜백 URL을 저장
         const client_id = data.client_id;
         const redirect_uri = data.redirect_uri;
+        
 
         // 필요한 추가 작업을 여기에 수행할 수 있습니다.
         // 예: 클라이언트 ID와 콜백 URL을 가지고 카카오 로그인 URL을 구성하거나,

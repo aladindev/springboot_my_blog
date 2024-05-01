@@ -2,10 +2,14 @@ package com.aladin.springbootstudy.service.encrypt;
 
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
@@ -15,34 +19,32 @@ public class EncryptService {
     @Value("#{encrypt.kakao_encrpy_key}")
     String kakao_encrpy_key;
 
-    public String aesBytesEncryptor(String value) {
-        AesBytesEncryptor aesBytesEncryptor = new AesBytesEncryptor(kakao_encrpy_key, getSalt());
-        byte[] bytes= aesBytesEncryptor.encrypt(value.getBytes(StandardCharsets.UTF_8));
+    public String aesCBCEncode(String plainText) throws Exception {
 
-        return byteArrayToString(bytes);
+        SecretKeySpec secretKey = new SecretKeySpec(kakao_encrpy_key.getBytes("UTF-8"), "AES");
+        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes());
+
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        c.init(Cipher.ENCRYPT_MODE, secretKey, IV);
+
+        byte[] encrpytionByte = c.doFinal(plainText.getBytes("UTF-8"));
+
+        return Hex.encodeHexString(encrpytionByte);
     }
 
-    public String getSalt() {
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[20];
 
-        sr.nextBytes(salt);
+    public String aesCBCDecode(String encodeText) throws Exception {
 
-        //byte To String
-        StringBuffer sb = new StringBuffer();
-        for(byte b : salt) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
+        SecretKeySpec secretKey = new SecretKeySpec(kakao_encrpy_key.getBytes("UTF-8"), "AES");
+        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes());
 
-    // byte -> String
-    public String byteArrayToString(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte abyte : bytes) {
-            sb.append(abyte);
-            sb.append(" ");
-        }
-        return sb.toString();
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+
+        c.init(Cipher.DECRYPT_MODE, secretKey, IV);
+
+        byte[] decodeByte = Hex.decodeHex(encodeText.toCharArray());
+
+        return new String(c.doFinal(decodeByte), "UTF-8");
     }
 }
