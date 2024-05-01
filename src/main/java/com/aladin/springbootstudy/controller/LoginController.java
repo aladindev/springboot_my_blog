@@ -7,19 +7,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/login")
 public class LoginController {
     private Logger logger = Logger.getLogger(BoardController.class);
 
-    @Value("#{oauth.restapi_key}")
-    String restapi_key;
+    @Value("#{oauth.client_id}")
+    String client_id;
     @Value("#{oauth.redirect_url}")
     String redirect_url;
 
-    @GetMapping(value="/kakao")
-    public ModelAndView post() {
+    @GetMapping(value="/kakao/get-url")
+    public Map<String, String> getKakaoConfig() {
+        Map<String, String> kakaoConfig = new HashMap<>();
+        kakaoConfig.put("client_id", client_id);
+        kakaoConfig.put("redirect_url", redirect_url);
 
-        return null;
+        // 클라이언트 ID와 콜백 URL을 포함하는 Map을 반환합니다.
+        return kakaoConfig;
     }
+
+
 }
