@@ -40,7 +40,6 @@ public class OAuthController {
 
         String encryptResult = encryptService.aesCBCEncode(email);
 
-        logger.info("encryptResult > " + encryptResult);
         return null;
     }
 }
