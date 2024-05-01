@@ -32,7 +32,12 @@ public class OAuthController {
     public Map<String, String> kakaoCallback(@RequestParam("code") String code) throws IOException {
 
         String kakaoAccessToken = kakaoService.getAccessTokenFromKakao(client_id, code);
-        logger.info("kakaoAccessToken > " + kakaoAccessToken);
+
+        HashMap<String, Object> userInfoMap = new HashMap<>();
+        userInfoMap = kakaoService.getUserInfo(kakaoAccessToken);
+
+        logger.info(userInfoMap);
+
         return null;
     }
 }
