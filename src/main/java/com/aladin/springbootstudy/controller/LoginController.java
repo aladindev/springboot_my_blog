@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +22,14 @@ public class LoginController {
     String redirect_url;
 
     @GetMapping(value="/kakao/get-url")
-    public Map<String, String> getKakaoConfig() {
-        Map<String, String> kakaoConfig = new HashMap<>();
-        kakaoConfig.put("client_id", client_id);
-        kakaoConfig.put("redirect_url", redirect_url);
+    public void redirectToKakao(HttpServletResponse response) {
+        String authUrl = "https://kauth.kakao.com/oauth/authorize" +
+                "?response_type=code" +
+                "&client_id=" + client_id +
+                "&redirect_uri=" + redirect_url;
 
-        // 클라이언트 ID와 콜백 URL을 포함하는 Map을 반환합니다.
-        return kakaoConfig;
+        response.setHeader("Location", authUrl);
+        response.setStatus(302);
     }
 
 
