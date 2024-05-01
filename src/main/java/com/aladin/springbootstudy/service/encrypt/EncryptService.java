@@ -1,5 +1,6 @@
 package com.aladin.springbootstudy.service.encrypt;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.encrypt.AesBytesEncryptor;
@@ -9,10 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 
 @Service
-@RequiredArgsConstructor
 public class EncryptService {
-    private final AesBytesEncryptor encryptor;
-
     /** 대칭키 */
     @Value("#{encrypt.kakao-kakao_encrpy_key-key}")
     String kakao_encrpy_key;

@@ -42,6 +42,7 @@ public class OAuthController {
 
         String encryptResult = encryptService.aesBytesEncryptor(email);
 
+        logger.info("encryptResult > " + encryptResult);
         return null;
     }
 }
