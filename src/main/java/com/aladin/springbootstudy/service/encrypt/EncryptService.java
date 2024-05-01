@@ -20,9 +20,10 @@ public class EncryptService {
     String kakao_encrpy_key;
 
     public String aesCBCEncode(String plainText) throws Exception {
-
+        // AES 암호화를 위한 32바이트 키 사용
         SecretKeySpec secretKey = new SecretKeySpec(kakao_encrpy_key.getBytes("UTF-8"), "AES");
-        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes());
+        // AES 블록 크기(16바이트)에 맞는 IV 생성
+        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes("UTF-8"));
 
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
@@ -30,14 +31,15 @@ public class EncryptService {
 
         byte[] encrpytionByte = c.doFinal(plainText.getBytes("UTF-8"));
 
+        // Hex 문자열로 변환 (org.apache.commons.codec.binary.Hex 사용)
         return Hex.encodeHexString(encrpytionByte);
     }
 
-
     public String aesCBCDecode(String encodeText) throws Exception {
-
+        // AES 암호화를 위한 32바이트 키 사용
         SecretKeySpec secretKey = new SecretKeySpec(kakao_encrpy_key.getBytes("UTF-8"), "AES");
-        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes());
+        // AES 블록 크기(16바이트)에 맞는 IV 생성
+        IvParameterSpec IV = new IvParameterSpec(kakao_encrpy_key.substring(0,16).getBytes("UTF-8"));
 
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
