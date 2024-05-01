@@ -7,16 +7,16 @@ async function kakaoLogin() {
         const data = await response.json();
         
         // 변수에 카카오 클라이언트 ID와 콜백 URL을 저장
-        const restapi_key = data.restapi_key;
+        const client_id = data.client_id;
         const redirect_url = data.redirect_url;
-
-        // 얻은 정보를 콘솔에 출력해 볼 수 있습니다.
-        console.log(`카카오 클라이언트 ID: ${restapi_key}`);
-        console.log(`콜백 URL: ${redirect_url}`);
 
         // 필요한 추가 작업을 여기에 수행할 수 있습니다.
         // 예: 클라이언트 ID와 콜백 URL을 가지고 카카오 로그인 URL을 구성하거나,
         // 사용자에게 보여줄 수 있는 어떤 형태의 인터페이스를 구성할 수 있습니다.
+        const request_url = "https://kauth.kakao.com/oauth/authorize?response_type=code&client_id="+client_id+"&redirect_uri="+redirect_uri;
+
+        // 조합된 URL로 페이지를 변경하여 카카오 로그인 페이지로 이동
+        window.location.href = request_url;
 
     } catch (error) {
         // 에러 처리: 네트워크 요청 실패 혹은 응답 변환 중 오류가 발생할 경우
