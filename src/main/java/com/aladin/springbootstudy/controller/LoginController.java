@@ -20,7 +20,7 @@ public class LoginController {
     @Value("#{oauth.redirect_uri}")
     String redirect_uri;
 
-    @GetMapping(value="/kakao/get-url")
+    @GetMapping(value="/kakao")
     public Map<String, String> getKakaoConfig() {
         Map<String, String> kakaoConfig = new HashMap<>();
         kakaoConfig.put("client_id", client_id);

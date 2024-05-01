@@ -1,6 +1,5 @@
-package com.aladin.springbootstudy.service;
+package com.aladin.springbootstudy.service.oauth;
 
-import com.aladin.springbootstudy.controller.BoardController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -15,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class KakaoService {
-    private Logger logger = Logger.getLogger(KakaoService.class);
+public class OAuthKakaoService {
+    private Logger logger = Logger.getLogger(OAuthKakaoService.class);
     public String getAccessTokenFromKakao(String client_id, String code) throws IOException {
         //------kakao POST 요청------
         String reqURL = "https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id="+client_id+"&code=" + code;

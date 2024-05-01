@@ -15,4 +15,13 @@ public class Configuration {
 
         return propertiesFactoryBean;
     }
+
+    @Bean(name="encrypt")
+    public PropertiesFactoryBean encryptPropertiesFactoryBean() throws Exception {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("encrypt.yml");
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
+    }
 }
