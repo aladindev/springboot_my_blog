@@ -1,5 +1,6 @@
 package com.aladin.springbootstudy.service.user;
 
+import com.aladin.springbootstudy.dto.USER_AUTH_DTO;
 import com.aladin.springbootstudy.dto.USER_INFO_DTO;
 import com.aladin.springbootstudy.mapper.UserMapper;
 import org.apache.log4j.Logger;
@@ -19,5 +20,9 @@ public class UserService {
 
     public int insertUserInfo(USER_INFO_DTO userInfoDto) {
         return userMapper.insertUserInfo(userInfoDto);
+    }
+
+    public int insertUserAuth(USER_AUTH_DTO userAuthDto) {
+        return userMapper.insertUserAuth(userAuthDto);
     }
 }

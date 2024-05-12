@@ -1,5 +1,6 @@
 package com.aladin.springbootstudy.controller;
 
+import com.aladin.springbootstudy.dto.USER_AUTH_DTO;
 import com.aladin.springbootstudy.dto.USER_INFO_DTO;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
@@ -59,6 +60,17 @@ public class OAuthController {
             userInfoDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
             userService.insertUserInfo(userInfoDto);
+
+            userInfoDto = userService.getUserInfo(userInfoDto);
+
+            USER_AUTH_DTO userAuthDto = new USER_AUTH_DTO();
+            userAuthDto.setUserId(userInfoDto.getUserId());
+            userAuthDto.setAuthCd("00");
+            userAuthDto.setAuthLevel("00");
+            userAuthDto.setCreateDtm(new java.sql.Timestamp(new Date().getTime()));
+            userAuthDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
+
+
         } else {
             return "/";
         }
