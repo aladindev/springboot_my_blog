@@ -16,7 +16,7 @@ public interface UserMapper {
             "VALUES(LPAD(USER_INFO_SEQ.NEXTVAL, 6, '0'), #{dtoUserInfo.secretKey}, #{dtoUserInfo.createDtm}, #{dtoUserInfo.changeDtm})")
     int insertUserInfo(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
 
-    @Insert("INSERT INTO USER_INFO(USER_ID, AUTH_CD, AUTH_LEVEL, CRATE_DTM, CHANGE_DTM)" +
+    @Insert("INSERT INTO USER_AUTH(USER_ID, AUTH_CD, AUTH_LEVEL, CREATE_DTM, CHANGE_DTM)" +
             "VALUES(#{userAuthDto.userId}, #{userAuthDto.authCd}, #{userAuthDto.authLevel}, #{userAuthDto.createDtm}, #{userAuthDto.changeDtm})")
     int insertUserAuth(@Param("userAuthDto") USER_AUTH_DTO userAuthDto);
 }
