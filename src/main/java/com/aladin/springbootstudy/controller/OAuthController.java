@@ -1,7 +1,10 @@
 package com.aladin.springbootstudy.controller;
 
+import com.aladin.springbootstudy.dto.USER_INFO_DTO;
+import com.aladin.springbootstudy.mapper.UserMapper;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
+import com.aladin.springbootstudy.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +28,9 @@ public class OAuthController {
     @Autowired
     EncryptService encryptService;
 
+    @Autowired
+    UserService userService;
+
     @Value("#{oauth.client_id}")
     String client_id;
 
@@ -39,6 +45,10 @@ public class OAuthController {
         String email = userInfoMap.get("email") != null ? userInfoMap.get("email").toString() : "";
 
         String encryptResult = encryptService.aesCBCEncode(email);
+
+        USER_INFO_DTO userInfoDto = new USER_INFO_DTO();
+        userInfoDto.set
+        userService.getUserInfo()
 
         return null;
     }

@@ -1,14 +1,14 @@
 package com.aladin.springbootstudy.dto;
 
 public class USER_INFO_DTO {
-    private String user_id;
-    private String secret_key;
+    private String userId;
+    private String secretKey;
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

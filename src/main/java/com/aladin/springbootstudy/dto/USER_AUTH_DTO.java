@@ -1,15 +1,15 @@
 package com.aladin.springbootstudy.dto;
 
 public class USER_AUTH_DTO {
-    private String user_id;
-    private String auth_cd;
-    private String auth_level;
+    private String userId;
+    private String authCd;
+    private String authLevel;
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
