@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -36,7 +37,7 @@ public class OAuthController {
     String client_id;
 
     @GetMapping(value="/kakao/callback")
-    public String kakaoCallback(@RequestParam("code") String code) throws Exception {
+    public ModelAndView kakaoCallback(@RequestParam("code") String code) throws Exception {
 
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
@@ -65,6 +66,8 @@ public class OAuthController {
 
             userInfoDto = userService.getUserInfo(userInfoDto);
 
+            logger.info("userInfoDto > " + userInfoDto.getUserId());
+
             USER_AUTH_DTO userAuthDto = new USER_AUTH_DTO();
             userAuthDto.setUserId(userInfoDto.getUserId());
             userAuthDto.setAuthCd("00");
@@ -73,12 +76,13 @@ public class OAuthController {
             userAuthDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
             userService.insertUserAuth(userAuthDto);
+            ModelAndView mv = new ModelAndView("index");
+            return mv;
 
 
         } else {
-            return "/";
+            ModelAndView mv = new ModelAndView("index");
+            return mv;
         }
-
-        return null;
     }
 }
