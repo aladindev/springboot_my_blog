@@ -58,7 +58,7 @@ public class OAuthController {
             userInfoDto.setCreateDtm(new java.sql.Timestamp(new Date().getTime()));
             userInfoDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
-            userService.joinUser(userInfoDto);
+            userService.insertUserInfo(userInfoDto);
         } else {
             return "/";
         }

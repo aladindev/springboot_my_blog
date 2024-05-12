@@ -9,9 +9,9 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface UserMapper {
     @Select("SELECT USER_ID AS userId FROM USER_INFO WHERE SECRET_KEY = #{dtoUserInfo.secretKey}")
-    USER_INFO_DTO findOne(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
+    USER_INFO_DTO findUserInfo(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
 
     @Insert("INSERT INTO USER_INFO(USER_ID, SECRET_KEY, CREATE_DTM, CHANGE_DTM)" +
             "VALUES(LPAD(USER_INFO_SEQ.NEXTVAL, 6, '0'), #{dtoUserInfo.secretKey}, #{dtoUserInfo.createDtm}, #{dtoUserInfo.changeDtm})")
-    int insertOne(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
+    int insertUserInfo(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
 }
