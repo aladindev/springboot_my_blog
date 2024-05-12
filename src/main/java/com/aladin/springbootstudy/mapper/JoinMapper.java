@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface JoinMapper {
-    @Insert("INSERT USER_INFO(USER_ID, SECRET_KEY, CREATE_DTM, CHANGE_DTM)" +
+    @Insert("INSERT INTO USER_INFO(USER_ID, SECRET_KEY, CREATE_DTM, CHANGE_DTM)" +
             "VALUES(#{dtoUserInfo.userId}, #{dtoUserInfo.secretKey}, #{dtoUserInfo.createDtm}, #{dtoUserInfo.changeDtm}")
     int insertUser(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
 }

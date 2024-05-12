@@ -3,6 +3,7 @@ package com.aladin.springbootstudy.controller;
 import com.aladin.springbootstudy.dto.USER_INFO_DTO;
 import com.aladin.springbootstudy.mapper.UserMapper;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
+import com.aladin.springbootstudy.service.join.JoinService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
 import com.aladin.springbootstudy.service.user.UserService;
 import org.apache.log4j.Logger;
@@ -32,7 +33,7 @@ public class OAuthController {
     @Autowired
     UserService userService;
     @Autowired
-    Join
+    JoinService joinService;
 
     @Value("#{oauth.client_id}")
     String client_id;
@@ -66,6 +67,7 @@ public class OAuthController {
             userInfoDto.setCreateDtm(new Date());
             userInfoDto.setChangeDtm(new Date());
 
+            joinService.joinUser(userInfoDto);
         }
 
         return null;
