@@ -38,4 +38,5 @@ build/
 
 ### yml ###
 **/*.yml
+!**/oauth.yml
 **/*.yaml

@@ -1,0 +1,5 @@
+# oauth
+oauth:
+  kakao:
+  client_id: ${OAUTH_KAKAO_CLIENTID}
+  redirect_uri: ${OAUTH_KAKO_REDIRECTURI}
