@@ -31,6 +31,8 @@ public class OAuthController {
 
     @Autowired
     UserService userService;
+    @Autowired
+    Join
 
     @Value("#{oauth.client_id}")
     String client_id;
