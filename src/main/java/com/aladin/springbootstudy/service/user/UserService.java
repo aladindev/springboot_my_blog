@@ -16,4 +16,8 @@ public class UserService {
     public USER_INFO_DTO getUserInfo(USER_INFO_DTO userInfoDto) {
         return userMapper.findOne(userInfoDto);
     }
+
+    public int joinUser(USER_INFO_DTO userInfoDto) {
+        return userMapper.insertOne(userInfoDto);
+    }
 }

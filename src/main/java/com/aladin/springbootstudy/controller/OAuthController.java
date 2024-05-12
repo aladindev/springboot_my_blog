@@ -1,9 +1,7 @@
 package com.aladin.springbootstudy.controller;
 
 import com.aladin.springbootstudy.dto.USER_INFO_DTO;
-import com.aladin.springbootstudy.mapper.UserMapper;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
-import com.aladin.springbootstudy.service.join.JoinService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
 import com.aladin.springbootstudy.service.user.UserService;
 import org.apache.log4j.Logger;
@@ -14,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/oauth")
@@ -32,14 +28,12 @@ public class OAuthController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    JoinService joinService;
 
     @Value("#{oauth.client_id}")
     String client_id;
 
     @GetMapping(value="/kakao/callback")
-    public Map<String, String> kakaoCallback(@RequestParam("code") String code) throws Exception {
+    public String kakaoCallback(@RequestParam("code") String code) throws Exception {
 
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
@@ -58,16 +52,15 @@ public class OAuthController {
         userInfoDto.setSecretKey(encryptResult);
         userInfoDto = userService.getUserInfo(userInfoDto);
 
-        logger.info("userInfoDto > " + userInfoDto);
-
         if(userInfoDto == null) {
             userInfoDto = new USER_INFO_DTO();
             userInfoDto.setSecretKey(encryptResult);
             userInfoDto.setCreateDtm(new java.sql.Timestamp(new Date().getTime()));
             userInfoDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
-
-            joinService.joinUser(userInfoDto);
+            userService.joinUser(userInfoDto);
+        } else {
+            return "/";
         }
 
         return null;
