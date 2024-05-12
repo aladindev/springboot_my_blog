@@ -39,18 +39,22 @@ public class OAuthController {
 
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
+        /** Kakao Auth */
         HashMap<String, Object> userInfoMap = new HashMap<>();
         userInfoMap = OAuthKakaoService.getUserInfo(kakaoAccessToken);
-
         String email = userInfoMap.get("email") != null ? userInfoMap.get("email").toString() : "";
-
         String encryptResult = encryptService.aesCBCEncode(email);
 
+        /** DB Info */
         USER_INFO_DTO userInfoDto = new USER_INFO_DTO();
         userInfoDto.setSecretKey(encryptResult);
         userInfoDto = userService.getUserInfo(userInfoDto);
 
         logger.info("userInfoDto > " + userInfoDto);
+
+        if(userInfoDto == null) {
+
+        }
 
         return null;
     }

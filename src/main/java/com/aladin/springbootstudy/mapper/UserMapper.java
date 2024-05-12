@@ -7,6 +7,6 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT SECRET_KEY FROM USER_INFO WHERE USER_ID WHERE SECRET_KEY = #{dtoUserInfo.secretKey}")
+    @Select("SELECT SECRET_KEY FROM USER_INFO WHERE SECRET_KEY = #{dtoUserInfo.secretKey}")
     USER_INFO_DTO findOne(@Param("dtoUserInfo") USER_INFO_DTO dtoUserInfo);
 }
