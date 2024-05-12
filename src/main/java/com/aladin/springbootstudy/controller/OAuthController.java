@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +61,8 @@ public class OAuthController {
             userInfoDto = new USER_INFO_DTO();
             userInfoDto.setUserId(email);
             userInfoDto.setSecretKey(encryptResult);
-
+            userInfoDto.setCreateDtm(new Date());
+            userInfoDto.setChangeDtm(new Date());
 
         }
 
