@@ -1,4 +1,3 @@
-# oauth
 encrypt:
     kakao:
     encrypt_key: ${ENCRYPT_KAKAO_ENCRYPTKEY}
