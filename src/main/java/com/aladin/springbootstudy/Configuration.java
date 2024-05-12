@@ -9,16 +9,20 @@ import org.springframework.core.io.ClassPathResource;
 
 public class Configuration {
     @Bean(name = "oauth")
-    public YamlPropertiesFactoryBean kakaoPropertiesFactoryBean() {
-        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-        yaml.setResources(new ClassPathResource("oauth.yml"));
-        return yaml;
+    public PropertiesFactoryBean kakaoPropertiesFactoryBean() {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("oauth.yml");
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
     }
 
     @Bean(name = "encrypt")
-    public YamlPropertiesFactoryBean encryptPropertiesFactoryBean() {
-        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
-        yaml.setResources(new ClassPathResource("encrypt.yml"));
-        return yaml;
+    public PropertiesFactoryBean encryptPropertiesFactoryBean() {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        ClassPathResource classPathResource = new ClassPathResource("encrypt.yml");
+        propertiesFactoryBean.setLocation(classPathResource);
+
+        return propertiesFactoryBean;
     }
 }
