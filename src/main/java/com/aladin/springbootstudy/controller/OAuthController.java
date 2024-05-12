@@ -62,10 +62,10 @@ public class OAuthController {
 
         if(userInfoDto == null) {
             userInfoDto = new USER_INFO_DTO();
-            userInfoDto.setUserId(email);
             userInfoDto.setSecretKey(encryptResult);
-            userInfoDto.setCreateDtm(new Date());
-            userInfoDto.setChangeDtm(new Date());
+            userInfoDto.setCreateDtm(new java.sql.Timestamp(new Date().getTime()));
+            userInfoDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
+
 
             joinService.joinUser(userInfoDto);
         }

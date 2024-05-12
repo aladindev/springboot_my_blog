@@ -11,6 +11,6 @@ public class JoinService {
     @Autowired
     JoinMapper joinMapper;
     public int joinUser(USER_INFO_DTO userInfoDto) {
-        return joinMapper.insertUser(userInfoDto);
+        return joinMapper.insertOne(userInfoDto);
     }
 }
