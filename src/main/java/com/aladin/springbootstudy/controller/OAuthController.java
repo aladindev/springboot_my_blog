@@ -45,6 +45,10 @@ public class OAuthController {
         String email = userInfoMap.get("email") != null ? userInfoMap.get("email").toString() : "";
         String encryptResult = encryptService.aesCBCEncode(email);
 
+        if("".equals(email)) {
+            throw new Exception();
+        }
+
         /** DB Info */
         USER_INFO_DTO userInfoDto = new USER_INFO_DTO();
         userInfoDto.setSecretKey(encryptResult);
@@ -53,6 +57,10 @@ public class OAuthController {
         logger.info("userInfoDto > " + userInfoDto);
 
         if(userInfoDto == null) {
+            userInfoDto = new USER_INFO_DTO();
+            userInfoDto.setUserId(email);
+            userInfoDto.setSecretKey(encryptResult);
+
 
         }
 
