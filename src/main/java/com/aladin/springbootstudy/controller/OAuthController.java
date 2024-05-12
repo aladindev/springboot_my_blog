@@ -47,7 +47,7 @@ public class OAuthController {
         String encryptResult = encryptService.aesCBCEncode(email);
 
         USER_INFO_DTO userInfoDto = new USER_INFO_DTO();
-        userInfoDto.set
+        userInfoDto.se
         userService.getUserInfo()
 
         return null;

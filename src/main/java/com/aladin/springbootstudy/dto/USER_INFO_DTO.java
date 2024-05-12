@@ -11,4 +11,12 @@ public class USER_INFO_DTO {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
 }
