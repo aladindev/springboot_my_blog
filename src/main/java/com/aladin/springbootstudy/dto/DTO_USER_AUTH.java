@@ -2,7 +2,6 @@ package com.aladin.springbootstudy.dto;
 
 import javax.persistence.Entity;
 
-@Entity
 public class DTO_USER_AUTH {
     private String user_id;
     private String auth_cd;

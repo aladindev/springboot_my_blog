@@ -1,11 +1,14 @@
 package com.aladin.springbootstudy.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class ENTITY_USER_AUTH {
+    @Id
     private String user_id;
+    @Id
     private String auth_cd;
     private String auth_level;
 

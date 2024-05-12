@@ -3,7 +3,6 @@ package com.aladin.springbootstudy.dto;
 import javax.persistence.Entity;
 import java.util.Objects;
 
-@Entity
 public class DTO_USER_INFO {
     private String user_id;
     private String secret_key;

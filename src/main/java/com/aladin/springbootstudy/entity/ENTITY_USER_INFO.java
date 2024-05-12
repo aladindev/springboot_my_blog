@@ -1,10 +1,12 @@
 package com.aladin.springbootstudy.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class ENTITY_USER_INFO {
+    @Id
     private String user_id;
     private String secret_key;
 
