@@ -25,9 +25,9 @@ public class BoardController {
         return mv;
     }
 
-    @GetMapping(value="/about")
+    @GetMapping(value="/editor")
     public ModelAndView about() {
-        logger.warn("post controller ");
+        logger.warn("editor controller ");
         ModelAndView mv = new ModelAndView("board/about");
         return mv;
     }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,12 +78,17 @@ public class OAuthController {
             userAuthDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
             userService.insertUserAuth(userAuthDto);
-            ModelAndView mv = new ModelAndView("index");
+            RedirectView redirectView = new RedirectView("index");
+            ModelAndView mv = new ModelAndView(redirectView);
+
+            // Session이 있으면 가져오고 없으면 Session을 생성해서 return (default = true)
+            // HttpSession session = httpServeltRequest.getSession(true);
             return mv;
 
 
         } else {
-            ModelAndView mv = new ModelAndView("index");
+            RedirectView redirectView = new RedirectView("index");
+            ModelAndView mv = new ModelAndView(redirectView);
             return mv;
         }
     }
