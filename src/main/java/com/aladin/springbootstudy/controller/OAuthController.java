@@ -33,7 +33,7 @@ public class OAuthController {
     @Autowired
     UserService userService;
 
-    @Value("#{oauth.client_id}")
+    @Value("${oauth.client_id}")
     String client_id;
 
     @GetMapping(value="/kakao/callback")

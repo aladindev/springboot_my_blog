@@ -16,7 +16,7 @@ import java.security.SecureRandom;
 @Service
 public class EncryptService {
     /** 대칭키 */
-    @Value("#{encrypt['kakao.encrypt_key']}")
+    @Value("${encrypt['kakao.encrypt_key']}")
     String kakao_encrpy_key;
 
     public String aesCBCEncode(String plainText) throws Exception {
