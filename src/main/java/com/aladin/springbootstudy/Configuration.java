@@ -3,26 +3,23 @@ package com.aladin.springbootstudy;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.io.ClassPathResource;
 
 @org.springframework.context.annotation.Configuration
-
 public class Configuration {
-    @Bean(name = "oauth")
-    public PropertiesFactoryBean kakaoPropertiesFactoryBean() {
-        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        ClassPathResource classPathResource = new ClassPathResource("oauth.yml");
-        propertiesFactoryBean.setLocation(classPathResource);
 
-        return propertiesFactoryBean;
-    }
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer properties() {
+        PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+        YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
 
-    @Bean(name = "encrypt")
-    public PropertiesFactoryBean encryptPropertiesFactoryBean() {
-        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        ClassPathResource classPathResource = new ClassPathResource("encrypt.yml");
-        propertiesFactoryBean.setLocation(classPathResource);
+        // 여러 YAML 파일을 로드할 경우, 아래와 같이 처리할 수 있습니다.
+        yaml.setResources(new ClassPathResource("oauth.yml"), new ClassPathResource("encrypt.yml"));
 
-        return propertiesFactoryBean;
+        propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
+
+        return propertySourcesPlaceholderConfigurer;
     }
 }
+
