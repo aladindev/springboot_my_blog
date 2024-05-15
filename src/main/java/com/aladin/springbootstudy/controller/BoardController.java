@@ -17,4 +17,11 @@ public class BoardController {
         ModelAndView mv = new ModelAndView("board/post");
         return mv;
     }
+
+    @GetMapping(value="/category")
+    public ModelAndView category() {
+        logger.warn("post controller ");
+        ModelAndView mv = new ModelAndView("board/category");
+        return mv;
+    }
 }
