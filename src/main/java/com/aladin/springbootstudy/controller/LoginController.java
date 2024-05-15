@@ -15,9 +15,9 @@ import java.util.Map;
 public class LoginController {
     private Logger logger = Logger.getLogger(BoardController.class);
 
-    @Value("#{oauth.client_id}")
+    @Value("${oauth.client_id}")
     String client_id;
-    @Value("#{oauth.redirect_uri}")
+    @Value("${oauth.redirect_uri}")
     String redirect_uri;
 
     @GetMapping(value="/kakao")
