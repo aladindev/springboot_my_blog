@@ -1,6 +1,7 @@
 package com.aladin.springbootstudy.controller;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -9,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/") // 
 public class MainController {
 
-    private Logger logger = Logger.getLogger(MainController.class);
+    private Logger logger = LoggerFactory.getLogger(MainController.class);
     // 로컬 서버 포트 변경
     @GetMapping(value="/index")
     public ModelAndView index() {

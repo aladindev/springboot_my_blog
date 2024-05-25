@@ -5,7 +5,8 @@ import com.aladin.springbootstudy.dto.USER_INFO_DTO;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
 import com.aladin.springbootstudy.service.user.UserService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 @RequestMapping("/oauth")
 @Transactional
 public class OAuthController {
-    private Logger logger = Logger.getLogger(BoardController.class);
+    private Logger logger = LoggerFactory.getLogger(BoardController.class);
 
     @Autowired
     OAuthKakaoService OAuthKakaoService;
@@ -43,6 +44,7 @@ public class OAuthController {
     public ModelAndView kakaoCallback(HttpServletRequest httpServletRequest, @RequestParam("code") String code) throws Exception {
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
+        logger.info("kakao callback start");
         /** Kakao Auth */
         HashMap<String, Object> userInfoMap = new HashMap<>();
         userInfoMap = OAuthKakaoService.getUserInfo(kakaoAccessToken);
