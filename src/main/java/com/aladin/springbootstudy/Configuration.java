@@ -15,7 +15,8 @@ public class Configuration {
         YamlPropertiesFactoryBean yaml = new YamlPropertiesFactoryBean();
 
         // 여러 YAML 파일을 로드할 경우, 아래와 같이 처리할 수 있습니다.
-        yaml.setResources(new ClassPathResource("oauth.yml"), new ClassPathResource("encrypt.yml"));
+        yaml.setResources(new ClassPathResource("oauth.yml"), new ClassPathResource("encrypt.yml")
+                    , new ClassPathResource("oauth-local.yml"), new ClassPathResource("encrypt-local.yml"));
 
         propertySourcesPlaceholderConfigurer.setProperties(yaml.getObject());
 

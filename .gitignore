@@ -34,13 +34,13 @@ build/
 
 ### properties ###
 **/*.properties
-!**/application.properties
-!**/application-kafka.properties
+#!**/application.properties
+#!**/application-kafka.properties
 !**/log4j.properties
 
 ### yml ###
 **/*.yml
-!**/encrypt.yml
+#!**/encrypt.yml
 
 **/*.yaml
-!**/oauth.yaml
+#!**/oauth.yaml
