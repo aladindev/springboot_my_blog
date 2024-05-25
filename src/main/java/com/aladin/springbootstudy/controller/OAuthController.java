@@ -82,14 +82,14 @@ public class OAuthController {
             userAuthDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
             userService.insertUserAuth(userAuthDto);
-            RedirectView redirectView = new RedirectView("index");
+            RedirectView redirectView = new RedirectView("/index");
             ModelAndView mv = new ModelAndView(redirectView);
 
             return mv;
 
 
         } else {
-            RedirectView redirectView = new RedirectView("index");
+            RedirectView redirectView = new RedirectView("/index");
             ModelAndView mv = new ModelAndView(redirectView);
             return mv;
         }

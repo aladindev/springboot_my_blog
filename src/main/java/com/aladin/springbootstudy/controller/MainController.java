@@ -14,7 +14,7 @@ public class MainController {
     // 로컬 서버 포트 변경
     @GetMapping(value="/index")
     public ModelAndView index() {
-        logger.debug("/index");
+        logger.warn("/index");
         ModelAndView mv = new ModelAndView("index");
         return mv;
     }
@@ -22,7 +22,7 @@ public class MainController {
     // 로컬 서버 포트 변경
     @GetMapping(value="/")
     public ModelAndView main() {
-        logger.debug("/");
+        logger.warn("/");
         ModelAndView mv = new ModelAndView("index");
         return mv;
     }
