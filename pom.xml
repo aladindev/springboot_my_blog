@@ -17,19 +17,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-	<profiles>
-		<profile>
-			<id>local</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<filters>
-					<filter>src/main/resources/application-local.properties</filter>
-				</filters>
-			</build>
-		</profile>
-	</profiles>
 	<dependencies>
 		<!-- OAuth2 lib -->
 		<dependency>
@@ -162,6 +149,27 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>src/main/resources/application-local.properties</filter>
+				</filters>
+			</build>
+		</profile>
+	</profiles>
 </project>
