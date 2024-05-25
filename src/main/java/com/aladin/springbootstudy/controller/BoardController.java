@@ -29,7 +29,7 @@ public class BoardController {
     @GetMapping(value="/editor")
     public ModelAndView about() {
         logger.warn("editor controller ");
-        ModelAndView mv = new ModelAndView("board/about");
+        ModelAndView mv = new ModelAndView("board/editor");
         return mv;
     }
 }
