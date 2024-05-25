@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.aladin</groupId>
 	<artifactId>springboot_my_blog</artifactId>
-<!--	<version>0.0.1-SNAPSHOT</version>-->
+	<!--	<version>0.0.1-SNAPSHOT</version>-->
 	<version>0.3</version>
 	<name>springboot_my_blog</name>
 	<description>springboot_my_blog</description>
@@ -122,7 +122,7 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>2.8.2</version>
 		</dependency>
-<!--		 https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
+		<!--		 https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka</artifactId>
@@ -130,12 +130,12 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
+		<!--		<resources>-->
+		<!--			<resource>-->
+		<!--				<directory>src/main/resources</directory>-->
+		<!--				<filtering>true</filtering>-->
+		<!--			</resource>-->
+		<!--		</resources>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -149,27 +149,6 @@
 					</excludes>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
-	<profiles>
-		<profile>
-			<id>local</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-			<build>
-				<filters>
-					<filter>src/main/resources/application-local.properties</filter>
-				</filters>
-			</build>
-		</profile>
-	</profiles>
 </project>
