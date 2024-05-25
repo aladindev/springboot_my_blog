@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -39,8 +40,7 @@ public class OAuthController {
     String client_id;
 
     @GetMapping(value="/kakao/callback")
-    public ModelAndView kakaoCallback(@RequestParam("code") String code) throws Exception {
-
+    public ModelAndView kakaoCallback(HttpServletRequest httpServletRequest, @RequestParam("code") String code) throws Exception {
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
         /** Kakao Auth */
@@ -57,6 +57,8 @@ public class OAuthController {
         USER_INFO_DTO userInfoDto = new USER_INFO_DTO();
         userInfoDto.setSecretKey(encryptResult);
         userInfoDto = userService.getUserInfo(userInfoDto);
+
+
 
         if(userInfoDto == null) {
             userInfoDto = new USER_INFO_DTO();
@@ -81,8 +83,6 @@ public class OAuthController {
             RedirectView redirectView = new RedirectView("index");
             ModelAndView mv = new ModelAndView(redirectView);
 
-            // Session이 있으면 가져오고 없으면 Session을 생성해서 return (default = true)
-            // HttpSession session = httpServeltRequest.getSession(true);
             return mv;
 
 
