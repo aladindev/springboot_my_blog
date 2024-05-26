@@ -92,9 +92,7 @@ public class OAuthController {
         }
 
         //sessionService
-        sessionService.addSession(httpServletRequest, userInfoDto.getUserId());
-
-        redirectAttributes.addFlashAttribute("userInfoDto", userInfoDto);
+        sessionService.addSession(httpServletRequest, userInfoDto);
         return mv;
     }
 }

@@ -83,14 +83,14 @@
 
         <div class="position-relative">
             <!-- userInfoDto가 null이 아닐 경우에만 표시 -->
-            <div th:if="${userInfoDto != null}">
-                <a href="#" class="mx-2"><span th:text="${userInfoDto.nickname} + ' 님 환영합니다.'"></span></a>
+            <div th:if="${session.userInfoDto != null}">
+                <a href="#" class="mx-2"><span th:text="${session.userInfoDto.nickname} + ' 님 환영합니다.'"></span></a>
                 <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </div>
 
             <!-- userInfoDto가 null일 경우에만 표시 -->
-            <div th:if="${userInfoDto == null}">
+            <div th:if="${session.userInfoDto == null}">
                 <a onclick="kakaoLogin();" href="#" class="mx-2">
                     <img src="/assets/img/kakao.png" alt="" class="img-fluid" width="25" height="25">
                 </a>
