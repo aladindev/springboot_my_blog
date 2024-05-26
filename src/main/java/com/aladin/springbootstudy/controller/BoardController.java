@@ -33,13 +33,8 @@ public class BoardController {
     }
 
     @GetMapping(value="/write") // editor
-    public Map<String, Object> writePost(@SessionAttribute(name = "userId", required = false) String userId) {
-        Map<String, Object> resultMap = new HashMap<>();
-        if(userId != null && !"".equals(userId)) {
-            resultMap.put("isLogin", true);
-        } else {
-            resultMap.put("isLogin", false);
-        }
-        return resultMap;
+    public ModelAndView writePost() {
+        ModelAndView mv = new ModelAndView("board/write");
+        return mv;
     }
 }
