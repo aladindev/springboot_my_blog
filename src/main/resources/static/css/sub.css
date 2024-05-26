@@ -14,14 +14,14 @@
 }
 
 /* 5 */
-.btn-5 {
+.btn-submit-1 {
   background: #000;
   color: #fff;
   line-height: 42px;
   padding: 0;
   border: none;
 }
-.btn-5:hover {
+.btn-submit-1:hover {
   background: transparent;
   color: #000;
    box-shadow:
@@ -30,8 +30,8 @@
    7px 7px 20px 0px #0002,
    4px 4px 5px 0px #0001;
 }
-.btn-5:before,
-.btn-5:after{
+.btn-submit-1:before,
+.btn-submit-1:after{
   content:'';
   position:absolute;
   top:0;
@@ -41,14 +41,14 @@
   background: #000;
   transition:400ms ease all;
 }
-.btn-5:after{
+.btn-submit-1:after{
   right:inherit;
   top:inherit;
   left:0;
   bottom:0;
 }
-.btn-5:hover:before,
-.btn-5:hover:after{
+.btn-submit-1:hover:before,
+.btn-submit-1:hover:after{
   width:100%;
   transition:800ms ease all;
 }
