@@ -59,6 +59,7 @@ function logout() {
 
 function write_post() {
         try {
+            alert("onclick write_post");
         // fetch API를 사용하여 로그아웃 요청을 보냅니다.
         fetch('/login/isLogin', {
             method: 'POST', // HTTP 메소드 지정
@@ -78,18 +79,18 @@ function write_post() {
                 });
             } else {
                 // 서버로부터 오류 응답을 받은 경우, 사용자에게 알립니다.
-                alert('로그아웃 실패!');
+                alert('세션 유효성 검증 실패!');
             }
         })
         .catch(error => {
             // 네트워크 오류 등의 이유로 요청이 실패한 경우
-            console.error('로그아웃 요청 중 오류 발생:', error);
-            alert('로그아웃 중 문제가 발생했습니다.');
+            console.error('세션 유효성 검증 요청 중 오류 발생:', error);
+            alert('세션 유효성 검증  중 문제가 발생했습니다.');
         });
     } catch (error) {
         // try 블록 내 코드 실행 중 발생한 예외를 처리합니다.
-        console.error('로그아웃 처리 중 예외 발생:', error);
-        alert('로그아웃 처리 중 오류가 발생했습니다.');
+        console.error('세션 유효성 검증 처리 중 예외 발생:', error);
+        alert('세션 유효성 검증 처리 중 오류가 발생했습니다.');
     }
 }
 

@@ -10,6 +10,11 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
+    <!-- CSRF PROTECT -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+
     <!-- Favicons -->
     <link href="/assets/img/favicon.png" rel="icon">
     <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -76,7 +81,7 @@
                     </ul>
                 </li>
 
-                <li><a onlick="write_post();">write post</a></li>
+                <li><a href="#" onclick="write_post();">write post</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav><!-- .navbar -->
