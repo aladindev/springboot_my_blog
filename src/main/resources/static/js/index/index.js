@@ -60,17 +60,21 @@ function logout() {
 function write_post() {
         try {
         // fetch API를 사용하여 로그아웃 요청을 보냅니다.
-        fetch('/login/logout', {
-            method: 'GET', // HTTP 메소드 지정
+        fetch('/login/isLogin', {
+            method: 'POST', // HTTP 메소드 지정
             credentials: 'include' // 쿠키를 포함시키기 위해 credentials 옵션을 'include'로 설정
         })
         .then(response => {
             // 서버로부터의 응답을 처리합니다.
-            // 로그아웃 성공 시 로그인 페이지 또는 홈페이지로 리다이렉트 할 수 있습니다.
             if (response.ok) {
                 response.json().then(data => {
-                    alert(data.resultMsg); // 서버로부터 받은 resultMsg를 출력
-                    window.location.href = '/index';
+                    if(data.isLogin) {
+                        window.location.href = '/board/write';
+                    } else {
+                        alert("로그인이 필요합니다.");
+                        return;
+                    }
+                    
                 });
             } else {
                 // 서버로부터 오류 응답을 받은 경우, 사용자에게 알립니다.
