@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +46,8 @@ public class OAuthController {
     String client_id;
 
     @GetMapping(value="/kakao/callback")
-    public ModelAndView kakaoCallback(HttpServletRequest httpServletRequest, @RequestParam("code") String code) throws Exception {
+    public ModelAndView kakaoCallback(HttpServletRequest httpServletRequest, @RequestParam("code") String code
+                                     , RedirectAttributes redirectAttributes) throws Exception {
         String kakaoAccessToken = OAuthKakaoService.getAccessTokenFromKakao(client_id, code);
 
         logger.info("kakao callback start");
@@ -91,6 +93,8 @@ public class OAuthController {
 
         //sessionService
         sessionService.addSession(httpServletRequest, userInfoDto.getUserId());
+
+        redirectAttributes.addFlashAttribute("userInfoDto", userInfoDto);
         return mv;
     }
 }
