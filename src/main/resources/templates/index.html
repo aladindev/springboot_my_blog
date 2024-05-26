@@ -84,7 +84,6 @@
         <div class="position-relative">
             <!-- userInfoDto가 null이 아닐 경우에만 표시 -->
             <div th:if="${userInfoDto != null}">
-                <p class="mx-2" th:text="${userInfoDto.nickname} + ' 님 환영합니다.'"></p>
                 <a href="#" class="mx-2"><span th:text="${userInfoDto.nickname} + ' 님 환영합니다.'"></span></a>
                 <a href="#" class="mx-2 js-search-open"><span class="bi-search"></span></a>
                 <i class="bi bi-list mobile-nav-toggle"></i>
