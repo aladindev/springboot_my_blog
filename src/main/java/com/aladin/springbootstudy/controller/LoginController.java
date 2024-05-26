@@ -35,11 +35,13 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, Model model) {
+    public Map<String, String> logout(HttpServletRequest request, Model model) {
         HttpSession session = request.getSession(false);  // Session이 없으면 null return
         if(session != null) {
             session.invalidate();
         }
-        return "redirect:/index";
+        Map<String, String> resMap = new HashMap<>();
+        resMap.put("resultMsg", "정상적으로 로그아웃 되었습니다.");
+        return resMap;
     }
 }

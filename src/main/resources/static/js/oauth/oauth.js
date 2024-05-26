@@ -36,8 +36,10 @@ function logout() {
             // 서버로부터의 응답을 처리합니다.
             // 로그아웃 성공 시 로그인 페이지 또는 홈페이지로 리다이렉트 할 수 있습니다.
             if (response.ok) {
-                // 예: 로그인 페이지로 리다이렉트
-                window.location.href = '/login';
+                response.json().then(data => {
+                    alert(data.resultMsg); // 서버로부터 받은 resultMsg를 출력
+                    window.location.href = '/index';
+                });
             } else {
                 // 서버로부터 오류 응답을 받은 경우, 사용자에게 알립니다.
                 alert('로그아웃 실패!');
