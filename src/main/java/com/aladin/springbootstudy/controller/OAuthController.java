@@ -4,6 +4,7 @@ import com.aladin.springbootstudy.dto.USER_AUTH_DTO;
 import com.aladin.springbootstudy.dto.USER_INFO_DTO;
 import com.aladin.springbootstudy.service.encrypt.EncryptService;
 import com.aladin.springbootstudy.service.oauth.OAuthKakaoService;
+import com.aladin.springbootstudy.service.session.SessionService;
 import com.aladin.springbootstudy.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,9 @@ public class OAuthController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SessionService sessionService;
+
     @Value("${oauth.client_id}")
     String client_id;
 
@@ -60,7 +64,8 @@ public class OAuthController {
         userInfoDto.setSecretKey(encryptResult);
         userInfoDto = userService.getUserInfo(userInfoDto);
 
-
+        RedirectView redirectView = new RedirectView("/index");
+        ModelAndView mv = new ModelAndView(redirectView);
 
         if(userInfoDto == null) {
             userInfoDto = new USER_INFO_DTO();
@@ -82,16 +87,10 @@ public class OAuthController {
             userAuthDto.setChangeDtm(new java.sql.Timestamp(new Date().getTime()));
 
             userService.insertUserAuth(userAuthDto);
-            RedirectView redirectView = new RedirectView("/index");
-            ModelAndView mv = new ModelAndView(redirectView);
-
-            return mv;
-
-
-        } else {
-            RedirectView redirectView = new RedirectView("/index");
-            ModelAndView mv = new ModelAndView(redirectView);
-            return mv;
         }
+
+        //sessionService
+        sessionService.addSession(httpServletRequest, userInfoDto.getUserId());
+        return mv;
     }
 }

@@ -13,6 +13,6 @@ public class SessionService {
         httpServletRequest.getSession().invalidate();
         HttpSession session = httpServletRequest.getSession(true);  // Session이 없으면 생성
         session.setAttribute("userId", userId);
-        session.setMaxInactiveInterval(600); // Session이 30분동안 유지
+        session.setMaxInactiveInterval(600); // Session이 10분동안 유지
     }
 }

@@ -9,6 +9,8 @@ public class USER_INFO_DTO {
     private Date createDtm;
     private Date changeDtm;
 
+    private String nickname;
+
     public Date getCreateDtm() {
         return createDtm;
     }
@@ -39,5 +41,13 @@ public class USER_INFO_DTO {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }
