@@ -58,9 +58,8 @@ function logout() {
 }
 
 function write_post() {
-        try {
-            alert("onclick write_post");
 
+    try {
         // CSRF 토큰을 메타 태그에서 가져옵니다.
         const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
