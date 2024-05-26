@@ -3,11 +3,14 @@ package com.aladin.springbootstudy.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,5 +32,14 @@ public class LoginController {
 
         // 클라이언트 ID와 콜백 URL을 포함하는 Map을 반환합니다.
         return kakaoConfig;
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);  // Session이 없으면 null return
+        if(session != null) {
+            session.invalidate();
+        }
+        return "redirect:/index";
     }
 }
