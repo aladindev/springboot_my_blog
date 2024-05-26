@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,9 +36,12 @@ public class BoardController {
         return mv;
     }
 
-    @PostMapping(value="/write") // editor
-    public ModelAndView postWrite() {
-        ModelAndView mv = new ModelAndView("board/write");
-        return mv;
+    @PostMapping(value="/write") // post write
+    public void postWrite(@RequestParam("title") String title,
+                          @RequestParam("editordata") String editorData) {
+
+        logger.info("title >> " + title);
+        logger.info("editorData >> " + editorData);
+
     }
 }

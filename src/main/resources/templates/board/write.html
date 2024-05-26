@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
   <meta charset="utf-8">
@@ -9,9 +9,14 @@
   <meta content="" name="description">
   <meta content="" name="keywords">
 
+  <!-- CSRF PROTECT -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
   <!-- Favicons -->
   <link href="/assets/img/favicon.png" rel="icon">
   <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,13 +128,13 @@
         </div>
 
         <div class="row mb-5">
-          <form action="/board/write" method="post">
+          <form th:action="@{/board/write}" th:method="post">
             <section id="hero-slider" class="hero-slider">
               <div class="button-container">
                 <button type="submit" class="btn-submit-1 mb-3"><h5>submit</h5></button>
               </div>
-                <input id="title" style="width: 100%;"
-                       class="section-header d-flex justify-content-between align-items-center mb-3" type="text" name="title" placeholder="제목"/>
+                <input name="title" style="width: 100%;"
+                       class="section-header d-flex justify-content-between align-items-center mb-3" type="text" placeholder="제목"/>
                 <textarea id="summernote" name="editordata"></textarea>
             </section>
           </form>
