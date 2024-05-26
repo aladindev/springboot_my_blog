@@ -60,10 +60,19 @@ function logout() {
 function write_post() {
         try {
             alert("onclick write_post");
+
+        // CSRF 토큰을 메타 태그에서 가져옵니다.
+        const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
         // fetch API를 사용하여 로그아웃 요청을 보냅니다.
         fetch('/login/isLogin', {
             method: 'POST', // HTTP 메소드 지정
-            credentials: 'include' // 쿠키를 포함시키기 위해 credentials 옵션을 'include'로 설정
+            credentials: 'include',// 쿠키를 포함시키기 위해 credentials 옵션을 'include'로 설정
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken // CSRF 토큰을 헤더에 추가합니다.
+            }
         })
         .then(response => {
             // 서버로부터의 응답을 처리합니다.
