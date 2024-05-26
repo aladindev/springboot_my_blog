@@ -26,6 +26,7 @@
   line-height: 42px;
   padding: 0;
   border: none;
+  width: 150px;
 }
 .btn-submit-1:hover {
   background: transparent;
