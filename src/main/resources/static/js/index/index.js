@@ -77,6 +77,7 @@ function write_post() {
             // 서버로부터의 응답을 처리합니다.
             if (response.ok) {
                 response.json().then(data => {
+                    alert(data.isLogin);
                     if(data.isLogin) {
                         window.location.href = '/board/write';
                     } else {
