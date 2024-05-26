@@ -2,12 +2,18 @@ package com.aladin.springbootstudy.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
-@RestController
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
+@Controller
 @RequestMapping("/board")
 public class BoardController {
     private Logger logger = LoggerFactory.getLogger(BoardController.class);
@@ -27,9 +33,13 @@ public class BoardController {
     }
 
     @GetMapping(value="/write") // editor
-    public ModelAndView about() {
-        logger.warn("editor controller ");
-        ModelAndView mv = new ModelAndView("board/editor");
-        return mv;
+    public Map<String, Object> writePost(@SessionAttribute(name = "userId", required = false) String userId) {
+        Map<String, Object> resultMap = new HashMap<>();
+        if(userId != null && !"".equals(userId)) {
+            resultMap.put("isLogin", true);
+        } else {
+            resultMap.put("isLogin", false);
+        }
+        return resultMap;
     }
 }
