@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,5 +41,16 @@ public class LoginController {
         Map<String, String> resMap = new HashMap<>();
         resMap.put("resultMsg", "정상적으로 로그아웃 되었습니다.");
         return resMap;
+    }
+
+    @PostMapping("/isLogin")
+    public Map<String, Boolean> isLogin(@SessionAttribute(name = "userId", required = false) Long userId) {
+        Map<String, Boolean> resultMap = new HashMap<>();
+        if(userId != null && !"".equals(userId)) {
+            resultMap.put("isLogin", true);
+        } else {
+            resultMap.put("isLogin", false);
+        }
+        return resultMap;
     }
 }
