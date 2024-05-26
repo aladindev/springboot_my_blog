@@ -3,10 +3,7 @@ package com.aladin.springbootstudy.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -33,7 +30,13 @@ public class BoardController {
     }
 
     @GetMapping(value="/write") // editor
-    public ModelAndView writePost() {
+    public ModelAndView getWriteHtml() {
+        ModelAndView mv = new ModelAndView("board/write");
+        return mv;
+    }
+
+    @PostMapping(value="/write") // editor
+    public ModelAndView postWrite() {
         ModelAndView mv = new ModelAndView("board/write");
         return mv;
     }
