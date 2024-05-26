@@ -44,13 +44,15 @@ public class LoginController {
     }
 
     @PostMapping("/isLogin")
-    public Map<String, Boolean> isLogin(@SessionAttribute(name = "userId", required = false) Long userId) {
+    public Map<String, Boolean> isLogin(HttpSession session) {
         Map<String, Boolean> resultMap = new HashMap<>();
-        if(userId != null && !"".equals(userId)) {
+        if(session.getAttribute("userInfoDto") != null) {
             resultMap.put("isLogin", true);
         } else {
             resultMap.put("isLogin", false);
         }
+
+        logger.info("isLogin >> "  + resultMap.get("isLogin"));
         return resultMap;
     }
 }
