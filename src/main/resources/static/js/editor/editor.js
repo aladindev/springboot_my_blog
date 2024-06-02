@@ -14,19 +14,26 @@ $(document).ready(function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 이미지 데이터를 숨겨진 입력 필드로 변환하는 함수
-    function convertImageToHiddenInput(image) {
-        // 숨겨진 입력 필드 생성
-        const hiddenInput = document.createElement("input");
-        hiddenInput.setAttribute("type", "hidden");
-        hiddenInput.setAttribute("name", "img[]"); // 서버에서 배열로 받기 위해 이름을 'img[]'로 지정
-        hiddenInput.value = image.src; // 이미지의 Base64 데이터를 값으로 설정
-        
-        // 폼에 숨겨진 입력 필드 추가
-        document.getElementById("postForm").appendChild(hiddenInput);
-    }
+	const submitBtn = document.getElementById("submitBtn");
+	const uploadForm = document.getElementById("uploadForm");
 
-    // 모든 이미지를 숨겨진 입력 필드로 변환
-    const images = document.querySelectorAll('img[name="img"]');
-    images.forEach(convertImageToHiddenInput);
+	// 폼 제출 버튼 클릭 이벤트 리스너
+	submitBtn.addEventListener("click", function() {
+		// 기존의 숨겨진 입력 필드 제거
+		const existingInputs = uploadForm.querySelectorAll('input[type="hidden"]');
+		existingInputs.forEach(input => input.remove());
+
+		// 모든 이미지를 숨겨진 입력 필드로 변환
+		const images = imagePreview.querySelectorAll('img[name="img"]');
+		images.forEach(image => {
+			const hiddenInput = document.createElement("input");
+			hiddenInput.setAttribute("type", "hidden");
+			hiddenInput.setAttribute("name", "img[]");
+			hiddenInput.value = image.src;
+			uploadForm.appendChild(hiddenInput);
+		});
+
+		// 폼 제출
+		uploadForm.submit();
+	});
 });
