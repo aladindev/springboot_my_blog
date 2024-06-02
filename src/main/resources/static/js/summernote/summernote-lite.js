@@ -3661,7 +3661,10 @@ function createImage(url) {
       type: 'hidden',
       name: 'img', // 입력 필드에 동일한 이름(name) 속성 추가
       value: url // 입력 필드의 값으로 이미지 URL 설정
-    }).appendTo(document.body);
+    });
+    // 'postForm' 폼 요소에 input 추가
+    external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('#postForm').append($input);
+    
 
     console.log($input);
   }).promise();
