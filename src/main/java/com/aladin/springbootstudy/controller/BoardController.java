@@ -2,6 +2,7 @@ package com.aladin.springbootstudy.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,6 +15,10 @@ import java.util.Map;
 @Controller
 @RequestMapping("/board")
 public class BoardController {
+
+    @Value("${file_path_img}")
+    private String filePathImg;
+
     private Logger logger = LoggerFactory.getLogger(BoardController.class);
     // 로컬 서버 포트 변경
     @GetMapping(value="/post")
@@ -38,10 +43,13 @@ public class BoardController {
 
     @PostMapping(value="/write") // post write
     public void postWrite(@RequestParam("title") String title,
-                          @RequestParam("editordata") String editorData) {
+                          @RequestParam("editordata") String editorData,
+                          @RequestParam("img") String[] imgs) {
 
         logger.info("title >> " + title);
         logger.info("editorData >> " + editorData);
+        logger.info("imgs >> " + imgs);
+        logger.info("filePathImg >> " + filePathImg);
 
     }
 }
