@@ -131,7 +131,7 @@
           <form id="postForm" th:action="@{/board/write}" th:method="post">
             <section id="hero-slider" class="hero-slider">
               <div class="button-container">
-                <button id="submitBtn" type="button" class="btn-submit-1 mb-3"><h5>submit</h5></button>
+                <button id="submitBtn" type="button" onclick="doSubmit();" class="btn-submit-1 mb-3"><h5>submit</h5></button>
               </div>
                 <input id="title" name="title" style="width: 100%;"
                        class="section-header d-flex justify-content-between align-items-center mb-3" type="text" placeholder="제목"/>

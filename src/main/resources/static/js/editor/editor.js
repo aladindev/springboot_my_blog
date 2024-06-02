@@ -13,30 +13,7 @@ $(document).ready(function() {
 	});
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-	const submitBtn = document.getElementById("submitBtn");
-	const uploadForm = document.getElementById("uploadForm");
 
-	// 폼 제출 버튼 클릭 이벤트 리스너
-	submitBtn.addEventListener("click", function() {
-		// 기존의 숨겨진 입력 필드 제거
-		const existingInputs = uploadForm.querySelectorAll('input[type="hidden"]');
-		existingInputs.forEach(input => input.remove());
-
-		// 모든 이미지를 숨겨진 입력 필드로 변환
-		const images = imagePreview.querySelectorAll('img[name="img"]');
-		images.forEach(image => {
-			const hiddenInput = document.createElement("input");
-			hiddenInput.setAttribute("type", "hidden");
-			hiddenInput.setAttribute("name", "img[]");
-			hiddenInput.value = image.src;
-			uploadForm.appendChild(hiddenInput);
-		});
-
-		// 폼 제출
-		uploadForm.submit();
-	});
-});
 
 function doSubmit() {
 
@@ -51,22 +28,8 @@ function doSubmit() {
 	}
 
 	const submitBtn = document.getElementById("submitBtn");
-	const uploadForm = document.getElementById("uploadForm");
-
-	// 기존의 숨겨진 입력 필드 제거
-	const existingInputs = uploadForm.querySelectorAll('input[type="hidden"]');
-	existingInputs.forEach(input => input.remove());
-
-	// 모든 이미지를 숨겨진 입력 필드로 변환
-	const images = imagePreview.querySelectorAll('img[name="img"]');
-	images.forEach(image => {
-		const hiddenInput = document.createElement("input");
-		hiddenInput.setAttribute("type", "hidden");
-		hiddenInput.setAttribute("name", "img[]");
-		hiddenInput.value = image.src;
-		uploadForm.appendChild(hiddenInput);
-	});
+	const postForm = document.getElementById("postForm");
 
 	// 폼 제출
-	uploadForm.submit();
+	postForm.submit();
 }
