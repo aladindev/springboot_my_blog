@@ -3664,9 +3664,7 @@ function createImage(url) {
     });
     // 'postForm' 폼 요소에 input 추가
     external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('#postForm').append($input);
-    
 
-    console.log($input);
   }).promise();
 }
 

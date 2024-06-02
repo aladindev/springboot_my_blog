@@ -9,6 +9,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +41,16 @@ public class BoardController {
     }
 
     @GetMapping(value="/write") // editor
-    public ModelAndView getWriteHtml() {
+    public ModelAndView getWriteHtml(HttpSession session) {
+        Map<String, Boolean> resultMap = new HashMap<>();
+        if(session.getAttribute("userInfoDto") != null) {
+            resultMap.put("isLogin", true);
+        } else {
+            resultMap.put("isLogin", false);
+            ModelAndView mv = new ModelAndView("/index");
+            return mv;
+        }
+
         ModelAndView mv = new ModelAndView("board/write");
         return mv;
     }
@@ -50,6 +64,18 @@ public class BoardController {
         logger.info("editorData >> " + editorData);
         logger.info("imgs >> " + imgs);
         logger.info("filePathImg >> " + filePathImg);
+
+        try {
+            // Base64 디코딩
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+
+            // 디코딩된 바이트 배열을 파일로 저장
+            Path destinationFile = Paths.get("저장할 경로", "filename.png");
+            Files.write(destinationFile, imageBytes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

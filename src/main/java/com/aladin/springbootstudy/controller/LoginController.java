@@ -51,8 +51,6 @@ public class LoginController {
         } else {
             resultMap.put("isLogin", false);
         }
-
-        logger.info("isLogin >> "  + resultMap.get("isLogin"));
         return resultMap;
     }
 }
