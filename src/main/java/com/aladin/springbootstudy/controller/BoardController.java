@@ -65,7 +65,7 @@ public class BoardController {
         logger.info("imgs >> " + imgs);
         logger.info("filePathImg >> " + filePathImg);
 
-
+  
 
         try {
             for(String base64Image : imgs) {
