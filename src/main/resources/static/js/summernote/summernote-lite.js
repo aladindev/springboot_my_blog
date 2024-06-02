@@ -5971,6 +5971,8 @@ var Editor_Editor = /*#__PURE__*/function () {
             $image.attr('data-filename', param);
           }
 
+          //Test aladin 0602
+          //$image.css('width', Math.min(_this3.$editable.width(), $image.width()));
           $image.css('width', Math.min(_this3.$editable.width(), $image.width()));
         }
 
