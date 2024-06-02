@@ -3624,6 +3624,7 @@ function readFileAsDataURL(file) {
  * @return {Promise} - then: $image
  */
 
+//TEST aladin 0602
 function createImage(url) {
   return external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.Deferred(function (deferred) {
     var $img = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<img>');
@@ -3636,6 +3637,16 @@ function createImage(url) {
     }).css({
       display: 'none'
     }).appendTo(document.body).attr('src', url);
+
+    //test
+    alert($img[0]);
+    console.log("console. log ");
+    console.log($img[0]);
+    console.log($img);
+    alert("stop");
+    return;
+    
+
   }).promise();
 }
 // CONCATENATED MODULE: ./src/js/base/editing/History.js
