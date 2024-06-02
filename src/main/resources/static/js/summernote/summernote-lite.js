@@ -3625,7 +3625,21 @@ function readFileAsDataURL(file) {
  */
 
 //TEST aladin 0602
-function createImage(url) {
+// function createImage(url) {
+//   return external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.Deferred(function (deferred) {
+//     var $img = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<img>');
+//     $img.one('load', function () {
+//       $img.off('error abort');
+//       deferred.resolve($img);
+//     }).one('error abort', function () {
+//       $img.off('load').detach();
+//       deferred.reject($img);
+//     }).css({
+//       display: 'none'
+//     }).appendTo(document.body).attr('src', url);
+//   }).promise();
+// }
+function createImage(url, name, width, height) {
   return external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.Deferred(function (deferred) {
     var $img = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<img>');
     $img.one('load', function () {
@@ -3635,18 +3649,13 @@ function createImage(url) {
       $img.off('load').detach();
       deferred.reject($img);
     }).css({
-      display: 'none'
-    }).appendTo(document.body).attr('src', url);
-
-    //test
-    alert($img[0]);
-    console.log("console. log ");
-    console.log($img[0]);
-    console.log($img);
-    alert("stop");
-    return;
-    
-
+      display: 'none', // 기본적으로는 이미지를 숨깁니다.
+      width: '450px', // 너비 설정
+      height: '450px' // 높이 설정
+    }).attr({
+      'src': url,
+      'name': 'img', // 이미지에 이름(name) 속성 추가
+    }).appendTo(document.body);
   }).promise();
 }
 // CONCATENATED MODULE: ./src/js/base/editing/History.js
