@@ -3639,7 +3639,7 @@ function readFileAsDataURL(file) {
 //     }).appendTo(document.body).attr('src', url);
 //   }).promise();
 // }
-function createImage(url, name, width, height) {
+function createImage(url) {
   return external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default.a.Deferred(function (deferred) {
     var $img = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<img>');
     $img.one('load', function () {
@@ -3650,17 +3650,16 @@ function createImage(url, name, width, height) {
       deferred.reject($img);
     }).css({
       display: 'none', // 기본적으로는 이미지를 숨깁니다.
-      width: width + 'px', // 너비 설정
-      height: height + 'px' // 높이 설정
+      width: '450px', // 너비 설정
+      height: '450px' // 높이 설정
     }).attr({
-      'src': url,
-      'name': name, // 이미지에 이름(name) 속성 추가
+      'src': url
     }).appendTo(document.body);
 
     // 숨겨진 입력 필드 생성 및 추가
     var $input = external_root_jQuery_commonjs2_jquery_commonjs_jquery_amd_jquery_default()('<input>').attr({
       type: 'hidden',
-      name: name, // 입력 필드에 동일한 이름(name) 속성 추가
+      name: 'img', // 입력 필드에 동일한 이름(name) 속성 추가
       value: url // 입력 필드의 값으로 이미지 URL 설정
     }).appendTo(document.body);
   }).promise();
