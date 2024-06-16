@@ -73,7 +73,7 @@ public class BoardController {
                 byte[] imageBytes = Base64.getDecoder().decode(base64Image);
 
                 // 디코딩된 바이트 배열을 파일로 저장
-                Path destinationFile = Paths.get(filePathImg, "filename.png"); // ㅎㅏ... bb
+                Path destinationFile = Paths.get(filePathImg, "filename.png"); // ㅎㅏ... bb  
                 Files.write(destinationFile, imageBytes);
             }
 
