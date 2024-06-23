@@ -55,9 +55,9 @@ public class BoardController {
         return mv;
     }
 
-    @PostMapping(value="/write") // post write
+    @PostMapping(value="/write") // post write // serialization
     public void postWrite(@RequestParam("title") String title,
-                          @RequestParam("editordata") String editorData, 
+                          @RequestParam("editordata") String editorData,
                           @RequestParam("img") String[] imgs) {
 
         logger.info("title >> " + title);
