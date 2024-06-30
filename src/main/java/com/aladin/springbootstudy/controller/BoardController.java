@@ -17,7 +17,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller   
+@Controller      
 @RequestMapping("/board")
 public class BoardController {
 
