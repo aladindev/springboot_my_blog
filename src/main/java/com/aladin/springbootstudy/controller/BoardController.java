@@ -24,7 +24,7 @@ public class BoardController {
     @Value("${file_path_img}")
     private String filePathImg;
 
-    private Logger logger = LoggerFactory.getLogger(BoardController.class);
+    private Logger logger = LoggerFactory.getLogger(BoardController.class); 
     // 로컬 서버 포트 변경
     @GetMapping(value="/post")
     public ModelAndView post() {
@@ -55,7 +55,7 @@ public class BoardController {
         return mv;
     }
 
-    @PostMapping(value="/write") // post write // serialization.... interface   
+    @PostMapping(value="/write") // post write // serialization.... interface
     public void postWrite(@RequestParam("title") String title,
                           @RequestParam("editordata") String editorData,
                           @RequestParam("img") String[] imgs) {
