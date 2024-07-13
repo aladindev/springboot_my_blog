@@ -34,7 +34,7 @@ public class BoardController {
     }
 
     @GetMapping(value="/category")
-    public ModelAndView category() {  // kafka !!
+    public ModelAndView category() {  // kafka !!e
         logger.warn("post controller ");
         ModelAndView mv = new ModelAndView("board/category");
         return mv;
