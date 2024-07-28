@@ -34,7 +34,7 @@ public class BoardController {
     }
 
     @GetMapping(value="/category")
-    public ModelAndView category() {  // kafka !!e
+    public ModelAndView category() {  // kafka !!e 
         logger.warn("post controller ");
         ModelAndView mv = new ModelAndView("board/category");
         return mv;
@@ -68,7 +68,7 @@ public class BoardController {
 
 
         try {
-            for(String base64Image : imgs) {
+            for(String base64Image : imgs) { // kafka Connect Debezium
                 // Base64 디코딩
                 byte[] imageBytes = Base64.getDecoder().decode(base64Image);
 
