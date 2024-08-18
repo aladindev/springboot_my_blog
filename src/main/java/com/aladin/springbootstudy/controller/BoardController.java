@@ -68,7 +68,9 @@ public class BoardController {
 
 
         try {
-            for(String base64Image : imgs) { // kafka Connect Debezium SourceDB : Oracle SinkDB : MariaDB CDC    
+            for(String base64Image : imgs) {
+                // kafka Connect Debezium SourceDB : Oracle SinkDB : MariaDB CDC
+                // confluent Kafka
                 // Base64 디코딩
                 byte[] imageBytes = Base64.getDecoder().decode(base64Image);
 
